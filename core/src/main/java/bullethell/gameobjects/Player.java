@@ -6,14 +6,10 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class Player extends GameObject {
-    private final GameContext context;
-    private final Texture sprite;
-    private final float speed = 200f;
+public class Player extends Ship {
 
     public Player(GameContext context) {
-        this.context = context;
-        this.sprite = context.getPlayerSprite();
+        super(context, context.getPlayerSprite(), 200f);
         x = context.getPlayWidth() / 2f;
         y = 50f;
     }

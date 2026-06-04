@@ -7,16 +7,12 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
 
-public class Enemy extends GameObject {
-    private final GameContext context;
-    private final Texture sprite;
+public class Enemy extends Ship {
     private final ArrayList<Vector2> path;
     private int targetIndex = 0;
-    final float speed = 150f;
 
     public Enemy(GameContext context, ArrayList<Vector2> points) {
-        this.context = context;
-        this.sprite = context.getPlayerSprite();
+        super(context, context.getPlayerSprite(), 150f);
         this.path = points == null ? new ArrayList<>() : new ArrayList<>(points);
 
         if (!this.path.isEmpty()) {

@@ -2,7 +2,6 @@ package bullethell.gameobjects;
 
 import bullethell.GameContext;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
@@ -55,5 +54,6 @@ public class Enemy extends Ship {
     @Override
     public void dispose() {
         // might remove this later idk yet
+        // TODO: maybe should the points drop happen here?
     }
 }

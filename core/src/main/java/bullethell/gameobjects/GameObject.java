@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public abstract class GameObject {
     protected float x, y;
-    final GameContext context;
+    protected final GameContext context;
 
     protected GameObject(GameContext context) {
         this.context = context;

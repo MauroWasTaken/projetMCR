@@ -26,6 +26,8 @@ public class GameContext extends ApplicationAdapter {
     private FitViewport viewport;
     private Texture background;
     private Texture playerSprite;
+    private Texture score100Sprite;
+    private Texture score500Sprite;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
@@ -49,6 +51,8 @@ public class GameContext extends ApplicationAdapter {
         // player init
         // load shared sprite texture and create player
         playerSprite = new Texture("player.png");
+        score100Sprite = new Texture("Score100.png");
+        score500Sprite = new Texture("Score500.png");
         gameObjects.add(new Player(this));
         level = new Level(this);
     }
@@ -115,6 +119,14 @@ public class GameContext extends ApplicationAdapter {
 
     public Texture getPlayerSprite() {
         return playerSprite;
+    }
+
+    public Texture get100PointsSprite() {
+        return score100Sprite;
+    }
+
+    public Texture get500PointsSprite() {
+        return score500Sprite;
     }
 
     public void despawn(GameObject object) {

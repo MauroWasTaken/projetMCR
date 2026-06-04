@@ -8,17 +8,21 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public abstract class ScoreDrop extends GameObject {
     protected final int scoreWin;
     protected final Texture sprite; // Flyweight pattern
+    protected final float speed;
 
-    protected ScoreDrop(GameContext context, int heldValue, Texture sprite) {
+    protected ScoreDrop(GameContext context, int heldValue, float speed, Texture sprite) {
         super(context);
         this.scoreWin = heldValue;
         this.sprite = sprite;
+        this.speed = speed;
+        y = context.getPlayHeight();
     }
 
     @Override
     public void update(float delta) {
-        // Drop falls vertically
-        y -= delta;
+        // TODO: load the freshly destroyed enemy's x and y coords here (somehow)
+        // Drop falls vertically, no need to wave it left to right
+        y -= delta * speed;
 
         // screen limits
         float spriteHalfWidth = sprite.getWidth() / 2f;

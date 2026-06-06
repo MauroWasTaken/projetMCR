@@ -45,6 +45,8 @@ public class GameContext extends ApplicationAdapter {
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
 
     Level level;
+    private boolean levelCompleted = false;
+    private float levelCompletionTimer = 0f;
 
     @Override
     public void create() {
@@ -120,7 +122,23 @@ public class GameContext extends ApplicationAdapter {
         for (GameObject gameObject : gameObjects) {
             gameObject.render(batch);
         }
+        // draw current money todo figure out why its blurry might need to change the camera
         font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), playWidth - 100, 20);
+
+        // check level completion
+        if (level.isFinished() && getEnemies().length == 0) {
+            levelCompleted = true;
+        }
+        if (levelCompleted) {
+            levelCompletionTimer += delta;
+            if (levelCompletionTimer >= 2f) {
+
+                font.getData().setScale(1.5f);
+                font.draw(batch, "Level Completed!", playWidth / 2 - 70, playHeight / 2);
+                font.getData().setScale(1f); // reset scale
+
+            }
+        }
         batch.end();
         // hitbox viewer (might only keep it for the player)
         shapeRenderer.setProjectionMatrix(camera.combined);

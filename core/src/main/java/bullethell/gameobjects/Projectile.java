@@ -15,7 +15,7 @@ public class Projectile extends GameObject{
     final boolean isPlayerProjectile;
     final Texture sprite;
     public Projectile(GameContext context, float x, float y, float velocityX, float velocityY, boolean isPlayerProjectile, Texture sprite) {
-        super(context,sprite.getWidth() * 0.9f, sprite.getHeight() * 0.9f);
+        super(context,sprite.getWidth() * 0.2f, sprite.getHeight() * 0.9f);
         this.isPlayerProjectile = isPlayerProjectile;
         this.x = x;
         this.y = y;

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import bullethell.gameobjects.GameObject;
@@ -33,6 +34,7 @@ public class GameContext extends ApplicationAdapter {
     private Texture score100Sprite;
     private Texture score500Sprite;
     private BitmapFont font;
+    private ShapeRenderer shapeRenderer;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
@@ -60,6 +62,7 @@ public class GameContext extends ApplicationAdapter {
         score100Sprite = new Texture("Score100.png");
         score500Sprite = new Texture("Score500.png");
         font = new BitmapFont();
+        shapeRenderer = new ShapeRenderer();
         gameObjects.add(new Player(this));
         level = new Level(this);
     }
@@ -98,6 +101,14 @@ public class GameContext extends ApplicationAdapter {
         }
         font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), playWidth - 100, 20);
         batch.end();
+        // hitbox viewer (might only keep it for the player)
+        shapeRenderer.setProjectionMatrix(camera.combined);
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        shapeRenderer.setColor(Color.RED);
+        for (GameObject gameObject : gameObjects) {
+            shapeRenderer.polygon(gameObject.getHitbox().getTransformedVertices());
+        }
+        shapeRenderer.end();
     }
 
     @Override
@@ -106,6 +117,7 @@ public class GameContext extends ApplicationAdapter {
         background.dispose();
         if (playerSprite != null) playerSprite.dispose();
         if (font != null) font.dispose();
+        if (shapeRenderer != null) shapeRenderer.dispose();
     }
 
     @Override

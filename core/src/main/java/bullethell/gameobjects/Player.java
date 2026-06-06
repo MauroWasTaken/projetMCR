@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Player extends Ship {
 
     public Player(GameContext context) {
-        super(context, context.getPlayerSprite(), 200f, context.getPlayerSprite().getWidth()*0.1f, context.getPlayerSprite().getHeight()*0.1f);
+        super(context, context.getPlayerSprite(), 200f, context.getPlayerSprite().getWidth()*0.2f, context.getPlayerSprite().getHeight()*0.2f);
         x = context.getPlayWidth() / 2f;
         y = 50f;
 

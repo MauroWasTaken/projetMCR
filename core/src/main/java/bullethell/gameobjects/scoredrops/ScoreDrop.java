@@ -12,7 +12,7 @@ public abstract class ScoreDrop extends GameObject {
     protected final float speed;
 
     protected ScoreDrop(GameContext context, int heldValue, float speed, float x, float y, Texture sprite)  {
-        super(context, sprite.getWidth() * 0.25f, sprite.getHeight() * 0.25f);
+        super(context, sprite.getWidth() * 0.33f, sprite.getHeight() * 0.33f); // the sprites are so big
         this.scoreWin = heldValue;
         this.sprite = sprite;
         this.speed = speed;
@@ -29,7 +29,7 @@ public abstract class ScoreDrop extends GameObject {
         float halfWidth = width / 2f;
         float maxX = context.getPlayWidth() - halfWidth;
         x = Math.max(halfWidth, Math.min(x, maxX));
-        
+
         // despawn when it goes off screen
         if (y < -height) {
             context.despawn(this);

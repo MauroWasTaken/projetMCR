@@ -28,7 +28,7 @@ public abstract class Ship extends GameObject{
     @Override
     public Polygon getHitbox() {
         hitbox.setPosition(x - width / 2f, y - height / 2f);
-        hitbox.setRotation(90f);
+        hitbox.setRotation(45f);
         return hitbox;
     }
 

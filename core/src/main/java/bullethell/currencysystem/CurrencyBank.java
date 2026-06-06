@@ -2,7 +2,7 @@ package bullethell.currencysystem;
 
 public class CurrencyBank {
     // Singleton object to manage player's funds
-    private CurrencyBank bank;
+    private static CurrencyBank bank;
     // Current value, rounded to two decimals to avoid hell
     private float value;
 
@@ -11,14 +11,14 @@ public class CurrencyBank {
         this.value = readFromFile();
     }
 
-    CurrencyBank getInstance() {
-        if (this.bank == null) {
-            this.bank = new CurrencyBank();
+    public static CurrencyBank getInstance() {
+        if (CurrencyBank.bank == null) {
+            CurrencyBank.bank = new CurrencyBank();
         }
-        return this.bank;
+        return CurrencyBank.bank;
     }
 
-    void purchase(float cost) throws InsufficientFundsException {
+    public void purchase(float cost) throws InsufficientFundsException {
         if (this.hasEnoughFunds(cost)) {
             this.value -= cost;
             this.saveFunds();
@@ -27,7 +27,7 @@ public class CurrencyBank {
         }
     }
 
-    void addFunds(float amount) {
+    public void addFunds(float amount) {
         this.value += amount;
         this.saveFunds();
     }
@@ -38,6 +38,10 @@ public class CurrencyBank {
 
     private void saveFunds() {
         // TODO: write to some offline storage for the player to resume their game (optional)
+    }
+
+    public float getValue() {
+        return this.value;
     }
 
     private float readFromFile() {

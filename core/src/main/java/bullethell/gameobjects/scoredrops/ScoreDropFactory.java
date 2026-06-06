@@ -10,7 +10,7 @@ public class ScoreDropFactory {
     public ScoreDropFactory(GameContext context) {
         this.context = context;
     }
-
+    /** todo might not use this?
     public ScoreDrop create100PointsDrop() {
         return new Score100Drop(context, SPEED, context.get100PointsSprite());
     }
@@ -18,4 +18,5 @@ public class ScoreDropFactory {
     public ScoreDrop create500PointsDrop() {
         return new Score500Drop(context, SPEED, context.get500PointsSprite());
     }
+     */
 }

@@ -1,6 +1,8 @@
 package bullethell;
 
+import bullethell.gameobjects.Enemy;
 import bullethell.gameobjects.Player;
+import bullethell.gameobjects.scoredrops.ScoreDropFactory;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -8,6 +10,7 @@ import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import bullethell.gameobjects.GameObject;
@@ -26,8 +29,10 @@ public class GameContext extends ApplicationAdapter {
     private FitViewport viewport;
     private Texture background;
     private Texture playerSprite;
+    private Texture projectileSprite;
     private Texture score100Sprite;
     private Texture score500Sprite;
+    private BitmapFont font;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
@@ -51,8 +56,10 @@ public class GameContext extends ApplicationAdapter {
         // player init
         // load shared sprite texture and create player
         playerSprite = new Texture("player.png");
+        projectileSprite = new Texture("projectile.png");
         score100Sprite = new Texture("Score100.png");
         score500Sprite = new Texture("Score500.png");
+        font = new BitmapFont();
         gameObjects.add(new Player(this));
         level = new Level(this);
     }
@@ -75,7 +82,6 @@ public class GameContext extends ApplicationAdapter {
         if (!pendingRemove.isEmpty()) {
             for (GameObject o : pendingRemove) {
                 gameObjects.remove(o);
-                o.dispose();
             }
             pendingRemove.clear();
         }
@@ -90,6 +96,7 @@ public class GameContext extends ApplicationAdapter {
         for (GameObject gameObject : gameObjects) {
             gameObject.render(batch);
         }
+        font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), playWidth - 100, 20);
         batch.end();
     }
 
@@ -98,9 +105,7 @@ public class GameContext extends ApplicationAdapter {
         batch.dispose();
         background.dispose();
         if (playerSprite != null) playerSprite.dispose();
-        for (GameObject gameObject : gameObjects) {
-            gameObject.dispose();
-        }
+        if (font != null) font.dispose();
     }
 
     @Override
@@ -120,6 +125,7 @@ public class GameContext extends ApplicationAdapter {
     public Texture getPlayerSprite() {
         return playerSprite;
     }
+    public Texture getProjectileSprite() { return projectileSprite; }
 
     public Texture get100PointsSprite() {
         return score100Sprite;
@@ -142,5 +148,15 @@ public class GameContext extends ApplicationAdapter {
             pendingAdd.add(object);
         }
     }
-
+    public Player getPlayer(){
+        return gameObjects.stream().filter(o -> o instanceof Player)
+            .map(o -> (Player) o) // converts gameobject to player
+            .findFirst()
+            .orElse(null); // returns null if no player was found
+    }
+    public Enemy[] getEnemies(){
+        return gameObjects.stream().filter(o -> o instanceof Enemy)
+            .map(o -> (Enemy) o) // converts gameobject to enemy
+            .toArray(Enemy[]::new); // converts stream to array
+    }
 }

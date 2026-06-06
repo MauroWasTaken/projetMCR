@@ -1,12 +1,14 @@
-package bullethell.gameobjects;
+package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.GameObject;
+import bullethell.gameobjects.Weapon;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Polygon;
 
 import java.util.ArrayList;
 
-public abstract class Ship extends GameObject{
+public abstract class Ship extends GameObject {
     double shootingOffsetX,shootingOffsetY;
     final Texture sprite;
     final float speed;
@@ -17,6 +19,10 @@ public abstract class Ship extends GameObject{
         this.sprite = sprite;
         this.speed = speed;
         this.weapons = new ArrayList<>();
+    }
+
+    public void addWeapon(Weapon weapon) {
+        this.weapons.add(weapon);
     }
 
     @Override

@@ -1,10 +1,13 @@
-package bullethell.gameobjects;
+package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.GameObject;
+import bullethell.gameobjects.Weapon;
 import bullethell.gameobjects.scoredrops.Score100Drop;
 import bullethell.gameobjects.scoredrops.Score500Drop;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 
@@ -17,26 +20,19 @@ public class Enemy extends Ship {
     private float shootTimer; // in ms
     private int nbShots; // -1 for "infinite"
 
-    public Enemy(GameContext context, ArrayList<Vector2> points, float shootDelay, int nbShots) {
-        super(context, context.getPlayerSprite(), 150f, context.getPlayerSprite().getWidth()*0.6f, context.getPlayerSprite().getHeight()*0.6f);
-        this.path = points == null ? new ArrayList<>() : new ArrayList<>(points);
+    public Enemy(GameContext context, Texture sprite, float speed, ArrayList<Vector2> path, float shootDelay, int nbShots) {
+        super(context, sprite, speed, sprite.getWidth() * 0.6f, sprite.getHeight() * 0.6f);
+        this.path = path == null ? new ArrayList<>() : new ArrayList<>(path);
         this.shootDelay = shootDelay;
         this.nbShots = nbShots;
-
-        shootingOffsetX = 0f;
-        shootingOffsetY = -sprite.getHeight() / 2f;
-
-        weapons.add(new Weapon(this, new Projectile[]{
-            new Projectile(context, 0, 0, 0, -100, false, context.getProjectileSprite()),
-            new Projectile(context, 0, 0, -100, -100, false, context.getProjectileSprite()),
-            new Projectile(context, 0, 0, 100, -100, false, context.getProjectileSprite())
-        }));
+        this.shootingOffsetX = 0f;
+        this.shootingOffsetY = -sprite.getHeight() / 2f;
 
         if (!this.path.isEmpty()) {
             Vector2 start = this.path.get(0);
-            x = start.x;
-            y = context.getPlayHeight() + start.y;
-            targetIndex = 1;
+            this.x = start.x;
+            this.y = context.getPlayHeight() + start.y;
+            this.targetIndex = 1;
         }
     }
 

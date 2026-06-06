@@ -1,6 +1,7 @@
-package bullethell.gameobjects;
+package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.Weapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -8,20 +9,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 public class Player extends Ship {
 
     public Player(GameContext context) {
-        super(context, context.getPlayerSprite(), 200f, context.getPlayerSprite().getWidth()*0.2f, context.getPlayerSprite().getHeight()*0.2f);
-        x = context.getPlayWidth() / 2f;
-        y = 50f;
-
-        shootingOffsetX = 0f;
-        shootingOffsetY = sprite.getHeight() / 2f;
-
-        weapons.add(new Weapon(this, new Projectile[]{
-            new Projectile(context, 0, 0, 0, 400, true, context.getProjectileSprite())
-        }));
-        weapons.add(new Weapon(this, new Projectile[]{
-            new Projectile(context, 0, 0, -200, 400, true, context.getProjectileSprite()),
-            new Projectile(context, 0, 0, 200, 400, true, context.getProjectileSprite())
-        }));
+        super(context, context.getPlayerSprite(), 200f, context.getPlayerSprite().getWidth() * 0.1f, context.getPlayerSprite().getHeight() * 0.1f);
+        this.x = context.getPlayWidth() / 2f;
+        this.y = 50f;
+        this.shootingOffsetX = 0f;
+        this.shootingOffsetY = sprite.getHeight() / 2f;
     }
 
     @Override

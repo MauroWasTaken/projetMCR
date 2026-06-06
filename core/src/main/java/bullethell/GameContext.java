@@ -1,8 +1,13 @@
 package bullethell;
 
-import bullethell.gameobjects.Enemy;
-import bullethell.gameobjects.Player;
-import bullethell.gameobjects.scoredrops.ScoreDropFactory;
+import bullethell.gameobjects.ships.Enemy;
+import bullethell.gameobjects.ships.Player;
+import bullethell.gameobjects.Weapon;
+import bullethell.gameobjects.builders.LevelBuilder;
+import bullethell.gameobjects.builders.LevelDirector;
+import bullethell.gameobjects.builders.PlayerBuilder;
+import bullethell.gameobjects.builders.WeaponBuilder;
+import bullethell.gameobjects.builders.WeaponDirector;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -63,8 +68,24 @@ public class GameContext extends ApplicationAdapter {
         score500Sprite = new Texture("Score500.png");
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
-        gameObjects.add(new Player(this));
-        level = new Level(this);
+
+        // Build Player
+        PlayerBuilder playerBuilder = new PlayerBuilder(this);
+        Player player = playerBuilder.build();
+
+        Weapon mainWeapon = new WeaponDirector().playerMainWeapon(new WeaponBuilder(this), player);
+        player.addWeapon(mainWeapon);
+
+        Weapon sideWeapons = new WeaponDirector().playerSideWeapons(new WeaponBuilder(this), player);
+        player.addWeapon(sideWeapons);
+
+        gameObjects.add(player);
+
+        // Build Level
+        LevelBuilder levelBuilder = new LevelBuilder(this);
+        LevelDirector levelDirector = new LevelDirector();
+
+        level = levelDirector.level1(levelBuilder, this);
     }
 
     @Override

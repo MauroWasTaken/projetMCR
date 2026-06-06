@@ -1,11 +1,11 @@
 package bullethell.gameobjects;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.ships.Player;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import com.badlogic.gdx.math.Polygon;
 

@@ -5,6 +5,7 @@ import bullethell.gameobjects.ships.Enemy;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 import bullethell.gameobjects.Weapon;
+import bullethell.gameobjects.Shield;
 
 import java.util.ArrayList;
 
@@ -17,6 +18,7 @@ public class EnemyBuilder {
     private int nbShots = -2;
 
     private final ArrayList<Weapon> weapons = new ArrayList<>();
+    private Shield shield;
 
     public EnemyBuilder(GameContext context) {
         this.context = context;
@@ -52,6 +54,11 @@ public class EnemyBuilder {
         return this;
     }
 
+    public EnemyBuilder addShield(Shield shield) {
+        this.shield = shield;
+        return this;
+    }
+
     public Enemy build() {
         if (path == null) throw new BuildingErrorException("Enemy requires a path"); //todo path needs to have 2 points
         if (sprite == null) throw new BuildingErrorException("Enemy requires a sprite");
@@ -62,6 +69,9 @@ public class EnemyBuilder {
         Enemy enemy = new Enemy(context, sprite, speed, path, shootDelay, nbShots);
         for (Weapon w : weapons) {
             enemy.addWeapon(w);
+        }
+        if (this.shield != null) {
+            enemy.setShield(this.shield);
         }
         return enemy;
     }

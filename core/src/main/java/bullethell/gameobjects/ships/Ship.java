@@ -62,6 +62,9 @@ public abstract class Ship extends GameObject {
     public Shield getShield(){
         return shield;
     }
+    public void setShield(Shield shield) {
+        this.shield = shield;
+    }
 
     public double getShootingX(){
         return this.x + shootingOffsetX;

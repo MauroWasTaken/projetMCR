@@ -8,6 +8,7 @@ import bullethell.gameobjects.builders.LevelDirector;
 import bullethell.gameobjects.builders.PlayerBuilder;
 import bullethell.gameobjects.builders.WeaponBuilder;
 import bullethell.gameobjects.builders.WeaponDirector;
+import bullethell.gameobjects.builders.ShieldDirector;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -75,6 +76,7 @@ public class GameContext extends ApplicationAdapter {
         PlayerBuilder playerBuilder = new PlayerBuilder(this);
         playerBuilder.addWeapon(new WeaponDirector().playerMainWeapon(new WeaponBuilder(this)));
         playerBuilder.addWeapon(new WeaponDirector().playerSideWeapons(new WeaponBuilder(this)));
+        playerBuilder.addShield(new ShieldDirector().quickRechargeShield());
         gameObjects.add(playerBuilder.build());
 
         // Build Level

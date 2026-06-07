@@ -8,7 +8,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
-import bullethell.gameobjects.builders.ShieldDirector;
 
 public class Player extends Ship {
 
@@ -18,7 +17,6 @@ public class Player extends Ship {
         this.y = 50f;
         this.shootingOffsetX = 0f;
         this.shootingOffsetY = sprite.getHeight() / 2f;
-        this.shield = new ShieldDirector().quickRechargeShield();
     }
 
     @Override

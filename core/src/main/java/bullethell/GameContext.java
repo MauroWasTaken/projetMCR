@@ -125,6 +125,11 @@ public class GameContext extends ApplicationAdapter {
         // draw current money todo figure out why its blurry might need to change the camera
         font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), playWidth - 100, 20);
 
+        Player p = getPlayer();
+        if (p != null && p.getShield() != null) {
+            font.draw(batch, "shield hp: " + p.getShield().getHp(), 10, 20);
+        }
+
         // check level completion
         if (level.isFinished() && getEnemies().length == 0) {
             levelCompleted = true;

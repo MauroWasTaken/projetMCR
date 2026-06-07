@@ -52,7 +52,7 @@ public class EnemyBuilder {
     }
 
     public Enemy build() {
-        if (path == null) throw new BuildingErrorException("Enemy requires a path");
+        if (path == null) throw new BuildingErrorException("Enemy requires a path"); //todo path needs to have 2 points
         if (sprite == null) throw new BuildingErrorException("Enemy requires a sprite");
         if (speed == -1f) throw new BuildingErrorException("Enemy requires a speed");
         if (shootDelay == -1f) throw new BuildingErrorException("Enemy requires a shoot delay");

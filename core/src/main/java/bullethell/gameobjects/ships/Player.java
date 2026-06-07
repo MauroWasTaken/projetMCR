@@ -1,10 +1,14 @@
 package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.GameObject;
+import bullethell.gameobjects.Shield;
 import bullethell.gameobjects.Weapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Polygon;
+import bullethell.gameobjects.builders.ShieldDirector;
 
 public class Player extends Ship {
 
@@ -14,10 +18,12 @@ public class Player extends Ship {
         this.y = 50f;
         this.shootingOffsetX = 0f;
         this.shootingOffsetY = sprite.getHeight() / 2f;
+        this.shield = new ShieldDirector().quickRechargeShield();
     }
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         float dirX = 0f;
         float dirY = 0f;
         //input handling
@@ -61,4 +67,5 @@ public class Player extends Ship {
     public void render(SpriteBatch batch) {
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
     }
+
 }

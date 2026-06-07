@@ -65,7 +65,7 @@ public class Enemy extends Ship {
         shootTimer += delta;
         if (shootTimer > shootDelay && nbShots != 0){
             for( Weapon w : weapons){
-                w.fire();
+                w.fire(this);
             }
             shootTimer = 0;
             nbShots--;

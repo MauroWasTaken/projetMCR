@@ -41,7 +41,7 @@ public class Player extends Ship {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             for (Weapon w : weapons) {
-                w.fire();
+                w.fire(this);
             }
         }
 

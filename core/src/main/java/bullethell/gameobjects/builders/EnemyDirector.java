@@ -17,13 +17,10 @@ public class EnemyDirector {
                .setSpeed(150f)
                .setPath(path)
                .setShootDelay(1f)
-               .setNbShots(-1);
+               .setNbShots(-1)
+               .addWeapon(new WeaponDirector().enemySpreadWeapon(new WeaponBuilder(context)));
 
-        Enemy enemy = builder.build();
-        Weapon weapon = new WeaponDirector().enemySpreadWeapon(new WeaponBuilder(context), enemy);
-        enemy.addWeapon(weapon);
-
-        return enemy;
+        return builder.build();
     }
 
     public Enemy heavyEnemy(GameContext context, ArrayList<Vector2> path) {
@@ -33,12 +30,9 @@ public class EnemyDirector {
                .setSpeed(75f)
                .setPath(path)
                .setShootDelay(0.5f)
-               .setNbShots(-1);
+               .setNbShots(-1)
+               .addWeapon(new WeaponDirector().enemySpreadWeapon(new WeaponBuilder(context)));
 
-        Enemy enemy = builder.build();
-        Weapon weapon = new WeaponDirector().enemySpreadWeapon(new WeaponBuilder(context), enemy);
-        enemy.addWeapon(weapon);
-
-        return enemy;
+        return builder.build();
     }
 }

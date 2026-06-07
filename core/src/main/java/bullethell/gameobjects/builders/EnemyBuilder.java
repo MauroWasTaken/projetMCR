@@ -4,6 +4,7 @@ import bullethell.GameContext;
 import bullethell.gameobjects.ships.Enemy;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
+import bullethell.gameobjects.Weapon;
 
 import java.util.ArrayList;
 
@@ -15,7 +16,7 @@ public class EnemyBuilder {
     private float shootDelay = -1f;
     private int nbShots = -2;
 
-    private final ArrayList<WeaponBuilder> weaponBuilders = new ArrayList<>();
+    private final ArrayList<Weapon> weapons = new ArrayList<>();
 
     public EnemyBuilder(GameContext context) {
         this.context = context;
@@ -46,8 +47,8 @@ public class EnemyBuilder {
         return this;
     }
 
-    public EnemyBuilder addWeapon(WeaponBuilder weaponBuilder) {
-        this.weaponBuilders.add(weaponBuilder);
+    public EnemyBuilder addWeapon(Weapon weapon) {
+        this.weapons.add(weapon);
         return this;
     }
 
@@ -59,8 +60,8 @@ public class EnemyBuilder {
         if (nbShots == -2) throw new BuildingErrorException("Enemy requires a number of shots");
 
         Enemy enemy = new Enemy(context, sprite, speed, path, shootDelay, nbShots);
-        for (WeaponBuilder wb : weaponBuilders) {
-            enemy.addWeapon(wb.build(enemy));
+        for (Weapon w : weapons) {
+            enemy.addWeapon(w);
         }
         return enemy;
     }

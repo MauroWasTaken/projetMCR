@@ -6,12 +6,11 @@ public class Weapon{
     Ship ship;
     Projectile[] projectiles;
 
-    public Weapon (Ship ship, Projectile[] projectiles){
-        this.ship = ship;
+    public Weapon (Projectile[] projectiles){
         this.projectiles = projectiles;
     }
 
-    public void fire(){
+    public void fire(Ship ship){
         for (Projectile p : projectiles) {
             Projectile copy = new Projectile(
                 ship.context,

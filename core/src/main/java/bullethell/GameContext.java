@@ -73,15 +73,9 @@ public class GameContext extends ApplicationAdapter {
 
         // Build Player
         PlayerBuilder playerBuilder = new PlayerBuilder(this);
-        Player player = playerBuilder.build();
-
-        Weapon mainWeapon = new WeaponDirector().playerMainWeapon(new WeaponBuilder(this), player);
-        player.addWeapon(mainWeapon);
-
-        Weapon sideWeapons = new WeaponDirector().playerSideWeapons(new WeaponBuilder(this), player);
-        player.addWeapon(sideWeapons);
-
-        gameObjects.add(player);
+        playerBuilder.addWeapon(new WeaponDirector().playerMainWeapon(new WeaponBuilder(this)));
+        playerBuilder.addWeapon(new WeaponDirector().playerSideWeapons(new WeaponBuilder(this)));
+        gameObjects.add(playerBuilder.build());
 
         // Build Level
         LevelBuilder levelBuilder = new LevelBuilder(this);

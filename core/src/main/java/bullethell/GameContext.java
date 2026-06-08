@@ -9,6 +9,8 @@ import bullethell.gameobjects.builders.PlayerBuilder;
 import bullethell.gameobjects.builders.WeaponBuilder;
 import bullethell.gameobjects.builders.WeaponDirector;
 import bullethell.gameobjects.builders.ShieldDirector;
+import bullethell.states.GameState;
+import bullethell.states.UpgradeMenuState;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -45,9 +47,10 @@ public class GameContext extends ApplicationAdapter {
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
 
-    Level level;
-    private boolean levelCompleted = false;
-    private float levelCompletionTimer = 0f;
+    private GameState currentState;
+    private bullethell.states.UpgradeMenuState upgradeMenuState;
+
+    private Level level;
 
     @Override
     public void create() {
@@ -64,7 +67,7 @@ public class GameContext extends ApplicationAdapter {
         background = new Texture(pixmap);
         pixmap.dispose();
         // player init
-        // load shared sprite texture and create player
+        // load shared sprites texture and font renderers
         playerSprite = new Texture("player.png");
         projectileSprite = new Texture("projectile.png");
         score100Sprite = new Texture("Score100.png");
@@ -72,18 +75,14 @@ public class GameContext extends ApplicationAdapter {
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 
-        // Build Player
-        PlayerBuilder playerBuilder = new PlayerBuilder(this);
-        playerBuilder.addWeapon(new WeaponDirector().playerMainWeapon(new WeaponBuilder(this)));
-        playerBuilder.addWeapon(new WeaponDirector().playerSideWeapons(new WeaponBuilder(this)));
-        playerBuilder.addShield(new ShieldDirector().quickRechargeShield());
-        gameObjects.add(playerBuilder.build());
-
         // Build Level
         LevelBuilder levelBuilder = new LevelBuilder(this);
         LevelDirector levelDirector = new LevelDirector();
 
         level = levelDirector.level1(levelBuilder, this);
+
+        upgradeMenuState = new UpgradeMenuState(this);
+        currentState = upgradeMenuState;
     }
 
     @Override
@@ -91,34 +90,15 @@ public class GameContext extends ApplicationAdapter {
         ScreenUtils.clear(0f, 0f, 0f, 1f);
         float delta = Gdx.graphics.getDeltaTime();
 
-        //System.out.println("FPS: " + Gdx.graphics.getFramesPerSecond());
-        // execute level logic
-        level.update(delta);
+        currentState.update(this, delta);
 
-        // update game objects
-        for (GameObject gameObject : gameObjects) {
-            gameObject.update(delta);
-        }
-
-        // delete pending objects
-        if (!pendingRemove.isEmpty()) {
-            for (GameObject o : pendingRemove) {
-                gameObjects.remove(o);
-            }
-            pendingRemove.clear();
-        }
-        // add pending objects
-        if (!pendingAdd.isEmpty()) {
-            gameObjects.addAll(pendingAdd);
-            pendingAdd.clear();
-        }
-        //draw objects
+        //draw objects todo maybe move to playingState
         batch.begin();
         batch.draw(background, 0f, 0f, playWidth, playHeight);
         for (GameObject gameObject : gameObjects) {
             gameObject.render(batch);
         }
-        // draw current money todo figure out why its blurry might need to change the camera
+        // draw current money
         font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), playWidth - 100, 20);
 
         Player p = getPlayer();
@@ -126,20 +106,8 @@ public class GameContext extends ApplicationAdapter {
             font.draw(batch, "shield hp: " + p.getShield().getHp(), 10, 20);
         }
 
-        // check level completion
-        if (level.isFinished() && getEnemies().length == 0) {
-            levelCompleted = true;
-        }
-        if (levelCompleted) {
-            levelCompletionTimer += delta;
-            if (levelCompletionTimer >= 2f) {
+        currentState.render(this, batch, font);
 
-                font.getData().setScale(1.5f);
-                font.draw(batch, "Level Completed!", playWidth / 2 - 70, playHeight / 2);
-                font.getData().setScale(1f); // reset scale
-
-            }
-        }
         batch.end();
         // hitbox viewer (might only keep it for the player)
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -155,6 +123,7 @@ public class GameContext extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         background.dispose();
+        //disposal of sprites
         if (playerSprite != null) playerSprite.dispose();
         if (font != null) font.dispose();
         if (shapeRenderer != null) shapeRenderer.dispose();
@@ -177,7 +146,10 @@ public class GameContext extends ApplicationAdapter {
     public Texture getPlayerSprite() {
         return playerSprite;
     }
-    public Texture getProjectileSprite() { return projectileSprite; }
+
+    public Texture getProjectileSprite() {
+        return projectileSprite;
+    }
 
     public Texture get100PointsSprite() {
         return score100Sprite;
@@ -200,15 +172,45 @@ public class GameContext extends ApplicationAdapter {
             pendingAdd.add(object);
         }
     }
-    public Player getPlayer(){
+
+    public Player getPlayer() {
         return gameObjects.stream().filter(o -> o instanceof Player)
             .map(o -> (Player) o) // converts gameobject to player
             .findFirst()
             .orElse(null); // returns null if no player was found
     }
-    public Enemy[] getEnemies(){
+
+    public Enemy[] getEnemies() {
         return gameObjects.stream().filter(o -> o instanceof Enemy)
             .map(o -> (Enemy) o) // converts gameobject to enemy
             .toArray(Enemy[]::new); // converts stream to array
+    }
+
+    public Level getLevel() {
+        return level;
+    }
+
+    public void setLevel(Level level) {
+        this.level = level;
+    }
+
+    public ArrayList<GameObject> getGameObjects() {
+        return gameObjects;
+    }
+
+    public ArrayList<GameObject> getPendingAdd() {
+        return pendingAdd;
+    }
+
+    public ArrayList<GameObject> getPendingRemove() {
+        return pendingRemove;
+    }
+
+    public void changeState(GameState newState) {
+        this.currentState = newState;
+    }
+
+    public bullethell.states.UpgradeMenuState getUpgradeMenuState() {
+        return upgradeMenuState;
     }
 }

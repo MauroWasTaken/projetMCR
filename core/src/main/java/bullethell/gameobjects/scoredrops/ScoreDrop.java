@@ -3,6 +3,7 @@ package bullethell.gameobjects.scoredrops;
 import bullethell.GameContext;
 import bullethell.currencysystem.CurrencyBank;
 import bullethell.gameobjects.GameObject;
+import bullethell.gameobjects.ships.Player;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
@@ -36,7 +37,7 @@ public abstract class ScoreDrop extends GameObject {
             return;
         }
 
-        bullethell.gameobjects.Player player = context.getPlayer();
+        Player player = context.getPlayer();
         if (player != null && this.collidesWith(player)) {
             CurrencyBank.getInstance().addFunds(scoreWin);
             context.despawn(this);

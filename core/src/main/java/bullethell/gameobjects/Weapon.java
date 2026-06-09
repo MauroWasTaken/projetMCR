@@ -1,5 +1,7 @@
 package bullethell.gameobjects;
 
+import bullethell.gameobjects.ships.Ship;
+
 public class Weapon{
     Ship ship;
     Projectile[] projectiles;

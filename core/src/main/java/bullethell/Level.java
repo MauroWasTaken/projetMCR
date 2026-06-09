@@ -1,7 +1,6 @@
 package bullethell;
 
-import bullethell.gameobjects.Enemy;
-import com.badlogic.gdx.math.Vector2;
+import bullethell.gameobjects.ships.Enemy;
 
 import java.util.ArrayList;
 
@@ -15,33 +14,19 @@ public class Level {
 
     // class that represents when and what kind of enemies will be spawned (might be used in builder)
     public static class EnemySpawn {
-        float time;
-        Enemy enemy;
+        public float time;
+        public Enemy enemy;
 
-        EnemySpawn(float time, Enemy enemy) {
+        public EnemySpawn(float time, Enemy enemy) {
             this.time = time;
             this.enemy = enemy;
         }
     }
 
-    public Level(GameContext context) {
+    public Level(GameContext context, ArrayList<EnemySpawn> spawnQueue) {
         this.context = context;
-
-        // not needed just starting enemies to test
-        ArrayList<Vector2> path = new ArrayList<>();
-        path.add(new Vector2(context.getPlayWidth(), 0));
-        path.add(new Vector2(20, -context.getPlayHeight() / 2));
-        path.add(new Vector2(context.getPlayWidth(), -context.getPlayHeight()));
-        ArrayList<Vector2> path2 = new ArrayList<>();
-        for (Vector2 point : path) {
-            float mirroredX = context.getPlayWidth() - point.x;
-            path2.add(new Vector2(mirroredX, point.y));
-        }
-        for (int i = 0; i < 20; i++) {
-            Enemy enemy = new Enemy(context, path, 1, -1);
-            spawnQueue.add(new EnemySpawn(2 + i * 0.2f, enemy));
-            Enemy enemy2 = new Enemy(context, path2,1 , -1);
-            spawnQueue.add(new EnemySpawn(2 + i * 0.2f, enemy2));
+        if (spawnQueue != null) {
+            this.spawnQueue.addAll(spawnQueue);
         }
     }
 

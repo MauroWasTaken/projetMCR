@@ -38,9 +38,9 @@ public class Level {
             path2.add(new Vector2(mirroredX, point.y));
         }
         for (int i = 0; i < 20; i++) {
-            Enemy enemy = new Enemy(context, path);
+            Enemy enemy = new Enemy(context, path, 1, -1);
             spawnQueue.add(new EnemySpawn(2 + i * 0.2f, enemy));
-            Enemy enemy2 = new Enemy(context, path2);
+            Enemy enemy2 = new Enemy(context, path2,1 , -1);
             spawnQueue.add(new EnemySpawn(2 + i * 0.2f, enemy2));
         }
     }

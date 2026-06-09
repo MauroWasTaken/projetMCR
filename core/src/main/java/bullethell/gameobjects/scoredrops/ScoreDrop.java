@@ -1,6 +1,7 @@
 package bullethell.gameobjects.scoredrops;
 
 import bullethell.GameContext;
+import bullethell.currencysystem.CurrencyBank;
 import bullethell.gameobjects.GameObject;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,36 +11,40 @@ public abstract class ScoreDrop extends GameObject {
     protected final Texture sprite; // Flyweight pattern
     protected final float speed;
 
-    protected ScoreDrop(GameContext context, int heldValue, float speed, Texture sprite) {
-        super(context);
+    protected ScoreDrop(GameContext context, int heldValue, float speed, float x, float y, Texture sprite)  {
+        super(context, sprite.getWidth() * 0.33f, sprite.getHeight() * 0.33f); // the sprites are so big
         this.scoreWin = heldValue;
         this.sprite = sprite;
         this.speed = speed;
-        y = context.getPlayHeight();
+        this.x = x;
+        this.y = y;
     }
 
     @Override
     public void update(float delta) {
-        // TODO: load the freshly destroyed enemy's x and y coords here (somehow)
         // Drop falls vertically, no need to wave it left to right
         y -= delta * speed;
 
-        // screen limits
-        float spriteHalfWidth = sprite.getWidth() / 2f;
-        float spriteHalfHeight = sprite.getHeight() / 2f;
-        float maxX = context.getPlayWidth() - spriteHalfWidth;
-        float maxY = context.getPlayHeight() - spriteHalfHeight;
-        x = Math.max(spriteHalfWidth, Math.min(x, maxX));
-        y = Math.max(spriteHalfHeight, Math.min(y, maxY));
+        // screen limits only on X
+        float halfWidth = width / 2f;
+        float maxX = context.getPlayWidth() - halfWidth;
+        x = Math.max(halfWidth, Math.min(x, maxX));
+
+        // despawn when it goes off screen
+        if (y < -height) {
+            context.despawn(this);
+            return;
+        }
+
+        bullethell.gameobjects.Player player = context.getPlayer();
+        if (player != null && this.collidesWith(player)) {
+            CurrencyBank.getInstance().addFunds(scoreWin);
+            context.despawn(this);
+        }
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
-    }
-
-    @Override
-    public void dispose() {
-        // might remove
+        batch.draw(sprite, x - width / 2f, y - height / 2f, width, height);
     }
 }

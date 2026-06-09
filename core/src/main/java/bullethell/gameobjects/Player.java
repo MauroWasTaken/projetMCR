@@ -3,15 +3,25 @@ package bullethell.gameobjects;
 import bullethell.GameContext;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class Player extends Ship {
 
     public Player(GameContext context) {
-        super(context, context.getPlayerSprite(), 200f);
+        super(context, context.getPlayerSprite(), 200f, context.getPlayerSprite().getWidth()*0.2f, context.getPlayerSprite().getHeight()*0.2f);
         x = context.getPlayWidth() / 2f;
         y = 50f;
+
+        shootingOffsetX = 0f;
+        shootingOffsetY = sprite.getHeight() / 2f;
+
+        weapons.add(new Weapon(this, new Projectile[]{
+            new Projectile(context, 0, 0, 0, 400, true, context.getProjectileSprite())
+        }));
+        weapons.add(new Weapon(this, new Projectile[]{
+            new Projectile(context, 0, 0, -200, 400, true, context.getProjectileSprite()),
+            new Projectile(context, 0, 0, 200, 400, true, context.getProjectileSprite())
+        }));
     }
 
     @Override
@@ -30,6 +40,11 @@ public class Player extends Ship {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             dirY -= 1f;
+        }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+            for (Weapon w : weapons) {
+                w.fire();
+            }
         }
 
         // normalize movement (in an if statement so that we dont divide by 0)
@@ -53,10 +68,5 @@ public class Player extends Ship {
     @Override
     public void render(SpriteBatch batch) {
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
-    }
-
-    @Override
-    public void dispose() {
-        // might remove
     }
 }

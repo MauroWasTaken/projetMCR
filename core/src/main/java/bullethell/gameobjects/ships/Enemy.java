@@ -38,6 +38,7 @@ public class Enemy extends Ship {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         // check if path is done
         if (path.isEmpty() || targetIndex >= path.size()) {
             context.despawn(this);
@@ -64,7 +65,7 @@ public class Enemy extends Ship {
         shootTimer += delta;
         if (shootTimer > shootDelay && nbShots != 0){
             for( Weapon w : weapons){
-                w.fire();
+                w.fire(this);
             }
             shootTimer = 0;
             nbShots--;
@@ -76,8 +77,8 @@ public class Enemy extends Ship {
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
     }
     @Override
-    public void OnCollision(GameObject other) {
-        super.OnCollision(other);
+    protected void die() {
+        super.die();
         if (Math.random() < dropRate500) {
             context.spawn( new Score500Drop(context, x,y));
         }else if (Math.random() < dropRate100) {

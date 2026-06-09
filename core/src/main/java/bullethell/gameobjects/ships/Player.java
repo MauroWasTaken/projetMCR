@@ -1,10 +1,13 @@
 package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.GameObject;
+import bullethell.gameobjects.Shield;
 import bullethell.gameobjects.Weapon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Polygon;
 
 public class Player extends Ship {
 
@@ -18,6 +21,7 @@ public class Player extends Ship {
 
     @Override
     public void update(float delta) {
+        super.update(delta);
         float dirX = 0f;
         float dirY = 0f;
         //input handling
@@ -35,7 +39,7 @@ public class Player extends Ship {
         }
         if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             for (Weapon w : weapons) {
-                w.fire();
+                w.fire(this);
             }
         }
 
@@ -61,4 +65,5 @@ public class Player extends Ship {
     public void render(SpriteBatch batch) {
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
     }
+
 }

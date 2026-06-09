@@ -8,6 +8,7 @@ import bullethell.gameobjects.builders.LevelDirector;
 import bullethell.gameobjects.builders.PlayerBuilder;
 import bullethell.gameobjects.builders.WeaponBuilder;
 import bullethell.gameobjects.builders.WeaponDirector;
+import bullethell.gameobjects.builders.ShieldDirector;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -73,15 +74,10 @@ public class GameContext extends ApplicationAdapter {
 
         // Build Player
         PlayerBuilder playerBuilder = new PlayerBuilder(this);
-        Player player = playerBuilder.build();
-
-        Weapon mainWeapon = new WeaponDirector().playerMainWeapon(new WeaponBuilder(this), player);
-        player.addWeapon(mainWeapon);
-
-        Weapon sideWeapons = new WeaponDirector().playerSideWeapons(new WeaponBuilder(this), player);
-        player.addWeapon(sideWeapons);
-
-        gameObjects.add(player);
+        playerBuilder.addWeapon(new WeaponDirector().playerMainWeapon(new WeaponBuilder(this)));
+        playerBuilder.addWeapon(new WeaponDirector().playerSideWeapons(new WeaponBuilder(this)));
+        playerBuilder.addShield(new ShieldDirector().quickRechargeShield());
+        gameObjects.add(playerBuilder.build());
 
         // Build Level
         LevelBuilder levelBuilder = new LevelBuilder(this);
@@ -124,6 +120,11 @@ public class GameContext extends ApplicationAdapter {
         }
         // draw current money todo figure out why its blurry might need to change the camera
         font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), playWidth - 100, 20);
+
+        Player p = getPlayer();
+        if (p != null && p.getShield() != null) {
+            font.draw(batch, "shield hp: " + p.getShield().getHp(), 10, 20);
+        }
 
         // check level completion
         if (level.isFinished() && getEnemies().length == 0) {

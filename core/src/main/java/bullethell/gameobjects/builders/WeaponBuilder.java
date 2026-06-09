@@ -24,10 +24,10 @@ public class WeaponBuilder {
     public GameContext getContext() {
         return context;
     }
-    public Weapon build(Ship ship) {
+    public Weapon build() {
         if (templates.isEmpty()) {
             throw new BuildingErrorException("Weapon requires at least one projectile template");
         }
-        return new Weapon(ship, templates.toArray(new Projectile[0]));
+        return new Weapon(templates.toArray(new Projectile[0]));
     }
 }

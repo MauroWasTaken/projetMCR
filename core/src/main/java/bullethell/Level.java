@@ -44,5 +44,7 @@ public class Level {
             }
         }
     }
-
+    public boolean isFinished(){
+        return nextSpawnIndex == spawnQueue.size();
+    }
 }

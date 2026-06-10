@@ -2,14 +2,10 @@ package bullethell;
 
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Player;
-import bullethell.gameobjects.Weapon;
 import bullethell.gameobjects.builders.LevelBuilder;
 import bullethell.gameobjects.builders.LevelDirector;
-import bullethell.gameobjects.builders.PlayerBuilder;
-import bullethell.gameobjects.builders.WeaponBuilder;
-import bullethell.gameobjects.builders.WeaponDirector;
-import bullethell.gameobjects.builders.ShieldDirector;
 import bullethell.states.GameState;
+import bullethell.states.HomeScreenState;
 import bullethell.states.UpgradeMenuState;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
@@ -54,7 +50,7 @@ public class GameContext extends Game {
     public AssetManager assetManager;
 
     private GameState currentState;
-    private bullethell.states.UpgradeMenuState upgradeMenuState;
+    private bullethell.states.UpgradeMenuState upgradeMenuState; // FIXME: I feel this violently violates state pattern
 
     private Level level;
 
@@ -92,7 +88,7 @@ public class GameContext extends Game {
         level = levelDirector.level1(levelBuilder, this);
 
         upgradeMenuState = new UpgradeMenuState(this);
-        currentState = upgradeMenuState;
+        currentState = new HomeScreenState();
     }
 
     @Override
@@ -108,8 +104,6 @@ public class GameContext extends Game {
         for (GameObject gameObject : gameObjects) {
             gameObject.render(batch);
         }
-        // draw current money
-        font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), playWidth - 100, 20);
 
         Player p = getPlayer();
         if (p != null && p.getShield() != null) {

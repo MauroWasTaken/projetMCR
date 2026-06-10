@@ -1,7 +1,6 @@
 package bullethell.states;
 
 import bullethell.GameContext;
-import bullethell.currencysystem.CurrencyBank;
 import bullethell.gameobjects.GameObject;
 import bullethell.gameobjects.builders.LevelBuilder;
 import bullethell.gameobjects.builders.LevelDirector;
@@ -39,9 +38,6 @@ public class PlayingState implements GameState {
 
         // check level completion
         if (context.getLevel().isFinished() && context.getEnemies().length == 0) {
-            if (!levelCompleted) { // so that money is only added once
-                CurrencyBank.getInstance().addFunds(100);
-            }
             levelCompleted = true;
         }
 
@@ -69,6 +65,9 @@ public class PlayingState implements GameState {
             font.draw(batch, "Level Completed!", context.getPlayWidth() / 2 - 70, context.getPlayHeight() / 2);
             font.getData().setScale(1f); // reset scale
         }
+        // draw current money
+        font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), context.getPlayWidth() - 100, 20);
+
         //todo add defeat screen
     }
 }

@@ -34,6 +34,7 @@ public class PlayerBuilder {
         }
         if (this.shield != null) {
             player.setShield(this.shield);
+            this.shield.setOwner(player);
         }
         return player;
     }

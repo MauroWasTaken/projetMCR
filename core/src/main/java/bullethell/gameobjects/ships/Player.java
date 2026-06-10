@@ -37,9 +37,9 @@ public class Player extends Ship {
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             dirY -= 1f;
         }
-        if (Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
             for (Weapon w : weapons) {
-                w.fire(this);
+                w.fire();
             }
         }
 
@@ -63,6 +63,13 @@ public class Player extends Ship {
 
     @Override
     public void render(SpriteBatch batch) {
+        if (isInvulnerable()) {
+            if ((int)(invulnerabilityTimer * 10) % 2 == 0) return;
+        }
+        for (Weapon weapon : weapons) {
+            weapon.render(batch);
+        }
+        if (shield != null) shield.render(batch);
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
     }
 

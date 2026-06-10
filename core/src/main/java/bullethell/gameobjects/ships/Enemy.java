@@ -65,7 +65,7 @@ public class Enemy extends Ship {
         shootTimer += delta;
         if (shootTimer > shootDelay && nbShots != 0){
             for( Weapon w : weapons){
-                w.fire(this);
+                w.fire();
             }
             shootTimer = 0;
             nbShots--;
@@ -75,6 +75,7 @@ public class Enemy extends Ship {
     @Override
     public void render(SpriteBatch batch) {
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
+        for (Weapon w : weapons) w.render(batch);
     }
     @Override
     protected void die() {

@@ -59,10 +59,10 @@ public class Projectile extends GameObject{
 
     @Override
     public void render(SpriteBatch batch) {
-        float width = sprite.getWidth();
-        float height = sprite.getHeight();
-        float originX = width / 2f;
-        float originY = height / 2f;
+        float width = sprite.getWidth() / 3f;
+        float height = sprite.getHeight() / 3f;
+        float originX = width / 1.7f;
+        float originY = height / 1.7f;
 
         batch.draw(sprite,
                 x - originX,

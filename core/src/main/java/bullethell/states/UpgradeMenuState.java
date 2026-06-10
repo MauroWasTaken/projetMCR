@@ -28,8 +28,8 @@ public class UpgradeMenuState implements GameState {
 
     public UpgradeMenuState(GameContext context) {
         availableUpgrades = new ArrayList<>(Arrays.asList(//adds default items to shop
-            new Upgrade("Quick Recharge Shield", "3 HP, recharges in 5s", 100, new ShieldDirector().quickRechargeShield()),
-            new Upgrade("Strong Shield", "5 HP, 2s recharge", 200, new ShieldDirector().strongShield()),
+            new Upgrade("Quick Recharge Shield", "3 HP, recharges in 5s", 100, new ShieldDirector(context).quickRechargeShield()),
+            new Upgrade("Strong Shield", "5 HP, 2s recharge", 200, new ShieldDirector(context).strongShield()),
             new Upgrade("Main Weapon", "Main weapon shoots", 100, new WeaponDirector().playerMainWeapon(new WeaponBuilder(context))),
             new Upgrade("Side Weapons", "Shoots 2 extra projectiles", 300, new WeaponDirector().playerSideWeapons(new WeaponBuilder(context)))
         ));

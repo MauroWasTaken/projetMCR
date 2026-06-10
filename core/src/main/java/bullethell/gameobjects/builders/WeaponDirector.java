@@ -21,9 +21,9 @@ public class WeaponDirector {
 
     public Weapon enemySpreadWeapon(WeaponBuilder builder) {
         GameContext context = builder.getContext();
-        builder.addProjectile(0, 0, 0, -100, false, context.getProjectileSprite());
-        builder.addProjectile(0, 0, -100, -100, false, context.getProjectileSprite());
-        builder.addProjectile(0, 0, 100, -100, false, context.getProjectileSprite());
+        builder.addProjectile(0, 0, 0, -100, false, context.getEnemyProjectileSprite());
+        builder.addProjectile(0, 0, -100, -100, false, context.getEnemyProjectileSprite());
+        builder.addProjectile(0, 0, 100, -100, false, context.getEnemyProjectileSprite());
         return builder.build();
     }
 }

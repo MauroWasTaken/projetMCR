@@ -12,7 +12,9 @@ import bullethell.gameobjects.builders.ShieldDirector;
 import bullethell.states.GameState;
 import bullethell.states.UpgradeMenuState;
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -29,16 +31,19 @@ import java.util.ArrayList;
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
  */
-public class GameContext extends ApplicationAdapter {
+public class GameContext extends Game {
     private final float playWidth = 450f;
     private final float playHeight = 600f;
 
-    private SpriteBatch batch;
+    SpriteBatch batch;
     private OrthographicCamera camera;
     private FitViewport viewport;
     private Texture background;
     private Texture playerSprite;
+    private Texture enemySprite;
+    private Texture shieldSprite;
     private Texture projectileSprite;
+    private Texture enemyProjectileSprite;
     private Texture score100Sprite;
     private Texture score500Sprite;
     private BitmapFont font;
@@ -46,6 +51,7 @@ public class GameContext extends ApplicationAdapter {
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
+    public AssetManager assetManager;
 
     private GameState currentState;
     private bullethell.states.UpgradeMenuState upgradeMenuState;
@@ -54,6 +60,7 @@ public class GameContext extends ApplicationAdapter {
 
     @Override
     public void create() {
+        assetManager = new AssetManager();
         batch = new SpriteBatch();
         // camera init
         camera = new OrthographicCamera();
@@ -69,9 +76,12 @@ public class GameContext extends ApplicationAdapter {
         // player init
         // load shared sprites texture and font renderers
         playerSprite = new Texture("player.png");
+        enemySprite = new Texture("enemy-ship.png");
         projectileSprite = new Texture("projectile.png");
+        enemyProjectileSprite = new Texture("enemy-projectile.png");
         score100Sprite = new Texture("Score100.png");
         score500Sprite = new Texture("Score500.png");
+        shieldSprite = new Texture("shield.png");
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 
@@ -110,12 +120,12 @@ public class GameContext extends ApplicationAdapter {
 
         batch.end();
         // hitbox viewer (might only keep it for the player)
-        shapeRenderer.setProjectionMatrix(camera.combined);
+        /*shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.setColor(Color.RED);
         for (GameObject gameObject : gameObjects) {
             shapeRenderer.polygon(gameObject.getHitbox().getTransformedVertices());
-        }
+        }*/
         shapeRenderer.end();
     }
 
@@ -147,8 +157,20 @@ public class GameContext extends ApplicationAdapter {
         return playerSprite;
     }
 
+    public Texture getEnemySprite() {
+        return enemySprite;
+    }
+
+    public Texture getShieldSprite() {
+        return shieldSprite;
+    }
+
     public Texture getProjectileSprite() {
         return projectileSprite;
+    }
+
+    public Texture getEnemyProjectileSprite() {
+        return enemyProjectileSprite;
     }
 
     public Texture get100PointsSprite() {

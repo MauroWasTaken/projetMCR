@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class EnemyDirector {
 
     public Enemy basicEnemy(GameContext context, ArrayList<Vector2> path) {
-        Texture sprite = context.getPlayerSprite();
+        Texture sprite = context.getEnemySprite();
         EnemyBuilder builder = new EnemyBuilder(context);
         builder.setSprite(sprite)
                .setSpeed(150f)
@@ -29,7 +29,7 @@ public class EnemyDirector {
         builder.setSprite(sprite)
                .setSpeed(75f)
                .setPath(path)
-               .setShootDelay(0.5f)
+               .setShootDelay(0.8f)
                .setNbShots(-1)
                .addWeapon(new WeaponDirector().enemySpreadWeapon(new WeaponBuilder(context)));
 

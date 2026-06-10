@@ -63,7 +63,11 @@ public class Player extends Ship {
 
     @Override
     public void render(SpriteBatch batch) {
+        if (isInvulnerable()) {
+            if ((int)(invulnerabilityTimer * 10) % 2 == 0) return;
+        }
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
+        shield.render(batch);
     }
 
 }

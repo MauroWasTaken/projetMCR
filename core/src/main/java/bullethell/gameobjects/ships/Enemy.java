@@ -60,6 +60,16 @@ public class Enemy extends Ship {
         // update position
         x += dx / distance * step;
         y += dy / distance * step;
+
+        // check for fire
+        shootTimer += delta;
+        if (shootTimer > shootDelay && nbShots != 0){
+            for( Weapon w : weapons){
+                w.fire();
+            }
+            shootTimer = 0;
+            nbShots--;
+        }
     }
 
     @Override

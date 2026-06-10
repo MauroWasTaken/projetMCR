@@ -1,6 +1,6 @@
 package bullethell.gameobjects;
 
-public class Upgrade {
+public class  Upgrade {
     private final String name;
     private final String description;
     private final int price;

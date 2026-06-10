@@ -30,7 +30,10 @@ public class Weapon extends GameObject{
     }
 
     public void fire(){
-
+        if (shootTimer < firingRate) {
+            return;
+        }
+        shootTimer = 0;
         TextureRegion currentFrame = animation.getKeyFrame(shootTimer, true);
         float naturalWidth = currentFrame.getRegionWidth() * 0.7f;
         float naturalHeight = currentFrame.getRegionHeight() * 0.7f;
@@ -62,14 +65,7 @@ public class Weapon extends GameObject{
 
     @Override
     public void update(float delta) {
-
         shootTimer += delta;
-
-        if (shootTimer >= firingRate) {
-            fire();
-            shootTimer = 0;
-
-        }
 
         this.x = owner.getX() + offsetX;
         this.y = owner.getY() + offsetY;

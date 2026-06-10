@@ -8,7 +8,6 @@ import bullethell.gameobjects.builders.WeaponBuilder;
 import bullethell.gameobjects.builders.WeaponDirector;
 import bullethell.currencysystem.CurrencyBank;
 import bullethell.currencysystem.InsufficientFundsException;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -23,15 +22,15 @@ public class UpgradeMenuState implements GameState {
 
     private String shopMessage = "";
     private float shopMessageTimer = 0f;
-    private ArrayList<Upgrade> availableUpgrades; //available to purchease
+    private final ArrayList<Upgrade> availableUpgrades; //available to purchase
     private final ArrayList<Upgrade> purchasedUpgrades = new ArrayList<>();
 
     public UpgradeMenuState(GameContext context) {
         availableUpgrades = new ArrayList<>(Arrays.asList(//adds default items to shop
+            new Upgrade("Main Weapon", "Main weapon shoots", 0, new WeaponDirector().playerMainWeapon(new WeaponBuilder(context))),
+            new Upgrade("Side Weapons", "Shoots 2 extra projectiles", 300, new WeaponDirector().playerSideWeapons(new WeaponBuilder(context))),
             new Upgrade("Quick Recharge Shield", "3 HP, recharges in 5s", 100, new ShieldDirector().quickRechargeShield()),
-            new Upgrade("Strong Shield", "5 HP, 2s recharge", 200, new ShieldDirector().strongShield()),
-            new Upgrade("Main Weapon", "Main weapon shoots", 100, new WeaponDirector().playerMainWeapon(new WeaponBuilder(context))),
-            new Upgrade("Side Weapons", "Shoots 2 extra projectiles", 300, new WeaponDirector().playerSideWeapons(new WeaponBuilder(context)))
+            new Upgrade("Strong Shield", "5 HP, 2s recharge", 200, new ShieldDirector().strongShield())
         ));
     }
 
@@ -120,5 +119,8 @@ public class UpgradeMenuState implements GameState {
             font.draw(batch, shopMessage, 50, 100);
             font.setColor(Color.WHITE);
         }
+
+        // draw current money
+        font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), context.getPlayWidth() - 100, 20);
     }
 }

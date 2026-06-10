@@ -11,9 +11,21 @@ import java.util.ArrayList;
 public class WeaponBuilder {
     private final GameContext context;
     private final ArrayList<Projectile> templates = new ArrayList<>();
+    private Texture sprite;
+    private float firingRate;
 
     public WeaponBuilder(GameContext context) {
         this.context = context;
+    }
+
+    public WeaponBuilder addSprite(Texture sprite) {
+        this.sprite = sprite;
+        return this;
+    }
+
+    public WeaponBuilder setFiringRate(float rate) {
+        this.firingRate = rate;
+        return this;
     }
 
     public WeaponBuilder addProjectile(float xOffset, float yOffset, float velocityX, float velocityY, boolean isPlayerProjectile, Texture sprite) {
@@ -21,13 +33,15 @@ public class WeaponBuilder {
         return this;
     }
 
+
     public GameContext getContext() {
         return context;
     }
+
     public Weapon build() {
         if (templates.isEmpty()) {
             throw new BuildingErrorException("Weapon requires at least one projectile template");
         }
-        return new Weapon(templates.toArray(new Projectile[0]));
+        return new Weapon(context, templates.toArray(new Projectile[0]), sprite, firingRate);
     }
 }

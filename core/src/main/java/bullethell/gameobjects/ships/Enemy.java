@@ -60,21 +60,12 @@ public class Enemy extends Ship {
         // update position
         x += dx / distance * step;
         y += dy / distance * step;
-
-        // check for fire
-        shootTimer += delta;
-        if (shootTimer > shootDelay && nbShots != 0){
-            for( Weapon w : weapons){
-                w.fire(this);
-            }
-            shootTimer = 0;
-            nbShots--;
-        }
     }
 
     @Override
     public void render(SpriteBatch batch) {
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
+        for (Weapon w : weapons) w.render(batch);
     }
     @Override
     protected void die() {

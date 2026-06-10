@@ -81,7 +81,7 @@ public class GameContext extends Game {
         enemyProjectileSprite = new Texture("enemy-projectile.png");
         score100Sprite = new Texture("Score100.png");
         score500Sprite = new Texture("Score500.png");
-        shieldSprite = new Texture("shield.png");
+        shieldSprite = new Texture("shields.png");
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 

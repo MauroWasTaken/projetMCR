@@ -16,6 +16,11 @@ public abstract class Ship extends GameObject {
     ArrayList<Weapon> weapons;
     Shield shield;
 
+    //TODO Make it so weapon places are computed dynamically
+    float[] xOffsets = {-20, 20, 2, 4};
+    float[] yOffsets = {-1, -1, 0.5f, 1};
+    int nbWeapons = 0;
+
     protected float invulnerabilityTime = 1.5f;
     protected float invulnerabilityTimer = 0f;
 
@@ -27,7 +32,11 @@ public abstract class Ship extends GameObject {
     }
 
     public void addWeapon(Weapon weapon) {
+
         this.weapons.add(weapon);
+        weapon.setOwner(this);
+        weapon.setOffset(xOffsets[nbWeapons], yOffsets[nbWeapons]);
+        ++nbWeapons;
     }
 
     public boolean isInvulnerable() {
@@ -36,6 +45,7 @@ public abstract class Ship extends GameObject {
 
     @Override
     public void update(float delta) {
+        for (Weapon w : weapons) w.update(delta);
         if (invulnerabilityTimer > 0f) {
             invulnerabilityTimer -= delta;
         }

@@ -10,7 +10,8 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 public class PlayingState implements GameState {
 
     private boolean levelCompleted = false;
-    private float levelCompletionTimer = 0f;
+    private boolean gameOver = false;
+    private float levelTransitionTimer = 0f;
 
     @Override
     public void update(GameContext context, float delta) {
@@ -35,25 +36,31 @@ public class PlayingState implements GameState {
             context.getGameObjects().addAll(context.getPendingAdd());
             context.getPendingAdd().clear();
         }
+        // check if player is still alive
+        if (context.getPlayer() == null){
+            gameOver = true;
+        }
 
         // check level completion
-        if (context.getLevel().isFinished() && context.getEnemies().length == 0) {
+        if (context.getLevel().isFinished() && context.getEnemies().length == 0 && !gameOver) {
             levelCompleted = true;
         }
 
-        if (levelCompleted) {
-            levelCompletionTimer += delta;
-            if (levelCompletionTimer >= 2f) {
+        if (levelCompleted || gameOver) {
+            levelTransitionTimer += delta;
+            if (levelTransitionTimer >= 2f) {
                 // clear all game objects
                 context.getGameObjects().clear();
                 context.getPendingAdd().clear();
                 context.getPendingRemove().clear();
-
-                // Change to upgrade menu and prep next level
-                context.changeState(context.getUpgradeMenuState());
-
-                // For now, reload level 1 since there is no level 2
-                context.setLevel(new LevelDirector().level1(new LevelBuilder(context), context));
+                if (levelCompleted){
+                    // Change to upgrade menu and prep next level
+                    context.changeState(context.getUpgradeMenuState());
+                    // For now, reload level 1 since there is no level 2
+                    context.setLevel(new LevelDirector().level1(new LevelBuilder(context), context));
+                    return;
+                }
+                context.changeState(new HomeScreenState());
             }
         }
     }
@@ -68,6 +75,10 @@ public class PlayingState implements GameState {
         // draw current money
         font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), context.getPlayWidth() - 100, 20);
 
-        //todo add defeat screen
+        if (gameOver) { //draws game over screen
+            font.getData().setScale(1.5f);
+            font.draw(batch, "GameOver!", context.getPlayWidth() / 2 - 50, context.getPlayHeight() / 2);
+            font.getData().setScale(1f); // reset scale
+        }
     }
 }

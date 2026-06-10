@@ -53,11 +53,11 @@ public class PlayingState implements GameState {
                 context.getGameObjects().clear();
                 context.getPendingAdd().clear();
                 context.getPendingRemove().clear();
+                // For now, reload level 1 since there is no level 2
+                context.setLevel(new LevelDirector().level1(new LevelBuilder(context), context));
                 if (levelCompleted){
                     // Change to upgrade menu and prep next level
                     context.changeState(context.getUpgradeMenuState());
-                    // For now, reload level 1 since there is no level 2
-                    context.setLevel(new LevelDirector().level1(new LevelBuilder(context), context));
                     return;
                 }
                 context.changeState(new HomeScreenState());

@@ -45,6 +45,6 @@ public class CurrencyBank {
     }
 
     private float readFromFile() {
-        return 100; //stole this function to setup the starting score
+        return 0;
     }
 }

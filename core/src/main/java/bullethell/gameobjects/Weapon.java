@@ -85,7 +85,7 @@ public class Weapon extends GameObject{
     }
 
     @Override
-    public void OnCollision(GameObject other) {
+    public void onCollision(GameObject other) {
 
     }
 }

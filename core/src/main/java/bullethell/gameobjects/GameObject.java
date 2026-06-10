@@ -28,7 +28,7 @@ public abstract class GameObject {
 
     public abstract void render(SpriteBatch batch);
 
-    public abstract void OnCollision(GameObject other);
+    public abstract void onCollision(GameObject other);
 
     public Polygon getHitbox() {
         hitbox.setPosition(x - width / 2f, y - height / 2f);
@@ -36,6 +36,7 @@ public abstract class GameObject {
     }
 
     public boolean collidesWith(GameObject other) {
+        if (other == null) return false;
         return Intersector.overlapConvexPolygons(this.getHitbox(), other.getHitbox());
     }
 

@@ -12,7 +12,7 @@ public class Score500Drop extends ScoreDrop {
         super(context, VALUE, SPEED,x,y ,context.get500PointsSprite());
     }
     @Override
-    public void OnCollision(GameObject other) {
+    public void onCollision(GameObject other) {
         // does nothing
     }
 }

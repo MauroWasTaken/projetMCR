@@ -12,7 +12,7 @@ public class Score100Drop extends ScoreDrop {
     }
 
     @Override
-    public void OnCollision(GameObject other) {
+    public void onCollision(GameObject other) {
         // does nothing
     }
 }

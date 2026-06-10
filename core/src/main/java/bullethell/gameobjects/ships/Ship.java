@@ -55,7 +55,7 @@ public abstract class Ship extends GameObject {
     }
 
     @Override
-    public void OnCollision(GameObject other) {
+    public void onCollision(GameObject other) {
         if (isInvulnerable()) return;
         if (shield != null && shield.getHp() > 0) {
             shield.hit();

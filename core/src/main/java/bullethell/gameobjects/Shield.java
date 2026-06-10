@@ -68,7 +68,7 @@ public class Shield extends GameObject {
     }
 
     @Override
-    public void OnCollision(GameObject other) {
+    public void onCollision(GameObject other) {
 
     }
 

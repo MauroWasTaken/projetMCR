@@ -70,6 +70,11 @@ public class Enemy extends Ship {
             shootTimer = 0;
             nbShots--;
         }
+        // check for player
+        Player player = context.getPlayer();
+        if (this.collidesWith(player)){
+            player.onCollision(this);
+        }
     }
 
     @Override

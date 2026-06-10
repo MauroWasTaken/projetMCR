@@ -44,7 +44,7 @@ public class Projectile extends GameObject{
         }
         boolean hasCollided = false;
         for (GameObject gameObject : gameObjects.stream().filter(e -> e.collidesWith(this)).toList()) {
-            gameObject.OnCollision(this);
+            gameObject.onCollision(this);
             hasCollided = true;
         }
         if (hasCollided) context.despawn(this);
@@ -83,7 +83,7 @@ public class Projectile extends GameObject{
     }
 
     @Override
-    public void OnCollision(GameObject other) {
+    public void onCollision(GameObject other) {
             //Do nothing
     }
 }

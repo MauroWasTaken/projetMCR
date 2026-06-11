@@ -1,11 +1,14 @@
 package bullethell.states;
 
 import bullethell.GameContext;
+import bullethell.currencysystem.CurrencyBank;
 import bullethell.gameobjects.GameObject;
 import bullethell.gameobjects.builders.LevelBuilder;
 import bullethell.gameobjects.builders.LevelDirector;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
+import java.util.Currency;
 
 public class PlayingState implements GameState {
 
@@ -57,9 +60,11 @@ public class PlayingState implements GameState {
                 context.setLevel(new LevelDirector().level1(new LevelBuilder(context), context));
                 if (levelCompleted){
                     // Change to upgrade menu and prep next level
+                    CurrencyBank.getInstance().addFunds(200);
                     context.changeState(context.getUpgradeMenuState());
                     return;
                 }
+                CurrencyBank.getInstance().reset();
                 context.changeState(new HomeScreenState());
             }
         }

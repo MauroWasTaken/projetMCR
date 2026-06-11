@@ -229,4 +229,8 @@ public class GameContext extends Game {
     public bullethell.states.UpgradeMenuState getUpgradeMenuState() {
         return upgradeMenuState;
     }
+
+    public void resetUpgradeMenuState() {
+        this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this);
+    }
 }

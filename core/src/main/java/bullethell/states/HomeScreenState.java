@@ -16,7 +16,8 @@ public class HomeScreenState implements GameState {
     public void update(GameContext context, float delta) {
         if (input.isKeyJustPressed(Input.Keys.NUM_1)) {
             // Start game
-            context.changeState(new UpgradeMenuState(context));
+            context.resetUpgradeMenuState();
+            context.changeState(context.getUpgradeMenuState());
         } else if (input.isKeyJustPressed(Input.Keys.NUM_2)) {
             // TODO: create options, maybe FX sounds/music toggle...or get rid of this
         } else if (input.isKeyJustPressed(Input.Keys.NUM_3)) {

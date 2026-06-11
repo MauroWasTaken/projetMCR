@@ -2,7 +2,6 @@ package bullethell.gameobjects.builders;
 
 import bullethell.GameContext;
 import bullethell.gameobjects.ships.Enemy;
-import bullethell.gameobjects.Weapon;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Vector2;
 
@@ -24,7 +23,7 @@ public class EnemyDirector {
     }
 
     public Enemy heavyEnemy(GameContext context, ArrayList<Vector2> path) {
-        Texture sprite = context.getPlayerSprite();
+        Texture sprite = context.getHeavyEnemySPrite();
         EnemyBuilder builder = new EnemyBuilder(context);
         builder.setSprite(sprite)
                .setSpeed(75f)

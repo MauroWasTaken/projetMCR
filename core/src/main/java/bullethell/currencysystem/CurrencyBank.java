@@ -37,7 +37,7 @@ public class CurrencyBank {
     }
 
     public void reset() {
-        this.value = 0;
+        this.value = 10000;
         this.saveFunds();
     }
 
@@ -50,6 +50,6 @@ public class CurrencyBank {
     }
 
     private float readFromFile() {
-        return 0;
+        return 10000;
     }
 }

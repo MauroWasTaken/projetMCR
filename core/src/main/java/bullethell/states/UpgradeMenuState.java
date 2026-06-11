@@ -53,6 +53,7 @@ public class UpgradeMenuState implements GameState {
     public void update(GameContext context, float delta) {
         if (input.isKeyJustPressed(Input.Keys.ENTER)) { // if done shopping, import player
             buildPlayer(context);                           // build new player
+            context.setNextLevel();
             context.changeState(new PlayingState());        // change state
             return;
         }

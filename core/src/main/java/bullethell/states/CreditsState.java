@@ -36,6 +36,6 @@ public class CreditsState implements GameState {
         writeCenteredTextAtHeight("Nathan Sweet", playHeight - 400, font, context, batch);
 
         font.getData().setScale(1f);
-        writeCenteredTextAtHeight("Press 0 to go back", playHeight - 450, font, context, batch);
+        writeCenteredTextAtHeight("Press 0 to go back", 50, font, context, batch);
     }
 }

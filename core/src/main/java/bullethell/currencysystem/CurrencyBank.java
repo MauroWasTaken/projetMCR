@@ -36,6 +36,11 @@ public class CurrencyBank {
         return this.value >= cost;
     }
 
+    public void reset() {
+        this.value = 10000;
+        this.saveFunds();
+    }
+
     private void saveFunds() {
         // TODO: write to some offline storage for the player to resume their game (optional)
     }
@@ -45,6 +50,6 @@ public class CurrencyBank {
     }
 
     private float readFromFile() {
-        return 0;
+        return 10000;
     }
 }

@@ -18,11 +18,11 @@ public class ShieldDirector {
 
     public Shield strongShield() {
         // 5 HP, 7 second recharge
-        return new Shield(context, context.getShieldSprite(), 5, 7000f);
+        return new Shield(context, context.getShieldSprite(), 3, -1f);
     }
 
     public Shield quickRechargeShield() {
-        // 2 HP, 3.5 second recharge
+        // 1 HP, 3.5 second recharge
         return new Shield(context, context.getShieldSprite(), 1, 3500f);
     }
 }

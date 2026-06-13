@@ -1,17 +1,20 @@
 package bullethell.states;
 
 import bullethell.GameContext;
+import bullethell.currencysystem.CurrencyBank;
+import bullethell.gameobjects.CampaignSingleton;
 import bullethell.gameobjects.GameObject;
-import bullethell.gameobjects.builders.LevelBuilder;
-import bullethell.gameobjects.builders.LevelDirector;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+
+import java.util.Currency;
 
 public class PlayingState implements GameState {
 
     private boolean levelCompleted = false;
     private boolean gameOver = false;
     private float levelTransitionTimer = 0f;
+    private final CampaignSingleton instance = CampaignSingleton.getInstance();
 
     @Override
     public void update(GameContext context, float delta) {
@@ -53,14 +56,23 @@ public class PlayingState implements GameState {
                 context.getGameObjects().clear();
                 context.getPendingAdd().clear();
                 context.getPendingRemove().clear();
-                // For now, reload level 1 since there is no level 2
-                context.setLevel(new LevelDirector().level1(new LevelBuilder(context), context));
-                if (levelCompleted){
+                if (levelCompleted) {
                     // Change to upgrade menu and prep next level
-                    context.changeState(context.getUpgradeMenuState());
-                    return;
+                    CurrencyBank.getInstance().addFunds(200);
+                    instance.levelSucceeded();
+                    if (instance.isCampaignCleared()) {
+                        // Return
+                        instance.reset();
+                        context.changeState(new HomeScreenState());
+                    } else {
+                        context.changeState(context.getUpgradeMenuState());
+                    }
                 }
-                context.changeState(new HomeScreenState());
+                if (gameOver) {
+                    CurrencyBank.getInstance().reset();
+                    instance.reset();
+                    context.changeState(new HomeScreenState());
+                }
             }
         }
     }

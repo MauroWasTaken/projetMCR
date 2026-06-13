@@ -1,5 +1,6 @@
 package bullethell;
 
+import bullethell.gameobjects.CampaignSingleton;
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Player;
 import bullethell.gameobjects.builders.LevelBuilder;
@@ -7,7 +8,6 @@ import bullethell.gameobjects.builders.LevelDirector;
 import bullethell.states.GameState;
 import bullethell.states.HomeScreenState;
 import bullethell.states.UpgradeMenuState;
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -37,6 +37,7 @@ public class GameContext extends Game {
     private Texture background;
     private Texture playerSprite;
     private Texture enemySprite;
+    private Texture heavyEnemySprite;
     private Texture shieldSprite;
     private Texture projectileSprite;
     private Texture enemyProjectileSprite;
@@ -48,6 +49,7 @@ public class GameContext extends Game {
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
     public AssetManager assetManager;
+    private final CampaignSingleton campaignInstance = CampaignSingleton.getInstance();
 
     private GameState currentState;
     private bullethell.states.UpgradeMenuState upgradeMenuState; // FIXME: I feel this violently violates state pattern
@@ -73,6 +75,7 @@ public class GameContext extends Game {
         // load shared sprites texture and font renderers
         playerSprite = new Texture("player.png");
         enemySprite = new Texture("enemy-ship.png");
+        heavyEnemySprite = new Texture("enemy-heavy.png");
         projectileSprite = new Texture("projectile.png");
         enemyProjectileSprite = new Texture("enemy-projectile.png");
         score100Sprite = new Texture("Score100.png");
@@ -155,6 +158,10 @@ public class GameContext extends Game {
         return enemySprite;
     }
 
+    public Texture getHeavyEnemySPrite() {
+        return heavyEnemySprite;
+    }
+
     public Texture getShieldSprite() {
         return shieldSprite;
     }
@@ -206,8 +213,8 @@ public class GameContext extends Game {
         return level;
     }
 
-    public void setLevel(Level level) {
-        this.level = level;
+    public void setNextLevel() {
+        this.level = this.campaignInstance.getNextLevel(this);
     }
 
     public ArrayList<GameObject> getGameObjects() {
@@ -228,5 +235,9 @@ public class GameContext extends Game {
 
     public bullethell.states.UpgradeMenuState getUpgradeMenuState() {
         return upgradeMenuState;
+    }
+
+    public void resetUpgradeMenuState() {
+        this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this);
     }
 }

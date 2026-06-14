@@ -8,7 +8,7 @@ import bullethell.gameobjects.builders.LevelDirector;
 public class CampaignSingleton {
     private static CampaignSingleton instance;
     private int nextLevel;
-    private final int MAX_LEVEL = 2;
+    private final int MAX_LEVEL = 4;
 
     private CampaignSingleton() {
         nextLevel = 1;

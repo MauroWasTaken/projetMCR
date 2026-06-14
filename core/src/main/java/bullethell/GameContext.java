@@ -372,6 +372,7 @@ public class GameContext extends Game {
             Upgrade.superMove("Supercharge shields", "The best defense is a good offense", 1500, SuperShield::new),
             Upgrade.superMove("Supercharge weapons", "MURDER!!!!", 1500, () -> new SuperLaser(getSuperLaserFx()))
         ));
+        purchasedUpgrades.clear();
     }
 
     public ArrayList<Upgrade> getAvailableUpgrades() {

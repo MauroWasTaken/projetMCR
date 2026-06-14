@@ -79,6 +79,7 @@ public class PlayingScreenState extends AbstractGameScreenState {
                 if (gameOver) {
                     // Go to Game Over Screen
                     context.changeState(new GameOverState(context, writer));
+
                 }
             }
         }

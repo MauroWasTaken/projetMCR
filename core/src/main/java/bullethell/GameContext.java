@@ -18,6 +18,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import bullethell.gameobjects.GameObject;
@@ -54,6 +55,8 @@ public class GameContext extends Game {
 
     private GameState currentState;
     private bullethell.states.UpgradeMenuState upgradeMenuState; // FIXME: I feel this violently violates state pattern
+
+    private ControlMode controlMode = ControlMode.KEYBOARD;
 
     private Level level;
 
@@ -152,6 +155,14 @@ public class GameContext extends Game {
         return playHeight;
     }
 
+    public Vector2 unprojectMouse(Vector2 mouse) {
+        // Method that takes a vector of mouse coordinates and adapts the value to the viewport.
+        if (mouse == null) {
+            throw new RuntimeException("Received null value for mouse control.");
+        }
+        return viewport.unproject(mouse);
+    }
+
     public Texture getPlayerSprite() {
         return playerSprite;
     }
@@ -245,5 +256,18 @@ public class GameContext extends Game {
 
     public void resetUpgradeMenuState() {
         this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this);
+    }
+
+    public enum ControlMode {
+        KEYBOARD,
+        MOUSE
+    }
+
+    public void setControlMode(ControlMode controlMode) {
+        this.controlMode = controlMode;
+    }
+
+    public ControlMode getControlMode() {
+        return this.controlMode;
     }
 }

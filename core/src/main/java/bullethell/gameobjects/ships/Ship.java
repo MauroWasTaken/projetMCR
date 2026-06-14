@@ -17,8 +17,8 @@ public abstract class Ship extends GameObject {
     Shield shield;
 
     //TODO Make it so weapon places are computed dynamically
-    float[] xOffsets = {-20, 20, 2, 4};
-    float[] yOffsets = {-1, -1, 0.5f, 1};
+    float[] xOffsets = {-20, 20, 10, -10};
+    float[] yOffsets = {-1, -1, 1, 1};
     int nbWeapons = 0;
 
     protected float invulnerabilityTime = 1.5f;
@@ -35,6 +35,7 @@ public abstract class Ship extends GameObject {
 
         this.weapons.add(weapon);
         weapon.setOwner(this);
+
         if (this instanceof Enemy) {
             weapon.setOffset((float) shootingOffsetX, (float) shootingOffsetY);
         } else {
@@ -96,6 +97,7 @@ public abstract class Ship extends GameObject {
     }
     public void setShield(Shield shield) {
         this.shield = shield;
+        shield.setOwner(this);
     }
 
     public ArrayList<Weapon> getWeapons() {

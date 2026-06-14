@@ -17,8 +17,9 @@ public class Weapon extends GameObject {
     TextureRegion[][] frames2D;
     TextureRegion[] frames;
     Animation<TextureRegion> animation;
-    private float firingRate;
-    private float shootTimer = 0;
+    private final float firingRate;
+
+    private float shootTimer;
 
     private float offsetX, offsetY;
 
@@ -27,10 +28,13 @@ public class Weapon extends GameObject {
         this.projectiles = projectiles;
         frames2D = TextureRegion.split(sprite, 48, 48);
         frames = frames2D[0];
-        animation = new Animation<>(0.1f, frames);
+
+        float frameDuration = firingRate / (float) frames.length;
+        animation = new Animation<>(frameDuration, frames);
         this.soundFx = soundFx.soundFx();
         this.volume = soundFx.volume();
         this.firingRate = firingRate;
+        shootTimer = firingRate;
     }
 
     public void fire(){
@@ -101,7 +105,15 @@ public class Weapon extends GameObject {
     @Override
     public void render(SpriteBatch batch) {
         if (owner instanceof Enemy) return;
-        TextureRegion currentFrame = animation.getKeyFrame(shootTimer, true); // true = loop
+
+        TextureRegion currentFrame;
+
+        if (shootTimer >= firingRate) {
+            currentFrame = frames[0];
+        } else {
+            currentFrame = animation.getKeyFrame(shootTimer, false);
+        }
+
         float naturalWidth = currentFrame.getRegionWidth();
         float naturalHeight = currentFrame.getRegionHeight();
         batch.draw(currentFrame,

@@ -6,16 +6,14 @@ import bullethell.states.statetextwriter.StateTextWriter;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public abstract class AbstractGameState implements GameState {
+/**
+ * Base for screen states
+ */
+public abstract class AbstractGameScreenState implements GameScreenState {
     protected final GameContext context;
     protected final IStateTextWriter writer;
 
-    AbstractGameState(GameContext context, BitmapFont font, SpriteBatch batch) {
-        this.context = context;
-        this.writer = new StateTextWriter(context, font, batch);
-    }
-
-    AbstractGameState(GameContext context, IStateTextWriter writer) {
+    AbstractGameScreenState(GameContext context, IStateTextWriter writer) {
         this.context = context;
         this.writer = writer;
     }

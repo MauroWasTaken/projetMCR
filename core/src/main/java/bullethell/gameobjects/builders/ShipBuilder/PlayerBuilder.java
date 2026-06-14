@@ -1,53 +1,78 @@
-package bullethell.gameobjects.builders;
+package bullethell.gameobjects.builders.ShipBuilder;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.builders.BuildingErrorException;
 import bullethell.gameobjects.ships.Player;
 import bullethell.gameobjects.Weapon;
 import bullethell.gameobjects.Shield;
 import bullethell.gameobjects.supermove.SuperMove;
+import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 
-public class PlayerBuilder {
-    private final GameContext context;
+/**
+ * Builds the player's ship
+ */
+public class PlayerBuilder extends ShipBuilder {
 
-    private final ArrayList<Weapon> weapons = new ArrayList<>();
-    private Shield shield;
     private SuperMove specialMove;
 
     public PlayerBuilder(GameContext context) {
-        this.context = context;
+        super(context);
     }
 
+    @Override
     public PlayerBuilder addWeapon(Weapon weapon) {
         this.weapons.add(weapon);
         return this;
     }
 
-    public PlayerBuilder addShield(Shield shield) {
+    @Override
+    public PlayerBuilder setShield(Shield shield) {
         this.shield = shield;
         return this;
     }
 
+    @Override
+    public PlayerBuilder setSprite(Texture sprite) {
+        this.sprite = sprite;
+        return this;
+    }
+
+    /**
+     * Sets a special move. Used with 'q'
+     * @param special special action to perform
+     * @return this
+     */
     public PlayerBuilder addSpecial(SuperMove special) {
         this.specialMove = special;
         return this;
     }
 
+    /**
+     * Builds and returns a player's ship
+     * @return a ship
+     */
     public Player build() {
-        Player player = new Player(context);
+
+        if (sprite == null) throw new BuildingErrorException("Player requires a sprite");
+
+        Player player = new Player(context, sprite);
         for (Weapon w : weapons) {
             player.addWeapon(w);
         }
         if (this.shield != null) {
             player.setShield(this.shield);
-            this.shield.setOwner(player);
-            context.getGameObjects().add(this.shield);
         }
         if (specialMove != null) {
             player.setSpecial(specialMove);
-            this.specialMove.setOwner(player);
         }
         return player;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        specialMove = null;
     }
 }

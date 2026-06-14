@@ -5,6 +5,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 
+/**
+ * General game object.
+ */
 public abstract class GameObject {
     protected float x, y;
     protected final float width, height;

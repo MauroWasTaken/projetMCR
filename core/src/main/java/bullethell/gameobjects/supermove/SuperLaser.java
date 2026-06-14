@@ -5,6 +5,9 @@ import com.badlogic.gdx.audio.Sound;
 
 import java.util.ArrayList;
 
+/**
+ * A kind of supermove. Fires each weapon once is a 360 pattern
+ */
 public class SuperLaser extends SuperMove {
 
     private final Sound soundFx;

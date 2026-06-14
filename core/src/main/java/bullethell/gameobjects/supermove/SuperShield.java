@@ -1,5 +1,8 @@
 package bullethell.gameobjects.supermove;
 
+/**
+ * A kind of supermove. The shield becomes indestructible and kills enemies on collition
+ */
 public class SuperShield extends SuperMove {
 
     float maxTime = 5f;

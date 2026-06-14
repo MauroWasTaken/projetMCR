@@ -8,6 +8,9 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * A shield
+ */
 public class Shield extends GameObject {
     final private int maxHP;
     private int hp;
@@ -15,11 +18,13 @@ public class Shield extends GameObject {
     final private float rechargeTime; // in ms  -1 for no recharge
     private float rechargeTimer;
 
+    // Used to display animations
     TextureRegion[][] frames2D;
     TextureRegion[] frames;
     Animation<TextureRegion> animation;
     private float stateTime = 0f;
 
+    // Normal & supercharged shield
     Texture normalShield;
     Texture superShield;
 
@@ -75,6 +80,10 @@ public class Shield extends GameObject {
         }
     }
 
+    /**
+     * If shield is supercharged, it kills enemies on contact
+     * @param other object with which this collisions
+     */
     @Override
     public void onCollision(GameObject other) {
 
@@ -93,6 +102,9 @@ public class Shield extends GameObject {
         setTexture(superShield);
     }
 
+    /**
+     * Takes a hit
+     */
     public void hit(){
         if (hp == 0 || isSuperCharged()) return;
         this.hp--;

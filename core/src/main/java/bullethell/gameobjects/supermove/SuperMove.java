@@ -2,12 +2,19 @@ package bullethell.gameobjects.supermove;
 
 import bullethell.gameobjects.ships.Ship;
 
+/**
+ * A supermove. Limited uses per game
+ */
 public abstract class SuperMove {
 
     protected Ship owner;
     protected int maxCharges;
 
+    /**
+     * Trigger the action
+     */
     public abstract void trigger();
+
     public void setOwner(Ship owner) {
         this.owner = owner;
     }

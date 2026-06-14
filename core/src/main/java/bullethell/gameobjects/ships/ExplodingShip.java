@@ -6,9 +6,13 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
+/**
+ * An exploding ship, just before it dies
+ */
 public class ExplodingShip extends GameObject {
     private float stateTime = 0f;
 
+    // Used to display exploding animation
     TextureRegion[][] frames2D;
     TextureRegion[] frames;
     Animation<TextureRegion> animation;

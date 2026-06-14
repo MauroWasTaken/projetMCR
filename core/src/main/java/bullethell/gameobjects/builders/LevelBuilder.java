@@ -6,7 +6,11 @@ import bullethell.gameobjects.ships.Enemy;
 
 import java.util.ArrayList;
 
+/**
+ * Builds levels
+ */
 public class LevelBuilder {
+
     private final GameContext context;
     private final ArrayList<Level.EnemySpawn> spawnQueue = new ArrayList<>();
 
@@ -23,6 +27,8 @@ public class LevelBuilder {
         if (spawnQueue.isEmpty()) {
             throw new BuildingErrorException("Level requires at least one enemy spawn");
         }
-        return new Level(context, spawnQueue);
+        Level level = new Level(context, spawnQueue);
+        spawnQueue.clear();
+        return level;
     }
 }

@@ -6,7 +6,10 @@ import bullethell.states.statetextwriter.IStateTextWriter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
-public class VictoryState extends AbstractGameState {
+/**
+ * Victory screen
+ */
+public class VictoryState extends AbstractGameScreenState {
 
     public VictoryState(GameContext context, IStateTextWriter writer) {
         super(context, writer);

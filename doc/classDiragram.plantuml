@@ -1,0 +1,490 @@
+@startuml
+
+!theme plain
+top to bottom direction
+skinparam linetype ortho
+
+class AbstractGameScreenState {
+  # writer: IStateTextWriter
+  # context: GameContext
+}
+class BuildingErrorException
+class CampaignSingleton {
+  - nextLevel: int
+  - MAX_LEVEL: int
+  - director: LevelDirector
+  - instance: CampaignSingleton
+  - score: int
+  - enemySpawner: EnemySpawner
+  - levelBuilder: LevelBuilder
+  + levelSucceeded(): void
+  + getScore(): int
+  + reset(): void
+  + getNextLevel(GameContext): Level
+  + isCampaignCleared(): boolean
+  + addScore(int): void
+  + getCurrentLevel(): int
+  + getInstance(): CampaignSingleton
+}
+class CreditsScreenState {
+  + update(float): void
+  + render(): void
+}
+class CurrencyBank {
+  - bank: CurrencyBank
+  - value: float
+  + getInstance(): CurrencyBank
+  + getValue(): float
+  + addFunds(float): void
+  - hasEnoughFunds(float): boolean
+  + purchase(float): void
+  + reset(): void
+}
+class Enemy {
+  - scoreValue: int
+  ~ dropRate500: float
+  - targetIndex: int
+  - path: ArrayList<Vector2>
+  - shootTimer: float
+  - nbShots: int
+  - shootDelay: float
+  ~ dropRate100: float
+  + die(): void
+  + update(float): void
+  + render(SpriteBatch): void
+}
+class EnemyBuilder {
+  - speed: float
+  - scoreValue: int
+  - shootDelay: float
+  - nbShots: int
+  - path: ArrayList<Vector2>
+  + reset(): void
+  + setNbShots(int): EnemyBuilder
+  + addWeapon(Weapon): EnemyBuilder
+  + setShield(Shield): EnemyBuilder
+  + setPath(ArrayList<Vector2>): EnemyBuilder
+  + setScoreValue(int): EnemyBuilder
+  + setSpeed(float): EnemyBuilder
+  + build(): Enemy
+  + setSprite(Texture): EnemyBuilder
+  + setShootDelay(float): EnemyBuilder
+}
+class EnemyDirector {
+  - weaponDirector: WeaponDirector
+  + basicEnemy(GameContext, EnemyBuilder, WeaponBuilder, ArrayList<Vector2>): Enemy
+  + heavyEnemy(GameContext, EnemyBuilder, WeaponBuilder, ArrayList<Vector2>): Enemy
+}
+class EnemySpawner {
+  - weaponBuilder: WeaponBuilder
+  - enemyBuilder: EnemyBuilder
+  - context: GameContext
+  - director: EnemyDirector
+  + makeBasicEnemy(ArrayList<Vector2>): Enemy
+  + makeHeavyEnemy(ArrayList<Vector2>): Enemy
+}
+class ExplodingShip {
+  ~ frames2D: TextureRegion[][]
+  ~ frames: TextureRegion[]
+  - stateTime: float
+  ~ animation: Animation<TextureRegion>
+  + update(float): void
+  + render(SpriteBatch): void
+  + onCollision(GameObject): void
+}
+class GameContext {
+  - shapeRenderer: ShapeRenderer
+  - viewport: FitViewport
+  - sideWeaponFx: Sound
+  ~ shieldFactory: ShieldFactory
+  - heavyEnemySprite: Texture
+  - shieldSprite: Texture
+  - score500Sprite: Texture
+  ~ weaponDirector: WeaponDirector
+  - camera: OrthographicCamera
+  - availableUpgrades: ArrayList<Upgrade>
+  - enemySprite: Texture
+  - campaignInstance: CampaignSingleton
+  - explosionSprite: Texture
+  - enemyProjectileSprite: Texture
+  - purchasedUpgrades: ArrayList<Upgrade>
+  - pendingAdd: ArrayList<GameObject>
+  - backgroundMusic: Music
+  - enemyShootFx: Sound
+  - playWidth: float
+  - font: BitmapFont
+  - gameObjects: ArrayList<GameObject>
+  - playerSprite: Texture
+  - currentState: GameScreenState
+  - background: Texture
+  - superChargedShield: Texture
+  ~ batch: SpriteBatch
+  - controlMode: ControlMode
+  - basicGun: Texture
+  - superLaserFx: Sound
+  - playHeight: float
+  - useFx: boolean
+  - score100Sprite: Texture
+  - mainWeaponFx: Sound
+  - level: Level
+  - projectileSprite: Texture
+  - MUSIC_VOLUME: float
+  ~ weaponBuilder: WeaponBuilder
+  - useMusic: boolean
+  - pendingRemove: ArrayList<GameObject>
+  + getExplosionSprite(): Texture
+  + toggleSoundFx(): void
+  + getBasicGunSprite(): Texture
+  + unprojectMouse(Vector2): Vector2
+  + getLevel(): Level
+  + changeState(GameScreenState): void
+  + getPlayerSprite(): Texture
+  + get500PointsSprite(): Texture
+  + create(): void
+  + getPlayHeight(): float
+  + getEnemyShootFx(): Sound
+  + despawn(GameObject): void
+  + usesMusic(): boolean
+  + getEnemyProjectileSprite(): Texture
+  + setNextLevel(): void
+  + spawn(GameObject): void
+  + toggleMusic(): void
+  + getControlMode(): ControlMode
+  + get100PointsSprite(): Texture
+  + getSuperLaserFx(): Sound
+  + getShieldSprite(): Texture
+  + getEnemySprite(): Texture
+  + setControlMode(ControlMode): void
+  + getHeavyEnemySprite(): Texture
+  + getProjectileSprite(): Texture
+  + resize(int, int): void
+  + render(): void
+  + getPendingRemove(): ArrayList<GameObject>
+  + getGameObjects(): ArrayList<GameObject>
+  + resetUpgrades(): void
+  + getPendingAdd(): ArrayList<GameObject>
+  + getSideWeaponFx(): Sound
+  + getEnemies(): Enemy[]
+  + getMainWeaponFx(): Sound
+  + getAvailableUpgrades(): ArrayList<Upgrade>
+  + getPlayWidth(): float
+  + getSuperShieldSprite(): Texture
+  + dispose(): void
+  + usesFx(): boolean
+  + getPurchasedUpgrades(): ArrayList<Upgrade>
+  + getPlayer(): Player
+}
+class GameObject {
+  # hitbox: Polygon
+  # y: float
+  # width: float
+  # context: GameContext
+  # x: float
+  # height: float
+  + update(float): void
+  + render(SpriteBatch): void
+  + getHitbox(): Polygon
+  + collidesWith(GameObject): boolean
+  + onCollision(GameObject): void
+}
+class GameOverState {
+  + update(float): void
+  + render(): void
+}
+interface GameScreenState << interface >> {
+  + update(float): void
+  + render(): void
+}
+class HomeScreenState {
+  + render(): void
+  + update(float): void
+}
+interface IStateTextWriter << interface >> {
+  + writeBottomRightText(String, float): void
+  + writeTightMultilineAtHeight(String[], float, float): float
+  + writeBottomLeftText(String, float): void
+  + writeCenteredTextAtHeight(String, float, float, Color): void
+  + writeCenteredTextAtHeight(String, float, float): float
+  + writeLeftBiasedTextAtHeight(String, float, float): void
+}
+class InsufficientFundsException
+class Level {
+  - nextSpawnIndex: int
+  - spawnQueue: ArrayList<EnemySpawn>
+  - context: GameContext
+  - x: float
+  + update(float): void
+  + isFinished(): boolean
+}
+class LevelBuilder {
+  - spawnQueue: ArrayList<EnemySpawn>
+  - context: GameContext
+  + addSpawn(float, Enemy): LevelBuilder
+  + build(): Level
+}
+class LevelDirector {
+  + level4(LevelBuilder, GameContext, EnemySpawner): Level
+  + level1(LevelBuilder, GameContext, EnemySpawner): Level
+  + level3(LevelBuilder, GameContext, EnemySpawner): Level
+  + level2(LevelBuilder, GameContext, EnemySpawner): Level
+}
+class OptionsScreenState {
+  + render(): void
+  + update(float): void
+}
+class Player {
+  - specialMove: SuperMove
+  - controlMode: ControlMode
+  + setShield(Shield): void
+  - handleKeyboardInput(float): void
+  + hasSpecial(): boolean
+  + getRemainingSpecialCharges(): int
+  + update(float): void
+  + render(SpriteBatch): void
+  - handleMouseInput(): void
+  + setSpecial(SuperMove): void
+}
+class PlayerBuilder {
+  - specialMove: SuperMove
+  + setShield(Shield): PlayerBuilder
+  + addWeapon(Weapon): PlayerBuilder
+  + setSprite(Texture): PlayerBuilder
+  + addSpecial(SuperMove): PlayerBuilder
+  + reset(): void
+  + build(): Player
+}
+class PlayingScreenState {
+  - gameOver: boolean
+  - levelTransitionTimer: float
+  - instance: CampaignSingleton
+  - levelCompleted: boolean
+  ~ nbRemainingSpecials: int
+  + render(): void
+  + update(float): void
+}
+class Projectile {
+  ~ padding: float
+  ~ velocityX: float
+  ~ rotation: float
+  ~ isPlayerProjectile: boolean
+  ~ sprite: Texture
+  ~ velocityY: float
+  + render(SpriteBatch): void
+  + getHitbox(): Polygon
+  + update(float): void
+  + onCollision(GameObject): void
+}
+class Score100Drop {
+  - SPEED: int
+  - VALUE: int
+  + onCollision(GameObject): void
+}
+class Score500Drop {
+  - VALUE: int
+  - SPEED: int
+  + onCollision(GameObject): void
+}
+class ScoreDrop {
+  # sprite: Texture
+  # speed: float
+  # scoreWin: int
+  + update(float): void
+  + render(SpriteBatch): void
+}
+class Shield {
+  ~ frames2D: TextureRegion[][]
+  - hp: int
+  - superChargeTimer: float
+  - rechargeTimer: float
+  ~ superShield: Texture
+  ~ owner: Ship
+  ~ normalShield: Texture
+  ~ animation: Animation<TextureRegion>
+  - stateTime: float
+  - maxHP: int
+  ~ frames: TextureRegion[]
+  - rechargeTime: float
+  + update(float): void
+  + onCollision(GameObject): void
+  + isSuperCharged(): boolean
+  + render(SpriteBatch): void
+  + hit(): void
+  - setTexture(Texture): void
+  + getHp(): int
+  + supercharge(float): void
+  + setOwner(Ship): void
+}
+class ShieldFactory {
+  - context: GameContext
+  + quickRechargeShield(): Shield
+  + weakShield(): Shield
+  + strongShield(): Shield
+}
+class Ship {
+  ~ xOffsets: float[]
+  # invulnerabilityTime: float
+  ~ nbWeapons: int
+  ~ yOffsets: float[]
+  ~ speed: float
+  ~ shootingOffsetY: double
+  # invulnerabilityTimer: float
+  ~ shootingOffsetX: double
+  ~ sprite: Texture
+  ~ weapons: ArrayList<Weapon>
+  ~ shield: Shield
+  + getWeapons(): ArrayList<Weapon>
+  + getShootingX(): double
+  + getHitbox(): Polygon
+  + getY(): float
+  + onCollision(GameObject): void
+  + addWeapon(Weapon): void
+  + update(float): void
+  + getX(): float
+  + isInvulnerable(): boolean
+  + getShootingY(): double
+  + getShield(): Shield
+  + setShield(Shield): void
+  # die(): void
+  + setInvulnerabilityTimer(float): void
+}
+class ShipBuilder {
+  # shield: Shield
+  # context: GameContext
+  # weapons: ArrayList<Weapon>
+  # sprite: Texture
+  + setShield(Shield): ShipBuilder
+  + reset(): void
+  + setSprite(Texture): ShipBuilder
+  + addWeapon(Weapon): ShipBuilder
+}
+class StateTextWriter {
+  - font: BitmapFont
+  - context: GameContext
+  - batch: SpriteBatch
+  + writeCenteredTextAtHeight(String, float, float): float
+  + writeBottomRightText(String, float): void
+  + writeCenteredTextAtHeight(String, float, float, Color): void
+  + writeTightMultilineAtHeight(String[], float, float): float
+  + writeBottomLeftText(String, float): void
+  + writeLeftBiasedTextAtHeight(String, float, float): void
+}
+class SuperLaser {
+  - soundFx: Sound
+  + trigger(): void
+}
+class SuperMove {
+  # owner: Ship
+  # maxCharges: int
+  + setOwner(Ship): void
+  + getRemainingCharges(): int
+  + trigger(): void
+  # hasRunOutOfCharges(): boolean
+}
+class SuperShield {
+  ~ maxTime: float
+  + trigger(): void
+}
+class Upgrade {
+  - description: String
+  - shieldFactory: Supplier<Shield>
+  - price: int
+  - weaponFactory: Supplier<Weapon>
+  - superMoveFactory: Supplier<SuperMove>
+  - name: String
+  + shield(String, String, int, Supplier<Shield>): Upgrade
+  + isSuperUpgrade(): boolean
+  + getName(): String
+  + getShield(): Shield
+  + toString(): String
+  + getPrice(): int
+  + getDescription(): String
+  + superMove(String, String, int, Supplier<SuperMove>): Upgrade
+  + isWeaponUpgrade(): boolean
+  + isShieldUpgrade(): boolean
+  + weapon(String, String, int, Supplier<Weapon>): Upgrade
+  + getSuper(): SuperMove
+  + getWeapon(): Weapon
+}
+class UpgradeMenuScreenState {
+  - shopMessage: String
+  - shopMessageTimer: float
+  - availableUpgrades: ArrayList<Upgrade>
+  - purchasedUpgrades: ArrayList<Upgrade>
+  + render(): void
+  + update(float): void
+  - buildPlayer(GameContext): void
+}
+class VictoryState {
+  + update(float): void
+  + render(): void
+}
+class Weapon {
+  ~ frames: TextureRegion[]
+  ~ owner: Ship
+  ~ frames2D: TextureRegion[][]
+  ~ volume: float
+  - shootTimer: float
+  - offsetX: float
+  - offsetY: float
+  - firingRate: float
+  ~ projectiles: Projectile[]
+  ~ animation: Animation<TextureRegion>
+  ~ soundFx: Sound
+  + setOwner(Ship): void
+  + render(SpriteBatch): void
+  + setOffset(float, float): void
+  + onCollision(GameObject): void
+  + update(float): void
+  + fire(): void
+  + supercharge(): void
+}
+class WeaponBuilder {
+  - soundFx: WeaponSoundFx
+  - sprite: Texture
+  - templates: ArrayList<Projectile>
+  - context: GameContext
+  - firingRate: float
+  + addSprite(Texture): WeaponBuilder
+  + setFiringRate(float): WeaponBuilder
+  + addProjectile(float, float, float, float, boolean, Texture): WeaponBuilder
+  + build(): Weapon
+  + reset(): void
+  + getContext(): GameContext
+  + addSoundFx(Sound, float): WeaponBuilder
+}
+class WeaponDirector {
+  + playerSideWeapons(WeaponBuilder): Weapon
+  + enemySpreadWeapon(WeaponBuilder): Weapon
+  + playerMainWeapon(WeaponBuilder): Weapon
+}
+entity WeaponSoundFx << record >> {
+  - volume: float
+  - soundFx: Sound
+  + soundFx(): Sound
+  + volume(): float
+}
+
+AbstractGameScreenState     -[#008200,dashed]-^  GameScreenState            
+CreditsScreenState          -[#000082,plain]-^  AbstractGameScreenState    
+Enemy                       -[#000082,plain]-^  Ship                       
+EnemyBuilder                -[#000082,plain]-^  ShipBuilder                
+ExplodingShip               -[#000082,plain]-^  GameObject                 
+GameOverState               -[#000082,plain]-^  AbstractGameScreenState    
+HomeScreenState             -[#000082,plain]-^  AbstractGameScreenState    
+OptionsScreenState          -[#000082,plain]-^  AbstractGameScreenState    
+Player                      -[#000082,plain]-^  Ship                       
+PlayerBuilder               -[#000082,plain]-^  ShipBuilder                
+PlayingScreenState          -[#000082,plain]-^  AbstractGameScreenState    
+Projectile                  -[#000082,plain]-^  GameObject                 
+Score100Drop                -[#000082,plain]-^  ScoreDrop                  
+Score500Drop                -[#000082,plain]-^  ScoreDrop                  
+ScoreDrop                   -[#000082,plain]-^  GameObject                 
+Shield                      -[#000082,plain]-^  GameObject                 
+Ship                        -[#000082,plain]-^  GameObject                 
+StateTextWriter             -[#008200,dashed]-^  IStateTextWriter           
+SuperLaser                  -[#000082,plain]-^  SuperMove                  
+SuperShield                 -[#000082,plain]-^  SuperMove                  
+UpgradeMenuScreenState      -[#000082,plain]-^  AbstractGameScreenState    
+VictoryState                -[#000082,plain]-^  AbstractGameScreenState    
+Weapon                      -[#000082,plain]-^  GameObject                 
+@enduml

@@ -6,9 +6,9 @@ import com.badlogic.gdx.Input;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class CreditsState extends AbstractGameState {
+public class CreditsScreenState extends AbstractGameScreenState {
 
-    CreditsState(GameContext context, IStateTextWriter writer) {
+    CreditsScreenState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
     }
 

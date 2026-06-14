@@ -1,22 +1,27 @@
 package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.Shield;
 import bullethell.gameobjects.Weapon;
 import bullethell.gameobjects.supermove.SuperMove;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Player's ship
+ */
 public class Player extends Ship {
 
     private final GameContext.ControlMode controlMode;
     private SuperMove specialMove;
 
-    public Player(GameContext context) {
-        super(context, context.getPlayerSprite(), 200f, context.getPlayerSprite().getWidth() * 0.1f, context.getPlayerSprite().getHeight() * 0.1f);
+    public Player(GameContext context, Texture sprite) {
+        super(context, sprite, 200f, context.getPlayerSprite().getWidth() * 0.1f, context.getPlayerSprite().getHeight() * 0.1f);
         this.x = context.getPlayWidth() / 2f;
         this.y = 50f;
         this.shootingOffsetX = 0f;
@@ -31,12 +36,6 @@ public class Player extends Ship {
             this.handleKeyboardInput(delta);
         } else if (this.controlMode.equals(GameContext.ControlMode.MOUSE)) {
             this.handleMouseInput();
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            for (Weapon w : weapons) {
-                w.fire();
-            }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
             if (this.specialMove != null) {
@@ -57,6 +56,16 @@ public class Player extends Ship {
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
     }
 
+    @Override
+    public void setShield(Shield shield) {
+        super.setShield(shield);
+        context.getGameObjects().add(this.shield);  // Add this to game context only for player, so they're not displayed for enemies
+    }
+
+    /**
+     * Handles keyboard input mode
+     * @param delta game delta
+     */
     private void handleKeyboardInput(float delta) {
         float dirX = 0f;
         float dirY = 0f;
@@ -98,8 +107,9 @@ public class Player extends Ship {
         y = Math.max(spriteHalfHeight, Math.min(y, maxY));
     }
 
-
-
+    /**
+     * Handles mouse input mode
+     */
     private void handleMouseInput() {
         // Check mouse pointer is within game area
         final float spriteHalfWidth = sprite.getWidth() / 2f;
@@ -124,8 +134,14 @@ public class Player extends Ship {
         }
     }
 
+    /**
+     * Sets the special attack for this ship's instance
+     * @param specialMove special move to perform
+     */
     public void setSpecial(SuperMove specialMove) {
+
         this.specialMove = specialMove;
+        specialMove.setOwner(this);
     }
 
     public boolean hasSpecial() {

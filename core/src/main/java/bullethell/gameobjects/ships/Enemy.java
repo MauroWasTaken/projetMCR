@@ -10,16 +10,35 @@ import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 
+/**
+ * An enemy ship
+ */
 public class Enemy extends Ship {
+
     final float dropRate100 = 0.1f;
     final float dropRate500 = 0.02f;
+
     private final ArrayList<Vector2> path;
+
     private int targetIndex = 0;
+
     private final float shootDelay; // in ms
     private float shootTimer; // in ms
+
     private int nbShots; // -1 for "infinite"
+
     private final int scoreValue;
 
+    /**
+     * Constructor
+     * @param context the game context
+     * @param sprite sprite to render
+     * @param speed at which the enemy moves
+     * @param path the enemy follows on the screen
+     * @param shootDelay enemy firing rate
+     * @param nbShots per firing
+     * @param scoreValue score given to the player when they destroy this
+     */
     public Enemy(GameContext context, Texture sprite, float speed, ArrayList<Vector2> path, float shootDelay, int nbShots, int scoreValue) {
         super(context, sprite, speed, sprite.getWidth() * 0.6f, sprite.getHeight() * 0.6f);
         this.path = path == null ? new ArrayList<>() : new ArrayList<>(path);
@@ -84,6 +103,10 @@ public class Enemy extends Ship {
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
         for (Weapon w : weapons) w.render(batch);
     }
+
+    /**
+     * Destroys this ship and free resources
+     */
     @Override
     public void die() {
         super.die();

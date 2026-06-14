@@ -1,14 +1,19 @@
 package bullethell;
 
 import bullethell.gameobjects.CampaignSingleton;
+import bullethell.gameobjects.Upgrade;
+import bullethell.gameobjects.builders.WeaponBuilder;
+import bullethell.gameobjects.builders.WeaponDirector;
+import bullethell.gameobjects.factories.ShieldFactory;
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Player;
-import bullethell.states.GameState;
+import bullethell.gameobjects.supermove.SuperLaser;
+import bullethell.gameobjects.supermove.SuperShield;
+import bullethell.states.GameScreenState;
 import bullethell.states.HomeScreenState;
-import bullethell.states.UpgradeMenuState;
+import bullethell.states.statetextwriter.StateTextWriter;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
@@ -24,14 +29,17 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import bullethell.gameobjects.GameObject;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all platforms.
  */
 public class GameContext extends Game {
+
     private final float playWidth = 450f;
     private final float playHeight = 600f;
 
+    // Sprites
     SpriteBatch batch;
     private OrthographicCamera camera;
     private FitViewport viewport;
@@ -46,6 +54,8 @@ public class GameContext extends Game {
     private Texture score100Sprite;
     private Texture score500Sprite;
     private Texture explosionSprite;
+    private Texture basicGun;
+
     // SoundFX
     private Sound mainWeaponFx;
     private Sound sideWeaponFx;
@@ -61,19 +71,27 @@ public class GameContext extends Game {
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
-    public AssetManager assetManager; // TODO: what we doin' with that?
+
+    // Campaign
     private final CampaignSingleton campaignInstance = CampaignSingleton.getInstance();
 
-    private GameState currentState;
-    private bullethell.states.UpgradeMenuState upgradeMenuState; // FIXME: I feel this violently violates state pattern
+    private GameScreenState currentState;
 
     private ControlMode controlMode = ControlMode.KEYBOARD;
 
     private Level level;
 
+    // Upgrades management
+    private ArrayList<Upgrade> availableUpgrades; //available to purchase
+    private final ArrayList<Upgrade> purchasedUpgrades = new ArrayList<>();
+
+    // Builders
+    WeaponBuilder weaponBuilder;
+    WeaponDirector weaponDirector;
+    ShieldFactory shieldFactory;
+
     @Override
     public void create() {
-        assetManager = new AssetManager();
         batch = new SpriteBatch();
         // camera init
         camera = new OrthographicCamera();
@@ -98,6 +116,7 @@ public class GameContext extends Game {
         shieldSprite = new Texture("shields.png");
         superChargedShield = new Texture("super-shields.png");
         explosionSprite = new Texture("explosion_48.png");
+        basicGun = new Texture("big-gun.png");
         // Sounds
         mainWeaponFx = Gdx.audio.newSound(Gdx.files.internal("single_shot.wav"));
         sideWeaponFx = Gdx.audio.newSound(Gdx.files.internal("dual_shot.wav"));
@@ -109,12 +128,20 @@ public class GameContext extends Game {
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 
-        upgradeMenuState = new UpgradeMenuState(this, font, batch);
-        currentState = new HomeScreenState(this, font, batch);
+        currentState = new HomeScreenState(this, new StateTextWriter(this, font, batch));
+
         // Start music
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(this.MUSIC_VOLUME);
         backgroundMusic.play();
+
+        // Builders
+        weaponBuilder = new WeaponBuilder(this);
+        weaponDirector = new WeaponDirector();
+        shieldFactory = new ShieldFactory(this);
+
+        // Upgrades management
+        resetUpgrades();
     }
 
     @Override
@@ -208,6 +235,10 @@ public class GameContext extends Game {
 
     public Texture getExplosionSprite() {
         return explosionSprite;
+    }
+
+    public Texture getBasicGunSprite() {
+        return basicGun;
     }
 
     // Sound getters
@@ -314,16 +345,8 @@ public class GameContext extends Game {
         return pendingRemove;
     }
 
-    public void changeState(GameState newState) {
+    public void changeState(GameScreenState newState) {
         this.currentState = newState;
-    }
-
-    public bullethell.states.UpgradeMenuState getUpgradeMenuState() {
-        return upgradeMenuState;
-    }
-
-    public void resetUpgradeMenuState() {
-        this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this, font, batch);
     }
 
     public enum ControlMode {
@@ -337,5 +360,26 @@ public class GameContext extends Game {
 
     public ControlMode getControlMode() {
         return this.controlMode;
+    }
+
+    public void resetUpgrades() {
+        availableUpgrades = new ArrayList<>(Arrays.asList(//adds default items to shop
+            Upgrade.weapon("Main Weapon", "Main weapon shoots", 0, () -> weaponDirector.playerMainWeapon(weaponBuilder)),
+            Upgrade.weapon("Side Weapons", "Shoots 2 extra projectiles", 500, () -> weaponDirector.playerSideWeapons(weaponBuilder)),
+            Upgrade.shield("Weak Shield", "1 HP, no recharge", 100, () -> shieldFactory.weakShield()),
+            Upgrade.shield("Quick Recharge Shield", "1 HP, recharges in 20s", 600, () -> shieldFactory.quickRechargeShield()),
+            Upgrade.shield("Strong Shield", "3 HP, no recharge", 1200, () -> shieldFactory.strongShield()),
+            Upgrade.superMove("Supercharge shields", "The best defense is a good offense", 1500, SuperShield::new),
+            Upgrade.superMove("Supercharge weapons", "MURDER!!!!", 1500, () -> new SuperLaser(getSuperLaserFx()))
+        ));
+        purchasedUpgrades.clear();
+    }
+
+    public ArrayList<Upgrade> getAvailableUpgrades() {
+        return availableUpgrades;
+    }
+
+    public ArrayList<Upgrade> getPurchasedUpgrades() {
+        return purchasedUpgrades;
     }
 }

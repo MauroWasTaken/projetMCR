@@ -2,15 +2,25 @@ package bullethell.gameobjects.builders;
 
 import bullethell.GameContext;
 import bullethell.Level;
+import bullethell.gameobjects.factories.EnemySpawner;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
+/**
+ * Creates the different levels using a level builder
+ */
 public class LevelDirector {
     // the following levels were very much ai assisted, we described the level flow and it implemented it
 
-    public Level level1(LevelBuilder builder, GameContext context) {
-        EnemyDirector enemyDirector = new EnemyDirector();
+    /**
+     * Creates level 1
+     * @param builder to use to create the level
+     * @param context game context
+     * @param spawner enemy spawner to create enemies
+     * @return a new level
+     */
+    public Level level1(LevelBuilder builder, GameContext context, EnemySpawner spawner) {
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();
         // Paths
@@ -48,44 +58,43 @@ public class LevelDirector {
         float t = 2f; // start time
 
         // Waves
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathCenter));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathCenter));
         t += 3f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathRight));
         t += 3f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathLeft));
         t += 3f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathRight));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathLeft));
         t += 4f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathRight));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, pathRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathRight));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(pathRight));
         t += 4f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathLeft));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, pathLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathLeft));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(pathLeft));
         t += 4f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, zigzagRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(zigzagRight));
         t += 2f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, zigzagLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(zigzagLeft));
         t += 3f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathRight));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, pathLeft));
-        builder.addSpawn(t + 1.5f, enemyDirector.basicEnemy(context, pathCenter));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(pathLeft));
+        builder.addSpawn(t + 1.5f, spawner.makeBasicEnemy(pathCenter));
         t += 4f;
         for (int i = 0; i < 3; i++) {
-            builder.addSpawn(t + i * 2.5f, enemyDirector.basicEnemy(context, i % 2 == 0 ? zigzagRight : zigzagLeft));
+            builder.addSpawn(t + i * 2.5f, spawner.makeBasicEnemy(i % 2 == 0 ? zigzagRight : zigzagLeft));
         }
         t += 10f;
         for (int i = 0; i < 3; i++) {
-            builder.addSpawn(t + i * 3f, enemyDirector.basicEnemy(context, pathRight));
-            builder.addSpawn(t + i * 3f, enemyDirector.basicEnemy(context, pathLeft));
+            builder.addSpawn(t + i * 3f, spawner.makeBasicEnemy(pathRight));
+            builder.addSpawn(t + i * 3f, spawner.makeBasicEnemy(pathLeft));
         }
 
         return builder.build();
     }
 
 
-    public Level level2(LevelBuilder builder, GameContext context) {
-        EnemyDirector enemyDirector = new EnemyDirector();
+    public Level level2(LevelBuilder builder, GameContext context, EnemySpawner spawner) {
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();
 
@@ -143,45 +152,45 @@ public class LevelDirector {
         float t = 2f;
 
         // Waves
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, sweepLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(sweepLeft));
         t += 5f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, wideZigzagRight));
-        builder.addSpawn(t + 1.5f, enemyDirector.basicEnemy(context, wideZigzagLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(wideZigzagRight));
+        builder.addSpawn(t + 1.5f, spawner.makeBasicEnemy(wideZigzagLeft));
         t += 6f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenter));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenter));
         t += 7f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyLeft));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t + 2f, enemyDirector.basicEnemy(context, sweepRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyLeft));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t + 2f, spawner.makeBasicEnemy(sweepRight));
         t += 6f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, sweepLeft));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t + 1.5f, enemyDirector.basicEnemy(context, pathCenter));
+        builder.addSpawn(t, spawner.makeBasicEnemy(sweepLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t + 1.5f, spawner.makeBasicEnemy(pathCenter));
         t += 6f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyRight));
-        builder.addSpawn(t + 2f, enemyDirector.basicEnemy(context, wideZigzagLeft));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyRight));
+        builder.addSpawn(t + 2f, spawner.makeBasicEnemy(wideZigzagLeft));
         t += 7f;
         for (int i = 0; i < 4; i++) {
-            builder.addSpawn(t + i * 2f, enemyDirector.basicEnemy(context, i % 2 == 0 ? sweepRight : sweepLeft));
+            builder.addSpawn(t + i * 2f, spawner.makeBasicEnemy(i % 2 == 0 ? sweepRight : sweepLeft));
         }
         t += 10f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyLeft));
-        builder.addSpawn(t + 1.5f, enemyDirector.heavyEnemy(context, heavyRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyLeft));
+        builder.addSpawn(t + 1.5f, spawner.makeHeavyEnemy(heavyRight));
         t += 8f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, wideZigzagRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(wideZigzagRight));
         t += 5f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenter));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, sweepLeft));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t + 3f, enemyDirector.basicEnemy(context, wideZigzagLeft));
-        builder.addSpawn(t + 3f, enemyDirector.basicEnemy(context, wideZigzagRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenter));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(sweepLeft));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t + 3f, spawner.makeBasicEnemy(wideZigzagLeft));
+        builder.addSpawn(t + 3f, spawner.makeBasicEnemy(wideZigzagRight));
 
         return builder.build();
     }
 
-    public Level level3(LevelBuilder builder, GameContext context) {
-        EnemyDirector enemyDirector = new EnemyDirector();
+    public Level level3(LevelBuilder builder, GameContext context, EnemySpawner spawner) {
+
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();
 
@@ -259,117 +268,117 @@ public class LevelDirector {
 
 
         // Waves
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, sweepLeft));
-        builder.addSpawn(t + 0.8f, enemyDirector.basicEnemy(context, laneCenter));
+        builder.addSpawn(t, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(sweepLeft));
+        builder.addSpawn(t + 0.8f, spawner.makeBasicEnemy(laneCenter));
         t += 3f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, crossLeftToRight));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, crossRightToLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(crossLeftToRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(crossRightToLeft));
         t += 3f;
         for (int i = 0; i < 4; i++) {
-            builder.addSpawn(t + i * 1.2f, enemyDirector.basicEnemy(context, i % 2 == 0 ? zigzagRight : zigzagLeft));
+            builder.addSpawn(t + i * 1.2f, spawner.makeBasicEnemy(i % 2 == 0 ? zigzagRight : zigzagLeft));
         }
         t += 6f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, laneLeft));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, laneCenter));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, laneRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(laneLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(laneCenter));
+        builder.addSpawn(t, spawner.makeBasicEnemy(laneRight));
         t += 3f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t + 0.5f, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, sweepLeft));
-        builder.addSpawn(t + 1.5f, enemyDirector.basicEnemy(context, sweepLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t + 0.5f, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(sweepLeft));
+        builder.addSpawn(t + 1.5f, spawner.makeBasicEnemy(sweepLeft));
         t += 4f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, crossLeftToRight));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, crossRightToLeft));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, laneCenter));
+        builder.addSpawn(t, spawner.makeBasicEnemy(crossLeftToRight));
+        builder.addSpawn(t, spawner.makeBasicEnemy(crossRightToLeft));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(laneCenter));
 
         // PHASE 2: Heavy introductions (t~25 to ~55s) ===
         t += 4f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenter));
-        builder.addSpawn(t + 0.5f, enemyDirector.basicEnemy(context, sweepLeft));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, sweepRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenter));
+        builder.addSpawn(t + 0.5f, spawner.makeBasicEnemy(sweepLeft));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(sweepRight));
         t += 4f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyLeft));
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyLeft));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyRight));
         t += 2f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, zigzagRight));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, zigzagLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(zigzagRight));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(zigzagLeft));
         t += 4f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenter));
-        builder.addSpawn(t + 0.5f, enemyDirector.basicEnemy(context, crossLeftToRight));
-        builder.addSpawn(t + 0.5f, enemyDirector.basicEnemy(context, crossRightToLeft));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenter));
+        builder.addSpawn(t + 0.5f, spawner.makeBasicEnemy(crossLeftToRight));
+        builder.addSpawn(t + 0.5f, spawner.makeBasicEnemy(crossRightToLeft));
         t += 4f;
         for (int i = 0; i < 6; i++) {
             ArrayList<Vector2> path = i % 3 == 0 ? sweepRight : i % 3 == 1 ? sweepLeft : laneCenter;
-            builder.addSpawn(t + i * 0.8f, enemyDirector.basicEnemy(context, path));
+            builder.addSpawn(t + i * 0.8f, spawner.makeBasicEnemy(path));
         }
         t += 6f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyLeft));
-        builder.addSpawn(t + 0.5f, enemyDirector.heavyEnemy(context, heavyRight));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, zigzagLeft));
-        builder.addSpawn(t + 1.5f, enemyDirector.basicEnemy(context, zigzagRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyLeft));
+        builder.addSpawn(t + 0.5f, spawner.makeHeavyEnemy(heavyRight));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(zigzagLeft));
+        builder.addSpawn(t + 1.5f, spawner.makeBasicEnemy(zigzagRight));
 
         // PHASE 3: Endurance gauntlet (t~55 to ~100s) ===
         t += 5f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenter));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, laneLeft));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, laneRight));
-        builder.addSpawn(t + 2f, enemyDirector.basicEnemy(context, laneLeft));
-        builder.addSpawn(t + 2f, enemyDirector.basicEnemy(context, laneRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenter));
+        builder.addSpawn(t, spawner.makeBasicEnemy(laneLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(laneRight));
+        builder.addSpawn(t + 2f, spawner.makeBasicEnemy(laneLeft));
+        builder.addSpawn(t + 2f, spawner.makeBasicEnemy(laneRight));
         t += 4f;
         for (int i = 0; i < 4; i++) {
-            builder.addSpawn(t + i * 1.5f, enemyDirector.basicEnemy(context, crossLeftToRight));
-            builder.addSpawn(t + i * 1.5f, enemyDirector.basicEnemy(context, crossRightToLeft));
+            builder.addSpawn(t + i * 1.5f, spawner.makeBasicEnemy(crossLeftToRight));
+            builder.addSpawn(t + i * 1.5f, spawner.makeBasicEnemy(crossRightToLeft));
         }
         t += 7f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyLeft));
-        builder.addSpawn(t + 2f, enemyDirector.heavyEnemy(context, heavyCenter));
-        builder.addSpawn(t + 4f, enemyDirector.heavyEnemy(context, heavyRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyLeft));
+        builder.addSpawn(t + 2f, spawner.makeHeavyEnemy(heavyCenter));
+        builder.addSpawn(t + 4f, spawner.makeHeavyEnemy(heavyRight));
         t += 3f;
         for (int i = 0; i < 5; i++) {
-            builder.addSpawn(t + i * 1f, enemyDirector.basicEnemy(context, i % 2 == 0 ? zigzagRight : zigzagLeft));
+            builder.addSpawn(t + i * 1f, spawner.makeBasicEnemy(i % 2 == 0 ? zigzagRight : zigzagLeft));
         }
         t += 6f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, laneLeft));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, laneCenter));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, laneRight));
-        builder.addSpawn(t + 1.5f, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t + 1.5f, enemyDirector.basicEnemy(context, sweepLeft));
-        builder.addSpawn(t + 3f, enemyDirector.basicEnemy(context, crossLeftToRight));
-        builder.addSpawn(t + 3f, enemyDirector.basicEnemy(context, crossRightToLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(laneLeft));
+        builder.addSpawn(t, spawner.makeBasicEnemy(laneCenter));
+        builder.addSpawn(t, spawner.makeBasicEnemy(laneRight));
+        builder.addSpawn(t + 1.5f, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t + 1.5f, spawner.makeBasicEnemy(sweepLeft));
+        builder.addSpawn(t + 3f, spawner.makeBasicEnemy(crossLeftToRight));
+        builder.addSpawn(t + 3f, spawner.makeBasicEnemy(crossRightToLeft));
 
         // PHASE 4: Final onslaught (t~100 to ~130s) ===
         t += 5f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyLeft));
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyLeft));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyRight));
         for (int i = 0; i < 4; i++) {
-            builder.addSpawn(t + 1f + i * 1f, enemyDirector.basicEnemy(context, i % 2 == 0 ? sweepRight : sweepLeft));
+            builder.addSpawn(t + 1f + i * 1f, spawner.makeBasicEnemy(i % 2 == 0 ? sweepRight : sweepLeft));
         }
         t += 6f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenter));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenter));
         for (int i = 0; i < 3; i++) {
-            builder.addSpawn(t + 0.5f + i * 1.2f, enemyDirector.basicEnemy(context, crossLeftToRight));
-            builder.addSpawn(t + 0.5f + i * 1.2f, enemyDirector.basicEnemy(context, crossRightToLeft));
+            builder.addSpawn(t + 0.5f + i * 1.2f, spawner.makeBasicEnemy(crossLeftToRight));
+            builder.addSpawn(t + 0.5f + i * 1.2f, spawner.makeBasicEnemy(crossRightToLeft));
         }
         t += 6f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyLeft));
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenter));
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyRight));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, zigzagRight));
-        builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, zigzagLeft));
-        builder.addSpawn(t + 2f, enemyDirector.basicEnemy(context, crossLeftToRight));
-        builder.addSpawn(t + 2f, enemyDirector.basicEnemy(context, crossRightToLeft));
-        builder.addSpawn(t + 3f, enemyDirector.basicEnemy(context, sweepRight));
-        builder.addSpawn(t + 3f, enemyDirector.basicEnemy(context, sweepLeft));
-        builder.addSpawn(t + 4f, enemyDirector.basicEnemy(context, laneLeft));
-        builder.addSpawn(t + 4f, enemyDirector.basicEnemy(context, laneCenter));
-        builder.addSpawn(t + 4f, enemyDirector.basicEnemy(context, laneRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyLeft));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenter));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyRight));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(zigzagRight));
+        builder.addSpawn(t + 1f, spawner.makeBasicEnemy(zigzagLeft));
+        builder.addSpawn(t + 2f, spawner.makeBasicEnemy(crossLeftToRight));
+        builder.addSpawn(t + 2f, spawner.makeBasicEnemy(crossRightToLeft));
+        builder.addSpawn(t + 3f, spawner.makeBasicEnemy(sweepRight));
+        builder.addSpawn(t + 3f, spawner.makeBasicEnemy(sweepLeft));
+        builder.addSpawn(t + 4f, spawner.makeBasicEnemy(laneLeft));
+        builder.addSpawn(t + 4f, spawner.makeBasicEnemy(laneCenter));
+        builder.addSpawn(t + 4f, spawner.makeBasicEnemy(laneRight));
 
         return builder.build();
     }
 
-    public Level level4(LevelBuilder builder, GameContext context) {
-        EnemyDirector enemyDirector = new EnemyDirector();
+    public Level level4(LevelBuilder builder, GameContext context, EnemySpawner spawner) {
+
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();
 
@@ -437,56 +446,56 @@ public class LevelDirector {
 
         // Wave 1-3: X-crosses rapid fire
         for (int i = 0; i < 4; i++) {
-            builder.addSpawn(t, enemyDirector.basicEnemy(context, crossX1));
-            builder.addSpawn(t, enemyDirector.basicEnemy(context, crossX2));
+            builder.addSpawn(t, spawner.makeBasicEnemy(crossX1));
+            builder.addSpawn(t, spawner.makeBasicEnemy(crossX2));
             t += 1.5f;
         }
 
         // Wave 4-6: Horizontal sweeps mixing with X-crosses
         t += 1f;
         for (int i = 0; i < 3; i++) {
-            builder.addSpawn(t, enemyDirector.basicEnemy(context, horizSweepRight));
-            builder.addSpawn(t + 1f, enemyDirector.basicEnemy(context, horizSweepLeft));
+            builder.addSpawn(t, spawner.makeBasicEnemy(horizSweepRight));
+            builder.addSpawn(t + 1f, spawner.makeBasicEnemy(horizSweepLeft));
             t += 2f;
         }
 
         // Wave 7-8: Walls of basic enemies
         t += 2f;
-        for (int i = 0; i < 5; i++) builder.addSpawn(t, enemyDirector.basicEnemy(context, wallPaths.get(i)));
+        for (int i = 0; i < 5; i++) builder.addSpawn(t, spawner.makeBasicEnemy(wallPaths.get(i)));
         t += 3f;
-        for (int i = 0; i < 5; i++) builder.addSpawn(t, enemyDirector.basicEnemy(context, wallPaths.get(i)));
+        for (int i = 0; i < 5; i++) builder.addSpawn(t, spawner.makeBasicEnemy(wallPaths.get(i)));
 
         // === PHASE 2: Heavy Rain (t=20s to ~50s) ===
 
         t += 4f;
         // Introduce heavy center that lingers, surrounded by pincers
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenterLinger));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenterLinger));
         for (int i = 0; i < 4; i++) {
-            builder.addSpawn(t + 1f + i * 1.5f, enemyDirector.basicEnemy(context, pincerLeft));
-            builder.addSpawn(t + 1f + i * 1.5f, enemyDirector.basicEnemy(context, pincerRight));
+            builder.addSpawn(t + 1f + i * 1.5f, spawner.makeBasicEnemy(pincerLeft));
+            builder.addSpawn(t + 1f + i * 1.5f, spawner.makeBasicEnemy(pincerRight));
         }
 
         t += 8f;
         // Dual heavies with wall drops
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCrawlLeft));
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCrawlRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCrawlLeft));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCrawlRight));
         t += 2f;
-        for (int i = 1; i < 4; i++) builder.addSpawn(t, enemyDirector.basicEnemy(context, wallPaths.get(i))); // middle 3
+        for (int i = 1; i < 4; i++) builder.addSpawn(t, spawner.makeBasicEnemy(wallPaths.get(i))); // middle 3
         t += 3f;
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, wallPaths.get(0)));
-        builder.addSpawn(t, enemyDirector.basicEnemy(context, wallPaths.get(4)));
+        builder.addSpawn(t, spawner.makeBasicEnemy(wallPaths.get(0)));
+        builder.addSpawn(t, spawner.makeBasicEnemy(wallPaths.get(4)));
 
         t += 4f;
         // Tri-Heavy threat
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCrawlLeft));
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenterLinger));
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCrawlRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCrawlLeft));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenterLinger));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCrawlRight));
 
         t += 2f;
         // Non-stop X-crosses during Tri-Heavy
         for (int i = 0; i < 6; i++) {
-            builder.addSpawn(t + i * 1f, enemyDirector.basicEnemy(context, crossX1));
-            builder.addSpawn(t + i * 1f, enemyDirector.basicEnemy(context, crossX2));
+            builder.addSpawn(t + i * 1f, spawner.makeBasicEnemy(crossX1));
+            builder.addSpawn(t + i * 1f, spawner.makeBasicEnemy(crossX2));
         }
 
         // === PHASE 3: Bullet Hell Chaos (t=50s to ~80s) ===
@@ -494,9 +503,9 @@ public class LevelDirector {
         t += 8f;
         // Alternating sweeps and pincers
         for (int i = 0; i < 6; i++) {
-            builder.addSpawn(t, enemyDirector.basicEnemy(context, i % 2 == 0 ? horizSweepRight : horizSweepLeft));
-            builder.addSpawn(t, enemyDirector.basicEnemy(context, i % 2 == 0 ? pincerLeft : pincerRight));
-            if (i % 3 == 0) builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCenterLinger));
+            builder.addSpawn(t, spawner.makeBasicEnemy(i % 2 == 0 ? horizSweepRight : horizSweepLeft));
+            builder.addSpawn(t, spawner.makeBasicEnemy(i % 2 == 0 ? pincerLeft : pincerRight));
+            if (i % 3 == 0) builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCenterLinger));
             t += 1.5f;
         }
 
@@ -504,7 +513,7 @@ public class LevelDirector {
         // Five continuous walls
         for (int w = 0; w < 5; w++) {
             for (int i = 0; i < 5; i++) {
-                if (i != w) builder.addSpawn(t, enemyDirector.basicEnemy(context, wallPaths.get(i))); // leaves a gap
+                if (i != w) builder.addSpawn(t, spawner.makeBasicEnemy(wallPaths.get(i))); // leaves a gap
             }
             t += 2f;
         }
@@ -512,22 +521,22 @@ public class LevelDirector {
         // === PHASE 4: The True Test (t=80s to ~100s) ===
 
         t += 3f;
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCrawlLeft));
-        builder.addSpawn(t, enemyDirector.heavyEnemy(context, heavyCrawlRight));
-        builder.addSpawn(t + 1f, enemyDirector.heavyEnemy(context, heavyCenterLinger));
-        builder.addSpawn(t + 2f, enemyDirector.heavyEnemy(context, heavyCrawlLeft));
-        builder.addSpawn(t + 2f, enemyDirector.heavyEnemy(context, heavyCrawlRight));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCrawlLeft));
+        builder.addSpawn(t, spawner.makeHeavyEnemy(heavyCrawlRight));
+        builder.addSpawn(t + 1f, spawner.makeHeavyEnemy(heavyCenterLinger));
+        builder.addSpawn(t + 2f, spawner.makeHeavyEnemy(heavyCrawlLeft));
+        builder.addSpawn(t + 2f, spawner.makeHeavyEnemy(heavyCrawlRight));
 
         t += 3f;
         // Absolute stream of basic enemies
         for(int i = 0; i < 15; i++) {
-            builder.addSpawn(t + i * 0.5f, enemyDirector.basicEnemy(context, crossX1));
-            builder.addSpawn(t + i * 0.5f, enemyDirector.basicEnemy(context, horizSweepLeft));
-            builder.addSpawn(t + i * 0.5f, enemyDirector.basicEnemy(context, pincerRight));
+            builder.addSpawn(t + i * 0.5f, spawner.makeBasicEnemy(crossX1));
+            builder.addSpawn(t + i * 0.5f, spawner.makeBasicEnemy(horizSweepLeft));
+            builder.addSpawn(t + i * 0.5f, spawner.makeBasicEnemy(pincerRight));
         }
 
         t += 8f;
-        for (int i = 0; i < 5; i++) builder.addSpawn(t, enemyDirector.heavyEnemy(context, wallPaths.get(i))); // 5 heavies wall
+        for (int i = 0; i < 5; i++) builder.addSpawn(t, spawner.makeHeavyEnemy(wallPaths.get(i))); // 5 heavies wall
 
         return builder.build();
     }

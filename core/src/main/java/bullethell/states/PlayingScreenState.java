@@ -7,9 +7,12 @@ import bullethell.gameobjects.GameObject;
 import bullethell.gameobjects.ships.Player;
 import bullethell.states.statetextwriter.IStateTextWriter;
 
-public class PlayingState extends AbstractGameState {
+/**
+ * Main game
+ */
+public class PlayingScreenState extends AbstractGameScreenState {
 
-    PlayingState(GameContext context, IStateTextWriter writer) {
+    PlayingScreenState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
     }
 
@@ -70,12 +73,13 @@ public class PlayingState extends AbstractGameState {
                         // Go to Victory Screen
                         context.changeState(new VictoryState(context, writer));
                     } else {
-                        context.changeState(context.getUpgradeMenuState());
+                        context.changeState(new UpgradeMenuScreenState(context, writer));
                     }
                 }
                 if (gameOver) {
                     // Go to Game Over Screen
                     context.changeState(new GameOverState(context, writer));
+
                 }
             }
         }

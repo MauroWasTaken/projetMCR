@@ -8,10 +8,10 @@ import bullethell.gameobjects.builders.LevelDirector;
 public class CampaignSingleton {
     private static CampaignSingleton instance;
     private int nextLevel;
-    private final int MAX_LEVEL = 2;
+    private final int MAX_LEVEL = 4;
 
     private CampaignSingleton() {
-        nextLevel = 1;
+        reset();
     }
 
     public static CampaignSingleton getInstance() {
@@ -38,6 +38,8 @@ public class CampaignSingleton {
         return switch (this.nextLevel) {
             case 1 -> director.level1(new LevelBuilder(context), context);
             case 2 -> director.level2(new LevelBuilder(context), context);
+            case 3 -> director.level3(new LevelBuilder(context), context);
+            case 4 -> director.level4(new LevelBuilder(context), context);
             default -> director.level1(new LevelBuilder(context), context); // TODO: clean up that shi, emergency fallback for now, but shouldn't happen in normal playthrough
         };
     }

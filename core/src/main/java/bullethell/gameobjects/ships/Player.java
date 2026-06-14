@@ -1,15 +1,15 @@
 package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
-import bullethell.gameobjects.GameObject;
-import bullethell.gameobjects.Shield;
 import bullethell.gameobjects.Weapon;
+import bullethell.gameobjects.super_move.SuperMove;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Polygon;
 
 public class Player extends Ship {
+
+    private SuperMove specialMove;
 
     public Player(GameContext context) {
         super(context, context.getPlayerSprite(), 200f, context.getPlayerSprite().getWidth() * 0.1f, context.getPlayerSprite().getHeight() * 0.1f);
@@ -42,6 +42,11 @@ public class Player extends Ship {
                 w.fire();
             }
         }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+            if (this.specialMove != null) {
+                specialMove.trigger();
+            }
+        }
 
         // normalize movement (in an if statement so that we dont divide by 0)
         if (dirX != 0f || dirY != 0f) {
@@ -63,7 +68,7 @@ public class Player extends Ship {
 
     @Override
     public void render(SpriteBatch batch) {
-        if (isInvulnerable()) {
+        if (isInvulnerable() && !shield.isSuperCharged()) {
             if ((int)(invulnerabilityTimer * 10) % 2 == 0) return;
         }
         for (Weapon weapon : weapons) {
@@ -71,6 +76,10 @@ public class Player extends Ship {
         }
         if (shield != null) shield.render(batch);
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
+    }
+
+    public void setSpecial(SuperMove specialMove) {
+        this.specialMove = specialMove;
     }
 
 }

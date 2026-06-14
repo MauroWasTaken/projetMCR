@@ -52,6 +52,29 @@ public class Weapon extends GameObject{
         }
     }
 
+    public void supercharge() {
+
+        int nbShots = 12;
+
+        for (int i = 0; i < nbShots; ++i) {
+            double angle = (2 * Math.PI / nbShots) * i;
+            double cos = Math.cos(angle);
+            double sin = Math.sin(angle);
+            for (Projectile p : projectiles) {
+                Projectile copy = new Projectile(
+                    context,
+                    x - p.x,
+                    y - p.y,
+                    (float) (p.velocityX * cos - p.velocityY * sin),
+                    (float) (p.velocityX * sin - p.velocityY * cos),
+                    p.isPlayerProjectile,
+                    p.sprite
+                );
+                context.spawn(copy);
+            }
+        }
+    }
+
     public void setOwner(Ship owner) {
         this.owner = owner;
         this.x = owner.getX();

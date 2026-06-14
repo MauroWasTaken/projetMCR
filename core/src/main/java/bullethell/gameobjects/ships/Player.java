@@ -1,6 +1,7 @@
 package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
+import bullethell.gameobjects.Shield;
 import bullethell.gameobjects.Weapon;
 import bullethell.gameobjects.supermove.SuperMove;
 import com.badlogic.gdx.Gdx;
@@ -56,6 +57,12 @@ public class Player extends Ship {
         }
         if (shield != null) shield.render(batch);
         batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
+    }
+
+    @Override
+    public void setShield(Shield shield) {
+        super.setShield(shield);
+        context.getGameObjects().add(this.shield);  // Add this to game context only for player, so they're not displayed for enemies
     }
 
     private void handleKeyboardInput(float delta) {

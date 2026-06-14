@@ -93,6 +93,24 @@ public class UpgradeMenuState implements GameState {
                     }
 
                     if (upgrade.isSuperUpgrade()) {
+                        if (upgrade.getSuper() instanceof SuperLaser) {
+                            boolean hasWeapon = purchasedUpgrades.stream().anyMatch(Upgrade::isWeaponUpgrade);
+                            if (!hasWeapon) {
+                                shopMessage = "Buy a weapon before buying a weapon supercharge!";
+                                shopMessageTimer = 2f;
+                                CurrencyBank.getInstance().addFunds(upgrade.getPrice()); // refund
+                                break; // block the purchase
+                            }
+                        }
+                        if (upgrade.getSuper() instanceof SuperShield) {
+                            boolean hasShield = purchasedUpgrades.stream().anyMatch(Upgrade::isShieldUpgrade);
+                            if (!hasShield) {
+                                shopMessage = "Buy a shiel before buying a shield supercharge!";
+                                shopMessageTimer = 2f;
+                                CurrencyBank.getInstance().addFunds(upgrade.getPrice()); // refund
+                                break; // block the purchase
+                            }
+                        }
                         // if it's a super, remove old super if exists
                         Upgrade oldSuper = null;
                         for (Upgrade purchasedUpgrade : purchasedUpgrades) { // look for a super if there is one

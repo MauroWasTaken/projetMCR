@@ -13,7 +13,7 @@ public abstract class SuperMove {
     }
 
     protected boolean checkMaxCharges() {
-        return maxCharges-- <= 0;
+        return maxCharges <= 0;
     }
 
     public int getRemainingCharges() {

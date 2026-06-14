@@ -13,6 +13,7 @@ public class SuperLaser extends SuperMove {
     @Override
     public void trigger() {
         if (checkMaxCharges()) return;
+        maxCharges--;
         ArrayList<Weapon> weapons = owner.getWeapons();
         for (Weapon w : weapons) {
             w.supercharge();

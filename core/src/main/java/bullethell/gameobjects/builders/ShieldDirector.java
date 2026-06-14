@@ -22,7 +22,7 @@ public class ShieldDirector {
     }
 
     public Shield quickRechargeShield() {
-        // 1 HP, 7 second recharge
-        return new Shield(context, context.getShieldSprite(), context.getSuperShieldSprite(),1, 7000f);
+        // 1 HP, 20 second recharge
+        return new Shield(context, context.getShieldSprite(), context.getSuperShieldSprite(),1, 20000f);
     }
 }

@@ -33,7 +33,7 @@ public class UpgradeMenuState extends AbstractGameState {
             Upgrade.weapon("Main Weapon", "Main weapon shoots", 0, () -> new WeaponDirector().playerMainWeapon(new WeaponBuilder(context))),
             Upgrade.weapon("Side Weapons", "Shoots 2 extra projectiles", 500, () -> new WeaponDirector().playerSideWeapons(new WeaponBuilder(context))),
             Upgrade.shield("Weak Shield", "1 HP, no recharge", 100, () -> new ShieldDirector(context).weakShield()),
-            Upgrade.shield("Quick Recharge Shield", "1 HP, recharges in 7s", 600, () -> new ShieldDirector(context).quickRechargeShield()),
+            Upgrade.shield("Quick Recharge Shield", "1 HP, recharges in 20s", 600, () -> new ShieldDirector(context).quickRechargeShield()),
             Upgrade.shield("Strong Shield", "3 HP, no recharge", 1200, () -> new ShieldDirector(context).strongShield()),
             Upgrade.superMove("Supercharge shields", "The best defense is a good offense", 1500, SuperShield::new),
             Upgrade.superMove("Supercharge weapons", "MURDER!!!!", 1500, () -> new SuperLaser(context.getSuperLaserFx()))

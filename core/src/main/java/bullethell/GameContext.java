@@ -1,10 +1,9 @@
 package bullethell;
 
 import bullethell.gameobjects.CampaignSingleton;
-import bullethell.gameobjects.builders.ShipBuilder.EnemyBuilder;
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Player;
-import bullethell.gameobjects.spawners.EnemySpawner;
+import bullethell.gameobjects.factories.EnemySpawner;
 import bullethell.states.GameScreenState;
 import bullethell.states.HomeScreenState;
 import bullethell.states.UpgradeMenuScreenState;

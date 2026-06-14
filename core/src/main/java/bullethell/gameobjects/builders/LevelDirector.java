@@ -2,15 +2,14 @@ package bullethell.gameobjects.builders;
 
 import bullethell.GameContext;
 import bullethell.Level;
-import bullethell.gameobjects.spawners.EnemySpawner;
+import bullethell.gameobjects.factories.EnemySpawner;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
 public class LevelDirector {
 
-    public Level level1(LevelBuilder builder, GameContext context) {
-        EnemySpawner spawner = new EnemySpawner(context);
+    public Level level1(LevelBuilder builder, GameContext context, EnemySpawner spawner) {
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();
 
@@ -34,8 +33,7 @@ public class LevelDirector {
     }
 
 
-    public Level level2(LevelBuilder builder, GameContext context) {
-        EnemySpawner spawner = new EnemySpawner(context);
+    public Level level2(LevelBuilder builder, GameContext context, EnemySpawner spawner) {
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();
 

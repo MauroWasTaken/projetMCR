@@ -1,4 +1,4 @@
-package bullethell.gameobjects.spawners;
+package bullethell.gameobjects.factories;
 
 import bullethell.GameContext;
 import bullethell.gameobjects.builders.EnemyDirector;

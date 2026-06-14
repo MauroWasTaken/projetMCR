@@ -4,14 +4,20 @@ import bullethell.GameContext;
 import bullethell.Level;
 import bullethell.gameobjects.builders.LevelBuilder;
 import bullethell.gameobjects.builders.LevelDirector;
+import bullethell.gameobjects.factories.EnemySpawner;
 
 public class CampaignSingleton {
     private static CampaignSingleton instance;
     private int nextLevel;
     private final int MAX_LEVEL = 2;
 
+    private final LevelDirector director;
+    private EnemySpawner enemySpawner;
+    private LevelBuilder levelBuilder;
+
     private CampaignSingleton() {
         nextLevel = 1;
+        director = new LevelDirector();
     }
 
     public static CampaignSingleton getInstance() {
@@ -34,11 +40,14 @@ public class CampaignSingleton {
     }
 
     public Level getNextLevel(GameContext context) {
-        final LevelDirector director = new LevelDirector();
+
+        if (this.enemySpawner == null) enemySpawner = new EnemySpawner(context);
+        if (this.levelBuilder == null) levelBuilder = new LevelBuilder(context);
+
         return switch (this.nextLevel) {
-            case 1 -> director.level1(new LevelBuilder(context), context);
-            case 2 -> director.level2(new LevelBuilder(context), context);
-            default -> director.level1(new LevelBuilder(context), context); // TODO: clean up that shi, emergency fallback for now, but shouldn't happen in normal playthrough
+            case 1 -> director.level1(levelBuilder, context, enemySpawner);
+            case 2 -> director.level2(levelBuilder, context, enemySpawner);
+            default -> director.level1(levelBuilder, context, enemySpawner); // TODO: clean up that shi, emergency fallback for now, but shouldn't happen in normal playthrough
         };
     }
 }

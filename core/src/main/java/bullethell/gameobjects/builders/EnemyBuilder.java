@@ -19,6 +19,7 @@ public class EnemyBuilder {
 
     private final ArrayList<Weapon> weapons = new ArrayList<>();
     private Shield shield;
+    private int scoreValue = 0;
 
     public EnemyBuilder(GameContext context) {
         this.context = context;
@@ -59,6 +60,11 @@ public class EnemyBuilder {
         return this;
     }
 
+    public EnemyBuilder setScoreValue(int scoreValue) {
+        this.scoreValue = scoreValue;
+        return this;
+    }
+
     public Enemy build() {
         if (path == null) throw new BuildingErrorException("Enemy requires a path"); //todo path needs to have 2 points
         if (sprite == null) throw new BuildingErrorException("Enemy requires a sprite");
@@ -66,7 +72,7 @@ public class EnemyBuilder {
         if (shootDelay == -1f) throw new BuildingErrorException("Enemy requires a shoot delay");
         if (nbShots == -2) throw new BuildingErrorException("Enemy requires a number of shots");
 
-        Enemy enemy = new Enemy(context, sprite, speed, path, shootDelay, nbShots);
+        Enemy enemy = new Enemy(context, sprite, speed, path, shootDelay, nbShots, scoreValue);
         for (Weapon w : weapons) {
             enemy.addWeapon(w);
         }

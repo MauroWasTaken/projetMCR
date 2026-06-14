@@ -9,6 +9,7 @@ public class CampaignSingleton {
     private static CampaignSingleton instance;
     private int nextLevel;
     private final int MAX_LEVEL = 4;
+    private int score;
 
     private CampaignSingleton() {
         reset();
@@ -31,6 +32,19 @@ public class CampaignSingleton {
 
     public void reset() {
         this.nextLevel = 1;
+        this.score = 0;
+    }
+
+    public void addScore(int amount) {
+        this.score += amount;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public int getCurrentLevel() {
+        return this.nextLevel;
     }
 
     public Level getNextLevel(GameContext context) {

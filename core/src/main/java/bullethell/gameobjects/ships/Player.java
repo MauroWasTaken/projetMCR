@@ -12,6 +12,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import com.badlogic.gdx.math.Vector2;
 
+/**
+ * Player's ship
+ */
 public class Player extends Ship {
 
     private final GameContext.ControlMode controlMode;
@@ -33,12 +36,6 @@ public class Player extends Ship {
             this.handleKeyboardInput(delta);
         } else if (this.controlMode.equals(GameContext.ControlMode.MOUSE)) {
             this.handleMouseInput();
-        }
-
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            for (Weapon w : weapons) {
-                w.fire();
-            }
         }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
             if (this.specialMove != null) {
@@ -65,6 +62,10 @@ public class Player extends Ship {
         context.getGameObjects().add(this.shield);  // Add this to game context only for player, so they're not displayed for enemies
     }
 
+    /**
+     * Handles keyboard input mode
+     * @param delta game delta
+     */
     private void handleKeyboardInput(float delta) {
         float dirX = 0f;
         float dirY = 0f;
@@ -106,8 +107,9 @@ public class Player extends Ship {
         y = Math.max(spriteHalfHeight, Math.min(y, maxY));
     }
 
-
-
+    /**
+     * Handles mouse input mode
+     */
     private void handleMouseInput() {
         // Check mouse pointer is within game area
         final float spriteHalfWidth = sprite.getWidth() / 2f;
@@ -132,6 +134,10 @@ public class Player extends Ship {
         }
     }
 
+    /**
+     * Sets the special attack for this ship's instance
+     * @param specialMove special move to perform
+     */
     public void setSpecial(SuperMove specialMove) {
 
         this.specialMove = specialMove;

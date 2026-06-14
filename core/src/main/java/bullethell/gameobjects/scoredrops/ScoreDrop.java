@@ -7,6 +7,9 @@ import bullethell.gameobjects.ships.Player;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Generic score drop
+ */
 public abstract class ScoreDrop extends GameObject {
     protected final int scoreWin;
     protected final Texture sprite; // Flyweight pattern

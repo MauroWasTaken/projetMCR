@@ -3,13 +3,14 @@ package bullethell.states;
 import bullethell.GameContext;
 import bullethell.gameobjects.Upgrade;
 import bullethell.gameobjects.builders.ShipBuilder.PlayerBuilder;
-import bullethell.gameobjects.builders.ShieldDirector;
+import bullethell.gameobjects.factories.ShieldFactory;
 import bullethell.gameobjects.builders.WeaponBuilder;
 import bullethell.gameobjects.builders.WeaponDirector;
 import bullethell.currencysystem.CurrencyBank;
 import bullethell.currencysystem.InsufficientFundsException;
 import bullethell.gameobjects.supermove.SuperLaser;
 import bullethell.gameobjects.supermove.SuperShield;
+import bullethell.states.statetextwriter.IStateTextWriter;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -24,20 +25,14 @@ public class UpgradeMenuScreenState extends AbstractGameScreenState {
 
     private String shopMessage = "";
     private float shopMessageTimer = 0f;
-    private final ArrayList<Upgrade> availableUpgrades; //available to purchase
-    private final ArrayList<Upgrade> purchasedUpgrades = new ArrayList<>();
 
-    public UpgradeMenuScreenState(GameContext context, BitmapFont font, SpriteBatch batch) {
-        super(context, font, batch);
-        availableUpgrades = new ArrayList<>(Arrays.asList(//adds default items to shop
-            Upgrade.weapon("Main Weapon", "Main weapon shoots", 0, () -> new WeaponDirector().playerMainWeapon(new WeaponBuilder(context))),
-            Upgrade.weapon("Side Weapons", "Shoots 2 extra projectiles", 500, () -> new WeaponDirector().playerSideWeapons(new WeaponBuilder(context))),
-            Upgrade.shield("Weak Shield", "1 HP, no recharge", 100, () -> new ShieldDirector(context).weakShield()),
-            Upgrade.shield("Quick Recharge Shield", "1 HP, recharges in 20s", 600, () -> new ShieldDirector(context).quickRechargeShield()),
-            Upgrade.shield("Strong Shield", "3 HP, no recharge", 1200, () -> new ShieldDirector(context).strongShield()),
-            Upgrade.superMove("Supercharge shields", "The best defense is a good offense", 1500, SuperShield::new),
-            Upgrade.superMove("Supercharge weapons", "MURDER!!!!", 1500, () -> new SuperLaser(context.getSuperLaserFx()))
-        ));
+    private ArrayList<Upgrade> availableUpgrades; //available to purchase
+    private ArrayList<Upgrade> purchasedUpgrades;
+
+    public UpgradeMenuScreenState(GameContext context, IStateTextWriter writer) {
+        super(context, writer);
+        availableUpgrades = context.getAvailableUpgrades();
+        purchasedUpgrades = context.getPurchasedUpgrades();
     }
 
     private void buildPlayer(GameContext context) {
@@ -49,7 +44,7 @@ public class UpgradeMenuScreenState extends AbstractGameScreenState {
             if (upgrade.isWeaponUpgrade()) {
                 playerBuilder.addWeapon(upgrade.getWeapon());
             } else if (upgrade.isShieldUpgrade()) {
-                playerBuilder.addShield(upgrade.getShield());
+                playerBuilder.setShield(upgrade.getShield());
             } else {
                 playerBuilder.addSpecial(upgrade.getSuper());
             }

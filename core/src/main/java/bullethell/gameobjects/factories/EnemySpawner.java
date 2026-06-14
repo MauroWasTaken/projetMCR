@@ -9,6 +9,9 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
+/**
+ * Factory for spawning enemies
+ */
 public class EnemySpawner {
 
     private final EnemyDirector director;
@@ -23,10 +26,20 @@ public class EnemySpawner {
         this.weaponBuilder = new WeaponBuilder(context);
     }
 
+    /**
+     * Makes a basic enemy
+     * @param path the enemy will follow. Set in LevelDirector
+     * @return a new basic enemy
+     */
     public Enemy makeBasicEnemy(ArrayList<Vector2> path) {
         return director.basicEnemy(context, enemyBuilder, weaponBuilder, path);
     }
 
+    /**
+     * Makes a heavy enemy
+     * @param path the enemy will follow. Set in LevelDirector
+     * @return a new heavy enemy
+     */
     public Enemy makeHeavyEnemy(ArrayList<Vector2> path) {
         return director.heavyEnemy(context, enemyBuilder, weaponBuilder, path);
     }

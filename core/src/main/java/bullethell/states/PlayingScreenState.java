@@ -7,6 +7,9 @@ import bullethell.gameobjects.GameObject;
 import bullethell.gameobjects.ships.Player;
 import bullethell.states.statetextwriter.IStateTextWriter;
 
+/**
+ * Main game
+ */
 public class PlayingScreenState extends AbstractGameScreenState {
 
     PlayingScreenState(GameContext context, IStateTextWriter writer) {
@@ -70,7 +73,7 @@ public class PlayingScreenState extends AbstractGameScreenState {
                         // Go to Victory Screen
                         context.changeState(new VictoryState(context, writer));
                     } else {
-                        context.changeState(context.getUpgradeMenuState());
+                        context.changeState(new UpgradeMenuScreenState(context, writer));
                     }
                 }
                 if (gameOver) {

@@ -6,6 +6,9 @@ import bullethell.states.statetextwriter.IStateTextWriter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 
+/**
+ * Game over screen
+ */
 public class GameOverState extends AbstractGameScreenState {
 
     public GameOverState(GameContext context, IStateTextWriter writer) {

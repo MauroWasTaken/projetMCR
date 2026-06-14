@@ -6,6 +6,9 @@ import bullethell.gameobjects.builders.LevelBuilder;
 import bullethell.gameobjects.builders.LevelDirector;
 import bullethell.gameobjects.factories.EnemySpawner;
 
+/**
+ * Represents a campaign, or one run through multiple levels until death
+ */
 public class CampaignSingleton {
     private static CampaignSingleton instance;
     private int nextLevel;
@@ -29,6 +32,10 @@ public class CampaignSingleton {
         return CampaignSingleton.instance;
     }
 
+    /**
+     * Checks if the campaign is over
+     * @return true if it is over
+     */
     public boolean isCampaignCleared() {
         return nextLevel > MAX_LEVEL;
     }
@@ -54,6 +61,11 @@ public class CampaignSingleton {
         return this.nextLevel;
     }
 
+    /**
+     * Creates the next level to play
+     * @param context game context
+     * @return a new level
+     */
     public Level getNextLevel(GameContext context) {
 
         if (this.enemySpawner == null) enemySpawner = new EnemySpawner(context);

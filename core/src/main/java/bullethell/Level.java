@@ -4,6 +4,9 @@ import bullethell.gameobjects.ships.Enemy;
 
 import java.util.ArrayList;
 
+/**
+ * A game level
+ */
 public class Level {
     private float x = 0;
     private final GameContext context;

@@ -11,12 +11,12 @@ import java.util.List;
 
 import static com.badlogic.gdx.Gdx.input;
 
+/**
+ * Home screen
+ */
 public class HomeScreenState extends AbstractGameScreenState {
-    public HomeScreenState(GameContext context, BitmapFont font, SpriteBatch batch) {
-        super(context, font, batch);
-    }
 
-    HomeScreenState(GameContext context, IStateTextWriter writer) {
+    public HomeScreenState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
     }
 
@@ -24,8 +24,8 @@ public class HomeScreenState extends AbstractGameScreenState {
     public void update(float delta) {
         if (input.isKeyJustPressed(Input.Keys.NUM_1)) {
             // Start game
-            context.resetUpgradeMenuState();
-            context.changeState(context.getUpgradeMenuState());
+            context.resetUpgrades();
+            context.changeState(new UpgradeMenuScreenState(context, writer));
         } else if (input.isKeyJustPressed(Input.Keys.NUM_2)) {
             context.changeState(new OptionsScreenState(context, writer));
         } else if (input.isKeyJustPressed(Input.Keys.NUM_3)) {

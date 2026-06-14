@@ -4,6 +4,9 @@ import bullethell.gameobjects.supermove.SuperMove;
 
 import java.util.function.Supplier;
 
+/**
+ * A shop upgrade. Can be either a shield, a weapon or a super move
+ */
 public class  Upgrade {
     private final String name;
     private final String description;

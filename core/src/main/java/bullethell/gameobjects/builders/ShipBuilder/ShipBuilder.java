@@ -22,21 +22,39 @@ public abstract class ShipBuilder {
         this.context = context;
     }
 
+    /**
+     * Sets the sprite used for rendering
+     * @param sprite a Texture to display
+     * @return this
+     */
     public ShipBuilder setSprite(Texture sprite) {
         this.sprite = sprite;
         return this;
     }
 
+    /**
+     * Add a weapon to the list of current weapons. There is currently no limit on the number of weapons
+     * @param weapon new weapon to add
+     * @return this
+     */
     public ShipBuilder addWeapon(Weapon weapon) {
         this.weapons.add(weapon);
         return this;
     }
 
-    public ShipBuilder addShield(Shield shield) {
+    /**
+     * Add a shield to protect the ship
+     * @param shield to add
+     * @return this
+     */
+    public ShipBuilder setShield(Shield shield) {
         this.shield = shield;
         return this;
     }
 
+    /**
+     * Resets values. Needed to not have multiple builder instances
+     */
     public void reset() {
         sprite = null;
         shield = null;

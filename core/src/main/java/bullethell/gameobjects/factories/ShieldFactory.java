@@ -1,13 +1,16 @@
-package bullethell.gameobjects.builders;
+package bullethell.gameobjects.factories;
 
 import bullethell.GameContext;
 import bullethell.gameobjects.Shield;
 
-public class ShieldDirector {
+/**
+ * Factory for creating shields
+ */
+public class ShieldFactory {
 
     private final GameContext context;
 
-    public ShieldDirector(GameContext context) {
+    public ShieldFactory(GameContext context) {
         this.context = context;
     }
 

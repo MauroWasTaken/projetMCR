@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Used to write text on different screens
+ */
 public class StateTextWriter implements IStateTextWriter {
     private final GameContext context;
     private final BitmapFont font;

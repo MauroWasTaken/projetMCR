@@ -10,6 +10,9 @@ import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
 
+/**
+ * Builds the player's ship
+ */
 public class PlayerBuilder extends ShipBuilder {
 
     private SuperMove specialMove;
@@ -25,7 +28,7 @@ public class PlayerBuilder extends ShipBuilder {
     }
 
     @Override
-    public PlayerBuilder addShield(Shield shield) {
+    public PlayerBuilder setShield(Shield shield) {
         this.shield = shield;
         return this;
     }
@@ -36,11 +39,20 @@ public class PlayerBuilder extends ShipBuilder {
         return this;
     }
 
+    /**
+     * Sets a special move. Used with 'q'
+     * @param special special action to perform
+     * @return this
+     */
     public PlayerBuilder addSpecial(SuperMove special) {
         this.specialMove = special;
         return this;
     }
 
+    /**
+     * Builds and returns a player's ship
+     * @return a ship
+     */
     public Player build() {
 
         if (sprite == null) throw new BuildingErrorException("Player requires a sprite");

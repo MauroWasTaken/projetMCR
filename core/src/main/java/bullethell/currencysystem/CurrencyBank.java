@@ -1,14 +1,17 @@
 package bullethell.currencysystem;
 
+/**
+ * Currency logic holder. Singleton object to manage player's funds.
+ */
 public class CurrencyBank {
-    // Singleton object to manage player's funds
+
     private static CurrencyBank bank;
     // Current value, rounded to two decimals to avoid hell
     private float value;
 
     private CurrencyBank() {
         // TODO: find a way to store the latest value, in a config file perhaps? (optional)
-        this.value = readFromFile();
+        this.value = 0;
     }
 
     public static CurrencyBank getInstance() {
@@ -18,18 +21,21 @@ public class CurrencyBank {
         return CurrencyBank.bank;
     }
 
+    /**
+     * Purchase an upgrade
+     * @param cost of the upgrade
+     * @throws InsufficientFundsException
+     */
     public void purchase(float cost) throws InsufficientFundsException {
         if (this.hasEnoughFunds(cost)) {
             this.value -= cost;
-            this.saveFunds();
         } else {
             throw new InsufficientFundsException("Not enough money");
         }
     }
 
     public void addFunds(float amount) {
-        this.value += amount;
-        this.saveFunds();
+        value += amount;
     }
 
     private boolean hasEnoughFunds(float cost) {
@@ -38,18 +44,10 @@ public class CurrencyBank {
 
     public void reset() {
         this.value = 0;
-        this.saveFunds();
-    }
-
-    private void saveFunds() {
-        // TODO: write to some offline storage for the player to resume their game (optional)
     }
 
     public float getValue() {
         return this.value;
     }
 
-    private float readFromFile() {
-        return 0;
-    }
 }

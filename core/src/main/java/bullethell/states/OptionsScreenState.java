@@ -7,6 +7,9 @@ import com.badlogic.gdx.Input;
 
 import static com.badlogic.gdx.Gdx.input;
 
+/**
+ * Options screen
+ */
 public class OptionsScreenState extends AbstractGameScreenState {
 
     OptionsScreenState(GameContext context, IStateTextWriter writer) {

@@ -9,11 +9,16 @@ import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.math.Polygon;
 
+/**
+ * A fired projectile to display on screen
+ */
 public class Projectile extends GameObject {
+
     final float padding = 20f;
     final float velocityX, velocityY, rotation;
     final boolean isPlayerProjectile;
     final Texture sprite;
+
     public Projectile(GameContext context, float x, float y, float velocityX, float velocityY, boolean isPlayerProjectile, Texture sprite) {
         super(context,sprite.getWidth() * 0.2f, sprite.getHeight() * 0.9f);
         this.isPlayerProjectile = isPlayerProjectile;

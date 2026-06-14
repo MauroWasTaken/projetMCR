@@ -6,6 +6,9 @@ import bullethell.gameobjects.ships.Enemy;
 
 import java.util.ArrayList;
 
+/**
+ * Builds levels
+ */
 public class LevelBuilder {
 
     private final GameContext context;

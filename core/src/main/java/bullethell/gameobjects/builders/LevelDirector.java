@@ -7,9 +7,19 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 
+/**
+ * Creates the different levels using a level builder
+ */
 public class LevelDirector {
     // the following levels were very much ai assisted, we described the level flow and it implemented it
 
+    /**
+     * Creates level 1
+     * @param builder to use to create the level
+     * @param context game context
+     * @param spawner enemy spawner to create enemies
+     * @return a new level
+     */
     public Level level1(LevelBuilder builder, GameContext context, EnemySpawner spawner) {
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();

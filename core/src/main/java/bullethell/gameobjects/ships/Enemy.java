@@ -26,6 +26,7 @@ public class Enemy extends Ship {
         this.nbShots = nbShots;
         this.shootingOffsetX = 0f;
         this.shootingOffsetY = -sprite.getHeight() / 2f;
+        this.invulnerabilityTime = 0f;
 
         if (!this.path.isEmpty()) {
             Vector2 start = this.path.get(0);

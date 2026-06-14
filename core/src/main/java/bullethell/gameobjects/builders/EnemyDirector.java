@@ -30,6 +30,7 @@ public class EnemyDirector {
                .setPath(path)
                .setShootDelay(0.8f)
                .setNbShots(-1)
+               .addShield(new ShieldDirector(context).weakShield())
                .addWeapon(new WeaponDirector().enemySpreadWeapon(new WeaponBuilder(context)));
 
         return builder.build();

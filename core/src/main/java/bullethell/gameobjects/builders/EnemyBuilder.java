@@ -72,6 +72,7 @@ public class EnemyBuilder {
         }
         if (this.shield != null) {
             enemy.setShield(this.shield);
+            shield.setOwner(enemy);
         }
         return enemy;
     }

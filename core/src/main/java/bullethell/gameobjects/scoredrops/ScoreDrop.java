@@ -31,7 +31,7 @@ public abstract class ScoreDrop extends GameObject {
         float maxX = context.getPlayWidth() - halfWidth;
         x = Math.max(halfWidth, Math.min(x, maxX));
 
-        // despawn when it goes off screen
+        // despawn when it goes off-screen
         if (y < -height) {
             context.despawn(this);
             return;

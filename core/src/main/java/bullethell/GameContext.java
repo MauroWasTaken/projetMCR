@@ -3,14 +3,14 @@ package bullethell;
 import bullethell.gameobjects.CampaignSingleton;
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Player;
-import bullethell.gameobjects.builders.LevelBuilder;
-import bullethell.gameobjects.builders.LevelDirector;
 import bullethell.states.GameState;
 import bullethell.states.HomeScreenState;
 import bullethell.states.UpgradeMenuState;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -45,12 +45,22 @@ public class GameContext extends Game {
     private Texture enemyProjectileSprite;
     private Texture score100Sprite;
     private Texture score500Sprite;
+    // SoundFX
+    private Sound mainWeaponFx;
+    private Sound sideWeaponFx;
+    private Sound enemyShootFx;
+    private Sound superLaserFx;
+    private Music backgroundMusic;
+    private boolean useFx;
+    private boolean useMusic;
+    private final float MUSIC_VOLUME = 0.2f;
+
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
-    public AssetManager assetManager;
+    public AssetManager assetManager; // TODO: what we doin' with that?
     private final CampaignSingleton campaignInstance = CampaignSingleton.getInstance();
 
     private GameState currentState;
@@ -86,17 +96,23 @@ public class GameContext extends Game {
         score500Sprite = new Texture("Score500.png");
         shieldSprite = new Texture("shields.png");
         superChargedShield = new Texture("super-shields.png");
+        // Sounds
+        mainWeaponFx = Gdx.audio.newSound(Gdx.files.internal("single_shot.wav"));
+        sideWeaponFx = Gdx.audio.newSound(Gdx.files.internal("dual_shot.wav"));
+        enemyShootFx = Gdx.audio.newSound(Gdx.files.internal("enemy_shoot.wav"));
+        superLaserFx = Gdx.audio.newSound(Gdx.files.internal("special_weapon.mp3"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background_music.mp3"));
+        useFx = true;
+        useMusic = true;
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 
-        // Build Level
-        LevelBuilder levelBuilder = new LevelBuilder(this);
-        LevelDirector levelDirector = new LevelDirector();
-
-        level = levelDirector.level1(levelBuilder, this);
-
-        upgradeMenuState = new UpgradeMenuState(this);
-        currentState = new HomeScreenState();
+        upgradeMenuState = new UpgradeMenuState(this, font, batch);
+        currentState = new HomeScreenState(this, font, batch);
+        // Start music
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(this.MUSIC_VOLUME);
+        backgroundMusic.play();
     }
 
     @Override
@@ -104,7 +120,7 @@ public class GameContext extends Game {
         ScreenUtils.clear(0f, 0f, 0f, 1f);
         float delta = Gdx.graphics.getDeltaTime();
 
-        currentState.update(this, delta);
+        currentState.update(delta);
 
         //draw objects todo maybe move to playingState
         batch.begin();
@@ -113,21 +129,9 @@ public class GameContext extends Game {
             gameObject.render(batch);
         }
 
-        Player p = getPlayer();
-        if (p != null && p.getShield() != null) {
-            font.draw(batch, "shield hp: " + p.getShield().getHp(), 10, 20);
-        }
-
-        currentState.render(this, batch, font);
+        currentState.render();
 
         batch.end();
-        // hitbox viewer (might only keep it for the player)
-        /*shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        for (GameObject gameObject : gameObjects) {
-            shapeRenderer.polygon(gameObject.getHitbox().getTransformedVertices());
-        }*/
         shapeRenderer.end();
     }
 
@@ -136,6 +140,7 @@ public class GameContext extends Game {
         batch.dispose();
         background.dispose();
         //disposal of sprites
+        // TODO: dispose items
         if (playerSprite != null) playerSprite.dispose();
         if (font != null) font.dispose();
         if (shapeRenderer != null) shapeRenderer.dispose();
@@ -171,7 +176,7 @@ public class GameContext extends Game {
         return enemySprite;
     }
 
-    public Texture getHeavyEnemySPrite() {
+    public Texture getHeavyEnemySprite() {
         return heavyEnemySprite;
     }
 
@@ -197,6 +202,63 @@ public class GameContext extends Game {
 
     public Texture get500PointsSprite() {
         return score500Sprite;
+    }
+
+    // Sound getters
+    public Sound getMainWeaponFx() {
+        if (useFx) {
+            return mainWeaponFx;
+        } else {
+            return null;
+        }
+    }
+
+    public Sound getSideWeaponFx() {
+        if (useFx) {
+            return sideWeaponFx;
+        } else {
+            return null;
+        }
+    }
+
+    public Sound getEnemyShootFx() {
+        if (useFx) {
+            return enemyShootFx;
+        } else {
+            return null;
+        }
+    }
+
+    public Sound getSuperLaserFx() {
+        if (useFx) {
+            return superLaserFx;
+        } else {
+            return null;
+        }
+    }
+
+    public void toggleSoundFx() {
+        this.useFx = !this.useFx;
+    }
+
+    public boolean usesFx() {
+        return this.useFx;
+    }
+
+    public void toggleMusic() {
+        if (useMusic) {
+            useMusic = false;
+            backgroundMusic.stop();
+        } else {
+            useMusic = true;
+            backgroundMusic.setLooping(true);
+            backgroundMusic.setVolume(this.MUSIC_VOLUME);
+            backgroundMusic.play();
+        }
+    }
+
+    public boolean usesMusic() {
+        return this.useMusic;
     }
 
     public void despawn(GameObject object) {
@@ -255,7 +317,7 @@ public class GameContext extends Game {
     }
 
     public void resetUpgradeMenuState() {
-        this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this);
+        this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this, font, batch);
     }
 
     public enum ControlMode {

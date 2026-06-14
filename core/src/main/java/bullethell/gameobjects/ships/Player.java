@@ -2,7 +2,7 @@ package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
 import bullethell.gameobjects.Weapon;
-import bullethell.gameobjects.super_move.SuperMove;
+import bullethell.gameobjects.supermove.SuperMove;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -80,7 +80,7 @@ public class Player extends Ship {
         }
 
 
-        // normalize movement (in an if statement so that we dont divide by 0)
+        // normalize movement (in an if statement so that we don't divide by 0)
         if (dirX != 0f || dirY != 0f) {
             float len = (float) Math.sqrt(dirX * dirX + dirY * dirY);
             dirX = dirX / len;
@@ -128,9 +128,16 @@ public class Player extends Ship {
         this.specialMove = specialMove;
     }
 
+    public boolean hasSpecial() {
+        return specialMove != null;
+    }
+
     public int getRemainingSpecialCharges() {
-        if (specialMove == null) return 0;
-        return specialMove.getRemainingCharges();
+        if (hasSpecial()) {
+            return specialMove.getRemainingCharges();
+        } else {
+            return 0;
+        }
     }
 
 }

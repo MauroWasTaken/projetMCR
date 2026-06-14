@@ -3,7 +3,6 @@ package bullethell.gameobjects;
 import bullethell.GameContext;
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Ship;
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;

@@ -4,12 +4,14 @@ import bullethell.GameContext;
 import bullethell.currencysystem.CurrencyBank;
 import bullethell.gameobjects.CampaignSingleton;
 import bullethell.gameobjects.GameObject;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import bullethell.gameobjects.ships.Player;
+import bullethell.states.statetextwriter.IStateTextWriter;
 
-import java.util.Currency;
+public class PlayingState extends AbstractGameState {
 
-public class PlayingState implements GameState {
+    PlayingState(GameContext context, IStateTextWriter writer) {
+        super(context, writer);
+    }
 
     private boolean levelCompleted = false;
     private boolean gameOver = false;
@@ -18,7 +20,7 @@ public class PlayingState implements GameState {
     int nbRemainingSpecials = 0;
 
     @Override
-    public void update(GameContext context, float delta) {
+    public void update(float delta) {
         // execute level logic
         context.getLevel().update(delta);
 
@@ -41,7 +43,7 @@ public class PlayingState implements GameState {
             context.getPendingAdd().clear();
         }
         // check if player is still alive
-        if (context.getPlayer() == null){
+        if (context.getPlayer() == null) {
             gameOver = true;
         } else {
             // If player is not dead, update remaining specials
@@ -66,8 +68,9 @@ public class PlayingState implements GameState {
                     instance.levelSucceeded();
                     if (instance.isCampaignCleared()) {
                         // Return
+                        CurrencyBank.getInstance().reset();
                         instance.reset();
-                        context.changeState(new HomeScreenState());
+                        context.changeState(new HomeScreenState(context, writer));
                     } else {
                         context.changeState(context.getUpgradeMenuState());
                     }
@@ -75,28 +78,33 @@ public class PlayingState implements GameState {
                 if (gameOver) {
                     CurrencyBank.getInstance().reset();
                     instance.reset();
-                    context.changeState(new HomeScreenState());
+                    context.changeState(new HomeScreenState(context, writer));
                 }
             }
         }
     }
 
     @Override
-    public void render(GameContext context, SpriteBatch batch, BitmapFont font) {
+    public void render() {
         if (levelCompleted) { //draws victory screen
-            font.getData().setScale(1.5f);
-            font.draw(batch, "Level Completed!", context.getPlayWidth() / 2 - 70, context.getPlayHeight() / 2);
-            font.getData().setScale(1f); // reset scale
+            this.writer.writeCenteredTextAtHeight("Level Completed!", context.getPlayHeight() / 2, 1.5f);
         }
-        // draw current money
-        font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), context.getPlayWidth() - 100, 20);
 
-        font.draw(batch, "Super charges : " + nbRemainingSpecials, 0, 20);
+        // draw shield hp, if any
+        final Player player = context.getPlayer();
+        if (player != null && player.getShield() != null) {
+            this.writer.writeBottomLeftText("Shield HP: " + player.getShield().getHp(), 1f);
+        }
+
+        // draw current money
+        this.writer.writeBottomRightText("Money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), 1f);
+
+        if (player != null && player.hasSpecial()) {
+            this.writer.writeCenteredTextAtHeight("Super charges: " + nbRemainingSpecials, 20, 1f);
+        }
 
         if (gameOver) { //draws game over screen
-            font.getData().setScale(1.5f);
-            font.draw(batch, "GameOver!", context.getPlayWidth() / 2 - 50, context.getPlayHeight() / 2);
-            font.getData().setScale(1f); // reset scale
+            this.writer.writeCenteredTextAtHeight("Game Over!", context.getPlayHeight() / 2, 1.5f);
         }
     }
 }

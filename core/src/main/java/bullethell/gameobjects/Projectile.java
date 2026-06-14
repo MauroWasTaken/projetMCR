@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.badlogic.gdx.math.Polygon;
 
-public class Projectile extends GameObject{
+public class Projectile extends GameObject {
     final float padding = 20f;
     final float velocityX, velocityY, rotation;
     final boolean isPlayerProjectile;
@@ -22,7 +22,7 @@ public class Projectile extends GameObject{
         this.velocityX = velocityX;
         this.velocityY = velocityY;
         this.sprite = sprite;
-        this.rotation = (float) (Math.atan2(velocityY, velocityX) * 180 / Math.PI + 90); //got this with the help of ai
+        this.rotation = (float) (Math.atan2(velocityY, velocityX) * 180 / Math.PI + 90); //got this with the help of AI
     }
 
     @Override

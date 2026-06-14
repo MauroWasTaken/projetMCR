@@ -1,43 +1,42 @@
 package bullethell.gameobjects;
 
-import bullethell.gameobjects.super_move.SuperMove;
+import bullethell.gameobjects.supermove.SuperMove;
+
+import java.util.function.Supplier;
 
 public class  Upgrade {
     private final String name;
     private final String description;
     private final int price;
-    private final Weapon weapon;
-    private final Shield shield;
-    private final SuperMove superMove;
+    private final Supplier<Weapon> weaponFactory;
+    private final Supplier<Shield> shieldFactory;
+    private final Supplier<SuperMove> superMoveFactory;
 
-    // Constructor for a Weapon upgrade
-    public Upgrade(String name, String description, int price, Weapon weapon) {
+    private Upgrade(String name, String description, int price,
+                    Supplier<Weapon> weaponFactory,
+                    Supplier<Shield> shieldFactory,
+                    Supplier<SuperMove> superMoveFactory) {
         this.name = name;
         this.description = description;
         this.price = price;
-        this.weapon = weapon;
-        this.shield = null;
-        this.superMove = null;
+        this.weaponFactory = weaponFactory;
+        this.shieldFactory = shieldFactory;
+        this.superMoveFactory = superMoveFactory;
     }
 
-    // Constructor for a Shield upgrade
-    public Upgrade(String name, String description, int price, Shield shield) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.shield = shield;
-        this.weapon = null;
-        this.superMove = null;
+    // Factory for a Weapon upgrade
+    public static Upgrade weapon(String name, String description, int price, Supplier<Weapon> weaponFactory) {
+        return new Upgrade(name, description, price, weaponFactory, null, null);
     }
 
-    // Constructor for a SuperMove upgrade
-    public Upgrade(String name, String description, int price, SuperMove superMove) {
-        this.name = name;
-        this.description = description;
-        this.price = price;
-        this.shield = null;
-        this.weapon = null;
-        this.superMove = superMove;
+    // Factory for a Shield upgrade
+    public static Upgrade shield(String name, String description, int price, Supplier<Shield> shieldFactory) {
+        return new Upgrade(name, description, price, null, shieldFactory, null);
+    }
+
+    // Factory for a SuperMove upgrade
+    public static Upgrade superMove(String name, String description, int price, Supplier<SuperMove> superMoveFactory) {
+        return new Upgrade(name, description, price, null, null, superMoveFactory);
     }
 
     public String getName() {
@@ -53,22 +52,22 @@ public class  Upgrade {
     }
 
     public Weapon getWeapon() {
-        return weapon;
+        return weaponFactory != null ? weaponFactory.get() : null;
     }
 
     public Shield getShield() {
-        return shield;
+        return shieldFactory != null ? shieldFactory.get() : null;
     }
 
-    public SuperMove getSuper() { return superMove; }
+    public SuperMove getSuper() { return superMoveFactory != null ? superMoveFactory.get() : null; }
 
     public boolean isWeaponUpgrade() {
-        return weapon != null;
+        return weaponFactory != null;
     }
 
-    public boolean isShieldUpgrade() { return shield != null; }
+    public boolean isShieldUpgrade() { return shieldFactory != null; }
 
-    public boolean isSuperUpgrade() { return superMove != null; }
+    public boolean isSuperUpgrade() { return superMoveFactory != null; }
 
     public String toString() {
         if (isWeaponUpgrade()) return "[Weapon]";

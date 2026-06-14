@@ -65,7 +65,7 @@ public class Player extends Ship {
             dirY -= 1f;
         }
 
-        // normalize movement (in an if statement so that we dont divide by 0)
+        // normalize movement (in an if statement so that we don't divide by 0)
         if (dirX != 0f || dirY != 0f) {
             float len = (float) Math.sqrt(dirX * dirX + dirY * dirY);
             dirX = dirX / len;

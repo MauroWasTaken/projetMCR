@@ -1,7 +1,6 @@
 package bullethell.gameobjects.ships;
 
 import bullethell.GameContext;
-import bullethell.gameobjects.GameObject;
 import bullethell.gameobjects.Weapon;
 import bullethell.gameobjects.scoredrops.Score100Drop;
 import bullethell.gameobjects.scoredrops.Score500Drop;

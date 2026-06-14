@@ -3,15 +3,17 @@ package bullethell.gameobjects;
 import bullethell.GameContext;
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Ship;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class Weapon extends GameObject{
+public class Weapon extends GameObject {
     Ship owner;
     Projectile[] projectiles;
-    Texture sprite;
+    Sound soundFx;
+    float volume;
     TextureRegion[][] frames2D;
     TextureRegion[] frames;
     Animation<TextureRegion> animation;
@@ -20,12 +22,14 @@ public class Weapon extends GameObject{
 
     private float offsetX, offsetY;
 
-    public Weapon (GameContext context, Projectile[] projectiles, Texture sprite, float firingRate){
+    public Weapon (GameContext context, Projectile[] projectiles, Texture sprite, WeaponSoundFx soundFx, float firingRate){
         super(context, sprite.getWidth() * 0.1f, sprite.getHeight() * 0.1f);
         this.projectiles = projectiles;
         frames2D = TextureRegion.split(sprite, 48, 48);
         frames = frames2D[0];
         animation = new Animation<>(0.1f, frames);
+        this.soundFx = soundFx.soundFx();
+        this.volume = soundFx.volume();
         this.firingRate = firingRate;
     }
 
@@ -35,8 +39,6 @@ public class Weapon extends GameObject{
         }
         shootTimer = 0;
         TextureRegion currentFrame = animation.getKeyFrame(shootTimer, true);
-        float naturalWidth = currentFrame.getRegionWidth() * 0.7f;
-        float naturalHeight = currentFrame.getRegionHeight() * 0.7f;
 
         for (Projectile p : projectiles) {
             Projectile copy = new Projectile(
@@ -49,6 +51,9 @@ public class Weapon extends GameObject{
                 p.sprite
             );
             context.spawn(copy);
+            if (soundFx != null) {
+                soundFx.play(volume);
+            }
         }
     }
 

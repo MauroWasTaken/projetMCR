@@ -2,8 +2,9 @@ package bullethell.gameobjects.builders;
 
 import bullethell.GameContext;
 import bullethell.gameobjects.Projectile;
-import bullethell.gameobjects.ships.Ship;
 import bullethell.gameobjects.Weapon;
+import bullethell.gameobjects.WeaponSoundFx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ public class WeaponBuilder {
     private final ArrayList<Projectile> templates = new ArrayList<>();
     private Texture sprite;
     private float firingRate;
+    private WeaponSoundFx soundFx;
 
     public WeaponBuilder(GameContext context) {
         this.context = context;
@@ -33,6 +35,11 @@ public class WeaponBuilder {
         return this;
     }
 
+    public WeaponBuilder addSoundFx(Sound sound, float volume) {
+        this.soundFx = new WeaponSoundFx(sound, volume);
+        return this;
+    }
+
 
     public GameContext getContext() {
         return context;
@@ -42,6 +49,6 @@ public class WeaponBuilder {
         if (templates.isEmpty()) {
             throw new BuildingErrorException("Weapon requires at least one projectile template");
         }
-        return new Weapon(context, templates.toArray(new Projectile[0]), sprite, firingRate);
+        return new Weapon(context, templates.toArray(new Projectile[0]), sprite, soundFx, firingRate);
     }
 }

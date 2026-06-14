@@ -18,14 +18,15 @@ import java.util.Arrays;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class UpgradeMenuState implements GameState {
+public class UpgradeMenuState extends AbstractGameState {
 
     private String shopMessage = "";
     private float shopMessageTimer = 0f;
     private final ArrayList<Upgrade> availableUpgrades; //available to purchase
     private final ArrayList<Upgrade> purchasedUpgrades = new ArrayList<>();
 
-    public UpgradeMenuState(GameContext context) {
+    public UpgradeMenuState(GameContext context, BitmapFont font, SpriteBatch batch) {
+        super(context, font, batch);
         availableUpgrades = new ArrayList<>(Arrays.asList(//adds default items to shop
             new Upgrade("Main Weapon", "Main weapon shoots", 0, new WeaponDirector().playerMainWeapon(new WeaponBuilder(context))),
             new Upgrade("Side Weapons", "Shoots 2 extra projectiles", 500, new WeaponDirector().playerSideWeapons(new WeaponBuilder(context))),
@@ -50,15 +51,15 @@ public class UpgradeMenuState implements GameState {
     }
 
     @Override
-    public void update(GameContext context, float delta) {
-        if (input.isKeyJustPressed(Input.Keys.ENTER)) { // if done shopping, import player
-            buildPlayer(context);                           // build new player
+    public void update(float delta) {
+        if (input.isKeyJustPressed(Input.Keys.ENTER)) { // if shopping is done, import player
+            buildPlayer(context);                       // build new player
             context.setNextLevel();
-            context.changeState(new PlayingState());        // change state
+            context.changeState(new PlayingState(context, writer)); // change state
             return;
         }
 
-        if (shopMessageTimer > 0) {     //update image timer so that it doesnt show up forever
+        if (shopMessageTimer > 0) {     //update image timer so that it doesn't show up forever
             shopMessageTimer -= delta;
         } else {
             shopMessage = "";
@@ -100,29 +101,27 @@ public class UpgradeMenuState implements GameState {
     }
 
     @Override
-    public void render(GameContext context, SpriteBatch batch, BitmapFont font) {
-        float playHeight = context.getPlayHeight();
-        font.getData().setScale(1.5f);
-        font.draw(batch, "UPGRADE MENU", 50, playHeight - 50);
-        font.getData().setScale(1f);
-        font.draw(batch, "Use numbers 1-9 to pick your weapon\nPress ENTER to start level", 50, playHeight - 80);
+    public void render() {
+        final float playHeight = context.getPlayHeight();
+        this.writer.writeCenteredTextAtHeight("UPGRADE MENU", playHeight - 50, 1.5f);
+        this.writer.writeTightMultilineAtHeight(new String[]{"Use numbers 1-9 to pick your weapon", "Press ENTER to start level"}, playHeight - 80, 1f);
 
         float startY = playHeight - 120;
 
+        final String TEMPLATE = "%d. %s %s - %d$";
         for (int i = 0; i < availableUpgrades.size(); i++) { //list the updates
             Upgrade u = availableUpgrades.get(i);
-            String type = u.isWeaponUpgrade() ? "[Weapon]" : "[Shield]";
-            font.draw(batch, (i + 1) + ". " + u.getName() + " " + type + " - " + u.getPrice() + "$", 50, startY - (i * 40));
-            font.draw(batch, "   " + u.getDescription(), 50, startY - (i * 40) - 20);
+            final String type = u.isWeaponUpgrade() ? "[Weapon]" : "[Shield]";
+            final String entry = TEMPLATE.formatted(i + 1, u.getName(), type, u.getPrice());
+            this.writer.writeLeftBiasedTextAtHeight(entry, startY - (i * 40), 1f);
+            this.writer.writeLeftBiasedTextAtHeight("   " + u.getDescription(), startY - (i * 40) - 20, 1f);
         }
 
         if (!shopMessage.isEmpty()) { // show shop message if there is one
-            font.setColor(Color.YELLOW);
-            font.draw(batch, shopMessage, 50, 100);
-            font.setColor(Color.WHITE);
+            this.writer.writeCenteredTextAtHeight(shopMessage, 100, 1f, Color.YELLOW);
         }
 
         // draw current money
-        font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), context.getPlayWidth() - 100, 20);
+        this.writer.writeBottomRightText("Money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), 1f);
     }
 }

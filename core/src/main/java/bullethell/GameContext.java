@@ -11,6 +11,7 @@ import bullethell.states.UpgradeMenuState;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -44,12 +45,15 @@ public class GameContext extends Game {
     private Texture enemyProjectileSprite;
     private Texture score100Sprite;
     private Texture score500Sprite;
+    private Sound mainWeaponFx;
+    private Sound sideWeaponFx;
+    private Sound enemyShootFx;
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
     private final ArrayList<GameObject> pendingAdd = new ArrayList<>();
     private final ArrayList<GameObject> pendingRemove = new ArrayList<>();
-    public AssetManager assetManager;
+    public AssetManager assetManager; // TODO: what we doin' with that?
     private final CampaignSingleton campaignInstance = CampaignSingleton.getInstance();
 
     private GameState currentState;
@@ -84,6 +88,10 @@ public class GameContext extends Game {
         score100Sprite = new Texture("Score100.png");
         score500Sprite = new Texture("Score500.png");
         shieldSprite = new Texture("shields.png");
+        // Sounds
+        mainWeaponFx = Gdx.audio.newSound(Gdx.files.internal("single_shot.wav"));
+        sideWeaponFx = Gdx.audio.newSound(Gdx.files.internal("dual_shot.wav"));
+        enemyShootFx = Gdx.audio.newSound(Gdx.files.internal("enemy_shoot.wav"));
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 
@@ -93,8 +101,8 @@ public class GameContext extends Game {
 
         level = levelDirector.level1(levelBuilder, this);
 
-        upgradeMenuState = new UpgradeMenuState(this);
-        currentState = new HomeScreenState();
+        upgradeMenuState = new UpgradeMenuState(this, font, batch);
+        currentState = new HomeScreenState(this, font, batch);
     }
 
     @Override
@@ -102,7 +110,7 @@ public class GameContext extends Game {
         ScreenUtils.clear(0f, 0f, 0f, 1f);
         float delta = Gdx.graphics.getDeltaTime();
 
-        currentState.update(this, delta);
+        currentState.update(delta);
 
         //draw objects todo maybe move to playingState
         batch.begin();
@@ -111,12 +119,7 @@ public class GameContext extends Game {
             gameObject.render(batch);
         }
 
-        Player p = getPlayer();
-        if (p != null && p.getShield() != null) {
-            font.draw(batch, "shield hp: " + p.getShield().getHp(), 10, 20);
-        }
-
-        currentState.render(this, batch, font);
+        currentState.render();
 
         batch.end();
         // hitbox viewer (might only keep it for the player)
@@ -134,6 +137,7 @@ public class GameContext extends Game {
         batch.dispose();
         background.dispose();
         //disposal of sprites
+        // TODO: dispose items
         if (playerSprite != null) playerSprite.dispose();
         if (font != null) font.dispose();
         if (shapeRenderer != null) shapeRenderer.dispose();
@@ -193,6 +197,19 @@ public class GameContext extends Game {
         return score500Sprite;
     }
 
+    // Sound getters
+    public Sound getMainWeaponFx() {
+        return mainWeaponFx;
+    }
+
+    public Sound getSideWeaponFx() {
+        return sideWeaponFx;
+    }
+
+    public Sound getEnemyShootFx() {
+        return enemyShootFx;
+    }
+
     public void despawn(GameObject object) {
         // adds to deletion list to fix deleting while update is going
         if (!pendingRemove.contains(object) && gameObjects.contains(object)) {
@@ -249,7 +266,7 @@ public class GameContext extends Game {
     }
 
     public void resetUpgradeMenuState() {
-        this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this);
+        this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this, font, batch);
     }
 
     public enum ControlMode {

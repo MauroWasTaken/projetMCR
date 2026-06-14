@@ -152,7 +152,7 @@ public class UpgradeMenuState extends AbstractGameState {
         final String TEMPLATE = "%d. %s %s - %d$";
         for (int i = 0; i < availableUpgrades.size(); i++) { //list the updates
             Upgrade u = availableUpgrades.get(i);
-            final String type = u.isWeaponUpgrade() ? "[Weapon]" : "[Shield]";
+            final String type = u.toString();
             final String entry = TEMPLATE.formatted(i + 1, u.getName(), type, u.getPrice());
             this.writer.writeLeftBiasedTextAtHeight(entry, startY - (i * 40), 1f);
             this.writer.writeLeftBiasedTextAtHeight("   " + u.getDescription(), startY - (i * 40) - 20, 1f);

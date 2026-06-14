@@ -68,6 +68,7 @@ public class PlayingState extends AbstractGameState {
                     instance.levelSucceeded();
                     if (instance.isCampaignCleared()) {
                         // Return
+                        CurrencyBank.getInstance().reset();
                         instance.reset();
                         context.changeState(new HomeScreenState(context, writer));
                     } else {

@@ -8,6 +8,8 @@ import bullethell.gameobjects.builders.WeaponBuilder;
 import bullethell.gameobjects.builders.WeaponDirector;
 import bullethell.currencysystem.CurrencyBank;
 import bullethell.currencysystem.InsufficientFundsException;
+import bullethell.gameobjects.super_move.SuperLaser;
+import bullethell.gameobjects.super_move.SuperShield;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -32,7 +34,9 @@ public class UpgradeMenuState extends AbstractGameState {
             new Upgrade("Side Weapons", "Shoots 2 extra projectiles", 500, new WeaponDirector().playerSideWeapons(new WeaponBuilder(context))),
             new Upgrade("Weak Shield", "1 HP, no recharge", 100, new ShieldDirector(context).weakShield()),
             new Upgrade("Quick Recharge Shield", "1 HP, recharges in 3.5s", 600, new ShieldDirector(context).quickRechargeShield()),
-            new Upgrade("Strong Shield", "3 HP, no recharge", 1200, new ShieldDirector(context).strongShield())
+            new Upgrade("Strong Shield", "3 HP, no recharge", 1200, new ShieldDirector(context).strongShield()),
+            new Upgrade("Supercharge shields", "The best defense is a good offense", 1500, new SuperShield()),
+            new Upgrade("Supercharge weapons", "MURDER!!!!", 1500, new SuperLaser())
         ));
     }
 
@@ -42,8 +46,10 @@ public class UpgradeMenuState extends AbstractGameState {
         for (Upgrade upgrade : purchasedUpgrades) { //add purchased upgrades
             if (upgrade.isWeaponUpgrade()) {
                 playerBuilder.addWeapon(upgrade.getWeapon());
-            } else {
+            } else if (upgrade.isShieldUpgrade()) {
                 playerBuilder.addShield(upgrade.getShield());
+            } else {
+                playerBuilder.addSpecial(upgrade.getSuper());
             }
         }
 
@@ -71,11 +77,11 @@ public class UpgradeMenuState extends AbstractGameState {
                 try {
                     CurrencyBank.getInstance().purchase(upgrade.getPrice());
 
-                    if (!upgrade.isWeaponUpgrade()) {
+                    if (upgrade.isShieldUpgrade()) {
                         // if it's a shield, remove old shield if exists
                         Upgrade oldShield = null;
                         for (Upgrade purchasedUpgrade : purchasedUpgrades) { // look for a shield if there is one
-                            if (!purchasedUpgrade.isWeaponUpgrade()) {
+                            if (purchasedUpgrade.isShieldUpgrade()) {
                                 oldShield = purchasedUpgrade;
                                 break;
                             }
@@ -83,6 +89,41 @@ public class UpgradeMenuState extends AbstractGameState {
                         if (oldShield != null) {                    // take it off and add the old shield back to the shop
                             purchasedUpgrades.remove(oldShield);
                             availableUpgrades.add(oldShield);
+                            CurrencyBank.getInstance().addFunds(oldShield.getPrice());
+                        }
+                    }
+
+                    if (upgrade.isSuperUpgrade()) {
+                        if (upgrade.getSuper() instanceof SuperLaser) {
+                            boolean hasWeapon = purchasedUpgrades.stream().anyMatch(Upgrade::isWeaponUpgrade);
+                            if (!hasWeapon) {
+                                shopMessage = "Buy a weapon before buying a weapon supercharge!";
+                                shopMessageTimer = 2f;
+                                CurrencyBank.getInstance().addFunds(upgrade.getPrice()); // refund
+                                break; // block the purchase
+                            }
+                        }
+                        if (upgrade.getSuper() instanceof SuperShield) {
+                            boolean hasShield = purchasedUpgrades.stream().anyMatch(Upgrade::isShieldUpgrade);
+                            if (!hasShield) {
+                                shopMessage = "Buy a shiel before buying a shield supercharge!";
+                                shopMessageTimer = 2f;
+                                CurrencyBank.getInstance().addFunds(upgrade.getPrice()); // refund
+                                break; // block the purchase
+                            }
+                        }
+                        // if it's a super, remove old super if exists
+                        Upgrade oldSuper = null;
+                        for (Upgrade purchasedUpgrade : purchasedUpgrades) { // look for a super if there is one
+                            if (purchasedUpgrade.isSuperUpgrade()) {
+                                oldSuper = purchasedUpgrade;
+                                break;
+                            }
+                        }
+                        if (oldSuper != null) {                    // take it off and add the old super back to the shop
+                            purchasedUpgrades.remove(oldSuper);
+                            availableUpgrades.add(oldSuper);
+                            CurrencyBank.getInstance().addFunds(oldSuper.getPrice());
                         }
                     }
 

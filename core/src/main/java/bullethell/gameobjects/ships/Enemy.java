@@ -82,7 +82,7 @@ public class Enemy extends Ship {
         for (Weapon w : weapons) w.render(batch);
     }
     @Override
-    protected void die() {
+    public void die() {
         super.die();
         if (Math.random() < dropRate500) {
             context.spawn( new Score500Drop(context, x,y));

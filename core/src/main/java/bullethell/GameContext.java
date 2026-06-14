@@ -46,6 +46,7 @@ public class GameContext extends Game {
     private Texture enemyProjectileSprite;
     private Texture score100Sprite;
     private Texture score500Sprite;
+    private Texture explosionSprite;
     // SoundFX
     private Sound mainWeaponFx;
     private Sound sideWeaponFx;
@@ -99,6 +100,7 @@ public class GameContext extends Game {
         score500Sprite = new Texture("Score500.png");
         shieldSprite = new Texture("shields.png");
         superChargedShield = new Texture("super-shields.png");
+        explosionSprite = new Texture("explosion_48.png");
         // Sounds
         mainWeaponFx = Gdx.audio.newSound(Gdx.files.internal("single_shot.wav"));
         sideWeaponFx = Gdx.audio.newSound(Gdx.files.internal("dual_shot.wav"));
@@ -208,6 +210,10 @@ public class GameContext extends Game {
 
     public Texture get500PointsSprite() {
         return score500Sprite;
+    }
+
+    public Texture getExplosionSprite() {
+        return explosionSprite;
     }
 
     // Sound getters

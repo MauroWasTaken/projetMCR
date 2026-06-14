@@ -35,8 +35,14 @@ public abstract class Ship extends GameObject {
 
         this.weapons.add(weapon);
         weapon.setOwner(this);
-        weapon.setOffset(xOffsets[nbWeapons], yOffsets[nbWeapons]);
-        ++nbWeapons;
+        if (this instanceof Enemy) {
+            weapon.setOffset((float) shootingOffsetX, (float) shootingOffsetY);
+        } else {
+            if (nbWeapons < xOffsets.length) {
+                weapon.setOffset(xOffsets[nbWeapons], yOffsets[nbWeapons]);
+            }
+            ++nbWeapons;
+        }
     }
 
     public boolean isInvulnerable() {
@@ -69,9 +75,9 @@ public abstract class Ship extends GameObject {
     }
 
     protected void die() {
-        //todo add explosion effect
         if (shield != null) context.despawn(shield);
         context.despawn(this);
+        context.spawn(new ExplodingShip(context, this.width, this.height, this.x, this.y));
     }
 
     @Override

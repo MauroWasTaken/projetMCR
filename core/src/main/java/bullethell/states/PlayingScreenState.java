@@ -67,18 +67,15 @@ public class PlayingScreenState extends AbstractGameScreenState {
                     CurrencyBank.getInstance().addFunds(200);
                     instance.levelSucceeded();
                     if (instance.isCampaignCleared()) {
-                        // Return
-                        CurrencyBank.getInstance().reset();
-                        instance.reset();
-                        context.changeState(new HomeScreenState(context, writer));
+                        // Go to Victory Screen
+                        context.changeState(new VictoryState(context, writer));
                     } else {
                         context.changeState(context.getUpgradeMenuState());
                     }
                 }
                 if (gameOver) {
-                    CurrencyBank.getInstance().reset();
-                    instance.reset();
-                    context.changeState(new HomeScreenState(context, writer));
+                    // Go to Game Over Screen
+                    context.changeState(new GameOverState(context, writer));
                 }
             }
         }
@@ -86,7 +83,7 @@ public class PlayingScreenState extends AbstractGameScreenState {
 
     @Override
     public void render() {
-        if (levelCompleted) { //draws victory screen
+        if (levelCompleted && !instance.isCampaignCleared()) { //draws level completed transition
             this.writer.writeCenteredTextAtHeight("Level Completed!", context.getPlayHeight() / 2, 1.5f);
         }
 
@@ -99,12 +96,12 @@ public class PlayingScreenState extends AbstractGameScreenState {
         // draw current money
         this.writer.writeBottomRightText("Money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), 1f);
 
+        // draw HUD
+        this.writer.writeLeftBiasedTextAtHeight("Level: " + instance.getCurrentLevel(), context.getPlayHeight() - 20, 1f);
+        this.writer.writeCenteredTextAtHeight("Score: " + instance.getScore(), context.getPlayHeight() - 20, 1f);
+
         if (player != null && player.hasSpecial()) {
             this.writer.writeCenteredTextAtHeight("Super charges: " + nbRemainingSpecials, 20, 1f);
-        }
-
-        if (gameOver) { //draws game over screen
-            this.writer.writeCenteredTextAtHeight("Game Over!", context.getPlayHeight() / 2, 1.5f);
         }
     }
 }

@@ -147,7 +147,7 @@ public class UpgradeMenuScreenState extends AbstractGameScreenState {
     public void render() {
         final float playHeight = context.getPlayHeight();
         this.writer.writeCenteredTextAtHeight("UPGRADE MENU", playHeight - 50, 1.5f);
-        this.writer.writeTightMultilineAtHeight(new String[]{"Use numbers 1-9 to pick your weapon", "Press ENTER to start level"}, playHeight - 80, 1f);
+        this.writer.writeTightMultilineAtHeight(new String[]{"Use numbers 1-9 to pick your weapon"," ", "Press ENTER to start level"}, playHeight - 80, 1f);
 
         float startY = playHeight - 120;
 

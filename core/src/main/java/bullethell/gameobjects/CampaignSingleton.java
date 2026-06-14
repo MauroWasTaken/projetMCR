@@ -9,13 +9,15 @@ import bullethell.gameobjects.factories.EnemySpawner;
 public class CampaignSingleton {
     private static CampaignSingleton instance;
     private int nextLevel;
-    private final int MAX_LEVEL = 2;
+    private final int MAX_LEVEL = 4;
+    private int score;
 
     private final LevelDirector director;
     private EnemySpawner enemySpawner;
     private LevelBuilder levelBuilder;
 
     private CampaignSingleton() {
+        reset();
         nextLevel = 1;
         director = new LevelDirector();
     }
@@ -37,6 +39,19 @@ public class CampaignSingleton {
 
     public void reset() {
         this.nextLevel = 1;
+        this.score = 0;
+    }
+
+    public void addScore(int amount) {
+        this.score += amount;
+    }
+
+    public int getScore() {
+        return this.score;
+    }
+
+    public int getCurrentLevel() {
+        return this.nextLevel;
     }
 
     public Level getNextLevel(GameContext context) {
@@ -47,6 +62,8 @@ public class CampaignSingleton {
         return switch (this.nextLevel) {
             case 1 -> director.level1(levelBuilder, context, enemySpawner);
             case 2 -> director.level2(levelBuilder, context, enemySpawner);
+            case 3 -> director.level3(levelBuilder, context, enemySpawner);
+            case 4 -> director.level4(levelBuilder, context, enemySpawner);
             default -> director.level1(levelBuilder, context, enemySpawner); // TODO: clean up that shi, emergency fallback for now, but shouldn't happen in normal playthrough
         };
     }

@@ -57,6 +57,11 @@ public class EnemyBuilder extends ShipBuilder {
         return this;
     }
 
+    public EnemyBuilder setScoreValue(int scoreValue) {
+        this.scoreValue = scoreValue;
+        return this;
+    }
+
     public Enemy build() {
 
         if (path == null) throw new BuildingErrorException("Enemy requires a path"); //todo path needs to have 2 points
@@ -65,7 +70,7 @@ public class EnemyBuilder extends ShipBuilder {
         if (shootDelay == -1f) throw new BuildingErrorException("Enemy requires a shoot delay");
         if (nbShots == -2) throw new BuildingErrorException("Enemy requires a number of shots");
 
-        Enemy enemy = new Enemy(context, sprite, speed, path, shootDelay, nbShots);
+        Enemy enemy = new Enemy(context, sprite, speed, path, shootDelay, nbShots, scoreValue);
 
         for (Weapon w : weapons) {
             enemy.addWeapon(w);
@@ -90,4 +95,5 @@ public class EnemyBuilder extends ShipBuilder {
     private ArrayList<Vector2> path;
     private float shootDelay = -1f;
     private int nbShots = -2;
+    private int scoreValue = 0;
 }

@@ -8,8 +8,8 @@ import bullethell.gameobjects.builders.WeaponBuilder;
 import bullethell.gameobjects.builders.WeaponDirector;
 import bullethell.currencysystem.CurrencyBank;
 import bullethell.currencysystem.InsufficientFundsException;
-import bullethell.gameobjects.super_move.SuperLaser;
-import bullethell.gameobjects.super_move.SuperShield;
+import bullethell.gameobjects.supermove.SuperLaser;
+import bullethell.gameobjects.supermove.SuperShield;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -36,7 +36,7 @@ public class UpgradeMenuState extends AbstractGameState {
             new Upgrade("Quick Recharge Shield", "1 HP, recharges in 3.5s", 600, new ShieldDirector(context).quickRechargeShield()),
             new Upgrade("Strong Shield", "3 HP, no recharge", 1200, new ShieldDirector(context).strongShield()),
             new Upgrade("Supercharge shields", "The best defense is a good offense", 1500, new SuperShield()),
-            new Upgrade("Supercharge weapons", "MURDER!!!!", 1500, new SuperLaser())
+            new Upgrade("Supercharge weapons", "MURDER!!!!", 1500, new SuperLaser(context.getSuperLaserFx()))
         ));
     }
 

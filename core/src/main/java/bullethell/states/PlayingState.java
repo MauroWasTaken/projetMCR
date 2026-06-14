@@ -43,7 +43,7 @@ public class PlayingState extends AbstractGameState {
             context.getPendingAdd().clear();
         }
         // check if player is still alive
-        if (context.getPlayer() == null){
+        if (context.getPlayer() == null) {
             gameOver = true;
         } else {
             // If player is not dead, update remaining specials
@@ -98,7 +98,9 @@ public class PlayingState extends AbstractGameState {
         // draw current money
         this.writer.writeBottomRightText("Money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), 1f);
 
-        font.draw(batch, "Super charges : " + nbRemainingSpecials, 0, 20);
+        if (player != null && player.hasSpecial()) {
+            this.writer.writeCenteredTextAtHeight("Super charges: " + nbRemainingSpecials, 20, 1f);
+        }
 
         if (gameOver) { //draws game over screen
             this.writer.writeCenteredTextAtHeight("Game Over!", context.getPlayHeight() / 2, 1.5f);

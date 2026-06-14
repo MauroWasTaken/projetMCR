@@ -1,4 +1,4 @@
-package bullethell.gameobjects.super_move;
+package bullethell.gameobjects.supermove;
 
 import bullethell.gameobjects.ships.Ship;
 
@@ -12,7 +12,7 @@ public abstract class SuperMove {
         this.owner = owner;
     }
 
-    protected boolean checkMaxCharges() {
+    protected boolean hasRunOutOfCharges() {
         return maxCharges <= 0;
     }
 

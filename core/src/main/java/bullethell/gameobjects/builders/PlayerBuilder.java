@@ -4,7 +4,7 @@ import bullethell.GameContext;
 import bullethell.gameobjects.ships.Player;
 import bullethell.gameobjects.Weapon;
 import bullethell.gameobjects.Shield;
-import bullethell.gameobjects.super_move.SuperMove;
+import bullethell.gameobjects.supermove.SuperMove;
 
 import java.util.ArrayList;
 

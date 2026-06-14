@@ -1,4 +1,4 @@
-package bullethell.gameobjects.super_move;
+package bullethell.gameobjects.supermove;
 
 public class SuperShield extends SuperMove {
 
@@ -10,9 +10,13 @@ public class SuperShield extends SuperMove {
 
     @Override
     public void trigger() {
-        if (checkMaxCharges()) return;
+        if (hasRunOutOfCharges()) {
+            return;
+        }
         maxCharges--;
-        if (owner.getShield() == null) return;
+        if (owner.getShield() == null) {
+            return;
+        }
         owner.getShield().supercharge(maxTime);
     }
 }

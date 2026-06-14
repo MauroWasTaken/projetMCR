@@ -38,7 +38,6 @@ public class Weapon extends GameObject {
             return;
         }
         shootTimer = 0;
-        TextureRegion currentFrame = animation.getKeyFrame(shootTimer, true);
 
         for (Projectile p : projectiles) {
             Projectile copy = new Projectile(
@@ -51,9 +50,9 @@ public class Weapon extends GameObject {
                 p.sprite
             );
             context.spawn(copy);
-            if (soundFx != null) {
-                soundFx.play(volume);
-            }
+        }
+        if (soundFx != null) {
+            soundFx.play(volume);
         }
     }
 

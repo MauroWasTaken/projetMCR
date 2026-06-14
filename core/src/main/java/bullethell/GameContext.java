@@ -49,6 +49,7 @@ public class GameContext extends Game {
     private Sound mainWeaponFx;
     private Sound sideWeaponFx;
     private Sound enemyShootFx;
+    private Sound superLaserFx;
     private Music backgroundMusic;
     private boolean useFx;
     private boolean useMusic;
@@ -99,6 +100,7 @@ public class GameContext extends Game {
         mainWeaponFx = Gdx.audio.newSound(Gdx.files.internal("single_shot.wav"));
         sideWeaponFx = Gdx.audio.newSound(Gdx.files.internal("dual_shot.wav"));
         enemyShootFx = Gdx.audio.newSound(Gdx.files.internal("enemy_shoot.wav"));
+        superLaserFx = Gdx.audio.newSound(Gdx.files.internal("special_weapon.mp3"));
         backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background_music.mp3"));
         useFx = true;
         useMusic = true;
@@ -222,6 +224,14 @@ public class GameContext extends Game {
     public Sound getEnemyShootFx() {
         if (useFx) {
             return enemyShootFx;
+        } else {
+            return null;
+        }
+    }
+
+    public Sound getSuperLaserFx() {
+        if (useFx) {
+            return superLaserFx;
         } else {
             return null;
         }

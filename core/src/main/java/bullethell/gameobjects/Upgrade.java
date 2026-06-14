@@ -1,6 +1,6 @@
 package bullethell.gameobjects;
 
-import bullethell.gameobjects.super_move.SuperMove;
+import bullethell.gameobjects.supermove.SuperMove;
 
 public class  Upgrade {
     private final String name;

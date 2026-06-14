@@ -24,6 +24,8 @@ public class LevelBuilder {
         if (spawnQueue.isEmpty()) {
             throw new BuildingErrorException("Level requires at least one enemy spawn");
         }
-        return new Level(context, spawnQueue);
+        Level level = new Level(context, spawnQueue);
+        spawnQueue.clear();
+        return level;
     }
 }

@@ -90,6 +90,8 @@ public abstract class Ship extends GameObject {
     }
     public void setShield(Shield shield) {
         this.shield = shield;
+        shield.setOwner(this);
+        context.getGameObjects().add(this.shield);
     }
 
     public ArrayList<Weapon> getWeapons() {

@@ -5,6 +5,7 @@ import bullethell.gameobjects.Weapon;
 import bullethell.gameobjects.supermove.SuperMove;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 
@@ -15,8 +16,8 @@ public class Player extends Ship {
     private final GameContext.ControlMode controlMode;
     private SuperMove specialMove;
 
-    public Player(GameContext context) {
-        super(context, context.getPlayerSprite(), 200f, context.getPlayerSprite().getWidth() * 0.1f, context.getPlayerSprite().getHeight() * 0.1f);
+    public Player(GameContext context, Texture sprite) {
+        super(context, sprite, 200f, context.getPlayerSprite().getWidth() * 0.1f, context.getPlayerSprite().getHeight() * 0.1f);
         this.x = context.getPlayWidth() / 2f;
         this.y = 50f;
         this.shootingOffsetX = 0f;
@@ -125,7 +126,9 @@ public class Player extends Ship {
     }
 
     public void setSpecial(SuperMove specialMove) {
+
         this.specialMove = specialMove;
+        specialMove.setOwner(this);
     }
 
     public boolean hasSpecial() {

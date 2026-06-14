@@ -2,6 +2,7 @@ package bullethell.gameobjects.builders;
 
 import bullethell.GameContext;
 import bullethell.Level;
+import bullethell.gameobjects.spawners.EnemySpawner;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 public class LevelDirector {
 
     public Level level1(LevelBuilder builder, GameContext context) {
-        EnemyDirector enemyDirector = new EnemyDirector();
+        EnemySpawner spawner = new EnemySpawner(context);
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();
 
@@ -25,8 +26,8 @@ public class LevelDirector {
         }
 
         for (int i = 0; i < 20; i++) {
-            builder.addSpawn(2 + i * 0.2f, enemyDirector.basicEnemy(context, path));
-            builder.addSpawn(2 + i * 0.2f, enemyDirector.basicEnemy(context, path2));
+            builder.addSpawn(2 + i * 0.2f, spawner.makeBasicEnemy(path));
+            builder.addSpawn(2 + i * 0.2f, spawner.makeBasicEnemy(path2));
         }
 
         return builder.build();
@@ -34,7 +35,7 @@ public class LevelDirector {
 
 
     public Level level2(LevelBuilder builder, GameContext context) {
-        EnemyDirector enemyDirector = new EnemyDirector();
+        EnemySpawner spawner = new EnemySpawner(context);
         float playWidth = context.getPlayWidth();
         float playHeight = context.getPlayHeight();
 
@@ -64,11 +65,11 @@ public class LevelDirector {
         path4.add(new Vector2(2 * playWidth / 3, 0));
 
         for (int i = 0; i < 10; ++i) {
-            builder.addSpawn(4 + i * 0.5f, enemyDirector.heavyEnemy(context, path));
-            builder.addSpawn(4 + i * 0.5f, enemyDirector.heavyEnemy(context, path2));
+            builder.addSpawn(4 + i * 0.5f, spawner.makeHeavyEnemy(path));
+            builder.addSpawn(4 + i * 0.5f, spawner.makeHeavyEnemy(path2));
             if (i == 7) {
-                builder.addSpawn(4, enemyDirector.heavyEnemy(context, path3));
-                builder.addSpawn(4, enemyDirector.heavyEnemy(context, path4));
+                builder.addSpawn(4, spawner.makeHeavyEnemy(path3));
+                builder.addSpawn(4, spawner.makeHeavyEnemy(path4));
             }
         }
 

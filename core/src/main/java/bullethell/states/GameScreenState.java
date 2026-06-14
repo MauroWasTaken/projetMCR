@@ -1,6 +1,6 @@
 package bullethell.states;
 
-public interface GameState {
+public interface GameScreenState {
     void update(float delta);
     void render();
 }

@@ -1,11 +1,13 @@
 package bullethell;
 
 import bullethell.gameobjects.CampaignSingleton;
+import bullethell.gameobjects.builders.ShipBuilder.EnemyBuilder;
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Player;
-import bullethell.states.GameState;
+import bullethell.gameobjects.spawners.EnemySpawner;
+import bullethell.states.GameScreenState;
 import bullethell.states.HomeScreenState;
-import bullethell.states.UpgradeMenuState;
+import bullethell.states.UpgradeMenuScreenState;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
@@ -63,12 +65,14 @@ public class GameContext extends Game {
     public AssetManager assetManager; // TODO: what we doin' with that?
     private final CampaignSingleton campaignInstance = CampaignSingleton.getInstance();
 
-    private GameState currentState;
-    private bullethell.states.UpgradeMenuState upgradeMenuState; // FIXME: I feel this violently violates state pattern
+    private GameScreenState currentState;
+    private UpgradeMenuScreenState upgradeMenuState; // FIXME: I feel this violently violates state pattern
 
     private ControlMode controlMode = ControlMode.KEYBOARD;
 
     private Level level;
+
+    private EnemySpawner enemySpawner;
 
     @Override
     public void create() {
@@ -107,12 +111,15 @@ public class GameContext extends Game {
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 
-        upgradeMenuState = new UpgradeMenuState(this, font, batch);
+        upgradeMenuState = new UpgradeMenuScreenState(this, font, batch);
         currentState = new HomeScreenState(this, font, batch);
         // Start music
         backgroundMusic.setLooping(true);
         backgroundMusic.setVolume(this.MUSIC_VOLUME);
         backgroundMusic.play();
+
+        //Set builders
+        enemySpawner = new EnemySpawner(this);
     }
 
     @Override
@@ -308,16 +315,16 @@ public class GameContext extends Game {
         return pendingRemove;
     }
 
-    public void changeState(GameState newState) {
+    public void changeState(GameScreenState newState) {
         this.currentState = newState;
     }
 
-    public bullethell.states.UpgradeMenuState getUpgradeMenuState() {
+    public UpgradeMenuScreenState getUpgradeMenuState() {
         return upgradeMenuState;
     }
 
     public void resetUpgradeMenuState() {
-        this.upgradeMenuState = new bullethell.states.UpgradeMenuState(this, font, batch);
+        this.upgradeMenuState = new UpgradeMenuScreenState(this, font, batch);
     }
 
     public enum ControlMode {

@@ -7,9 +7,9 @@ import bullethell.gameobjects.GameObject;
 import bullethell.gameobjects.ships.Player;
 import bullethell.states.statetextwriter.IStateTextWriter;
 
-public class PlayingState extends AbstractGameState {
+public class PlayingScreenState extends AbstractGameScreenState {
 
-    PlayingState(GameContext context, IStateTextWriter writer) {
+    PlayingScreenState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
     }
 

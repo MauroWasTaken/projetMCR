@@ -11,7 +11,7 @@ import java.util.List;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class HomeScreenState extends AbstractGameState {
+public class HomeScreenState extends AbstractGameScreenState {
     public HomeScreenState(GameContext context, BitmapFont font, SpriteBatch batch) {
         super(context, font, batch);
     }
@@ -27,10 +27,10 @@ public class HomeScreenState extends AbstractGameState {
             context.resetUpgradeMenuState();
             context.changeState(context.getUpgradeMenuState());
         } else if (input.isKeyJustPressed(Input.Keys.NUM_2)) {
-            context.changeState(new OptionsState(context, writer));
+            context.changeState(new OptionsScreenState(context, writer));
         } else if (input.isKeyJustPressed(Input.Keys.NUM_3)) {
             // Credits
-            context.changeState(new CreditsState(context, writer));
+            context.changeState(new CreditsScreenState(context, writer));
         } else if (input.isKeyJustPressed(Input.Keys.NUM_0)) {
             // Close the game
             Gdx.app.exit();

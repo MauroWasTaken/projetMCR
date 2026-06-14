@@ -7,9 +7,9 @@ import com.badlogic.gdx.Input;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class OptionsState extends AbstractGameState {
+public class OptionsScreenState extends AbstractGameScreenState {
 
-    OptionsState(GameContext context, IStateTextWriter writer) {
+    OptionsScreenState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
     }
 

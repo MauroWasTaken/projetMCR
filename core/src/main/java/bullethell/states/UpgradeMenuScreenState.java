@@ -2,7 +2,7 @@ package bullethell.states;
 
 import bullethell.GameContext;
 import bullethell.gameobjects.Upgrade;
-import bullethell.gameobjects.builders.PlayerBuilder;
+import bullethell.gameobjects.builders.ShipBuilder.PlayerBuilder;
 import bullethell.gameobjects.builders.ShieldDirector;
 import bullethell.gameobjects.builders.WeaponBuilder;
 import bullethell.gameobjects.builders.WeaponDirector;
@@ -20,14 +20,14 @@ import java.util.Arrays;
 
 import static com.badlogic.gdx.Gdx.input;
 
-public class UpgradeMenuState extends AbstractGameState {
+public class UpgradeMenuScreenState extends AbstractGameScreenState {
 
     private String shopMessage = "";
     private float shopMessageTimer = 0f;
     private final ArrayList<Upgrade> availableUpgrades; //available to purchase
     private final ArrayList<Upgrade> purchasedUpgrades = new ArrayList<>();
 
-    public UpgradeMenuState(GameContext context, BitmapFont font, SpriteBatch batch) {
+    public UpgradeMenuScreenState(GameContext context, BitmapFont font, SpriteBatch batch) {
         super(context, font, batch);
         availableUpgrades = new ArrayList<>(Arrays.asList(//adds default items to shop
             Upgrade.weapon("Main Weapon", "Main weapon shoots", 0, () -> new WeaponDirector().playerMainWeapon(new WeaponBuilder(context))),
@@ -42,6 +42,8 @@ public class UpgradeMenuState extends AbstractGameState {
 
     private void buildPlayer(GameContext context) {
         PlayerBuilder playerBuilder = new PlayerBuilder(context); // start builder
+
+        playerBuilder.setSprite(context.getPlayerSprite());
 
         for (Upgrade upgrade : purchasedUpgrades) { //add purchased upgrades
             if (upgrade.isWeaponUpgrade()) {
@@ -61,7 +63,7 @@ public class UpgradeMenuState extends AbstractGameState {
         if (input.isKeyJustPressed(Input.Keys.ENTER)) { // if shopping is done, import player
             buildPlayer(context);                       // build new player
             context.setNextLevel();
-            context.changeState(new PlayingState(context, writer)); // change state
+            context.changeState(new PlayingScreenState(context, writer)); // change state
             return;
         }
 

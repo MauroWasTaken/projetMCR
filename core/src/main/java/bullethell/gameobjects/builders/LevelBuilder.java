@@ -7,6 +7,7 @@ import bullethell.gameobjects.ships.Enemy;
 import java.util.ArrayList;
 
 public class LevelBuilder {
+
     private final GameContext context;
     private final ArrayList<Level.EnemySpawn> spawnQueue = new ArrayList<>();
 

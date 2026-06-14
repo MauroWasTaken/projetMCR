@@ -69,9 +69,9 @@ public abstract class Ship extends GameObject {
     }
 
     protected void die() {
-        //todo add explosion effect
         if (shield != null) context.despawn(shield);
         context.despawn(this);
+        context.spawn(new ExplodingShip(context, this.width, this.height, this.x, this.y));
     }
 
     @Override

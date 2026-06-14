@@ -37,6 +37,11 @@ public class Player extends Ship {
         } else if (this.controlMode.equals(GameContext.ControlMode.MOUSE)) {
             this.handleMouseInput();
         }
+        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
+            for (Weapon w : weapons) {
+                w.fire();
+            }
+        }
         if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
             if (this.specialMove != null) {
                 specialMove.trigger();
@@ -81,11 +86,6 @@ public class Player extends Ship {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.S) || Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
             dirY -= 1f;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) {
-            for (Weapon w : weapons) {
-                w.fire();
-            }
         }
 
 

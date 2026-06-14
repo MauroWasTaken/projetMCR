@@ -18,14 +18,17 @@ public class Enemy extends Ship {
     private final float shootDelay; // in ms
     private float shootTimer; // in ms
     private int nbShots; // -1 for "infinite"
+    private final int scoreValue;
 
-    public Enemy(GameContext context, Texture sprite, float speed, ArrayList<Vector2> path, float shootDelay, int nbShots) {
+    public Enemy(GameContext context, Texture sprite, float speed, ArrayList<Vector2> path, float shootDelay, int nbShots, int scoreValue) {
         super(context, sprite, speed, sprite.getWidth() * 0.6f, sprite.getHeight() * 0.6f);
         this.path = path == null ? new ArrayList<>() : new ArrayList<>(path);
         this.shootDelay = shootDelay;
         this.nbShots = nbShots;
+        this.scoreValue = scoreValue;
         this.shootingOffsetX = 0f;
         this.shootingOffsetY = -sprite.getHeight() / 2f;
+        this.invulnerabilityTime = 0f;
 
         if (!this.path.isEmpty()) {
             Vector2 start = this.path.get(0);
@@ -84,6 +87,7 @@ public class Enemy extends Ship {
     @Override
     public void die() {
         super.die();
+        bullethell.gameobjects.CampaignSingleton.getInstance().addScore(this.scoreValue);
         if (Math.random() < dropRate500) {
             context.spawn( new Score500Drop(context, x,y));
         }else if (Math.random() < dropRate100) {

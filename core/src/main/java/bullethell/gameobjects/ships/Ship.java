@@ -35,8 +35,14 @@ public abstract class Ship extends GameObject {
 
         this.weapons.add(weapon);
         weapon.setOwner(this);
-        weapon.setOffset(xOffsets[nbWeapons], yOffsets[nbWeapons]);
-        ++nbWeapons;
+        if (this instanceof Enemy) {
+            weapon.setOffset((float) shootingOffsetX, (float) shootingOffsetY);
+        } else {
+            if (nbWeapons < xOffsets.length) {
+                weapon.setOffset(xOffsets[nbWeapons], yOffsets[nbWeapons]);
+            }
+            ++nbWeapons;
+        }
     }
 
     public boolean isInvulnerable() {

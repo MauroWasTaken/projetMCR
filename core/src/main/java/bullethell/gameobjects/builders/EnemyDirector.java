@@ -23,7 +23,7 @@ public class EnemyDirector {
     }
 
     public Enemy heavyEnemy(GameContext context, ArrayList<Vector2> path) {
-        Texture sprite = context.getHeavyEnemySPrite();
+        Texture sprite = context.getHeavyEnemySprite();
         EnemyBuilder builder = new EnemyBuilder(context);
         builder.setSprite(sprite)
                .setSpeed(75f)

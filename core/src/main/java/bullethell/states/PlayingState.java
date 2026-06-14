@@ -5,11 +5,11 @@ import bullethell.currencysystem.CurrencyBank;
 import bullethell.gameobjects.CampaignSingleton;
 import bullethell.gameobjects.GameObject;
 import bullethell.gameobjects.ships.Player;
-import bullethell.states.statetextwriter.StateTextWriter;
+import bullethell.states.statetextwriter.IStateTextWriter;
 
 public class PlayingState extends AbstractGameState {
 
-    PlayingState(GameContext context, StateTextWriter writer) {
+    PlayingState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
     }
 

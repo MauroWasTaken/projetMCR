@@ -1,14 +1,14 @@
 package bullethell.states;
 
 import bullethell.GameContext;
-import bullethell.states.statetextwriter.StateTextWriter;
+import bullethell.states.statetextwriter.IStateTextWriter;
 import com.badlogic.gdx.Input;
 
 import static com.badlogic.gdx.Gdx.input;
 
 public class CreditsState extends AbstractGameState {
 
-    CreditsState(GameContext context, StateTextWriter writer) {
+    CreditsState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
     }
 

@@ -1,7 +1,7 @@
 package bullethell.states;
 
 import bullethell.GameContext;
-import bullethell.states.statetextwriter.StateTextWriter;
+import bullethell.states.statetextwriter.IStateTextWriter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,7 +16,7 @@ public class HomeScreenState extends AbstractGameState {
         super(context, font, batch);
     }
 
-    HomeScreenState(GameContext context, StateTextWriter writer) {
+    HomeScreenState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
     }
 

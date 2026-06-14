@@ -3,14 +3,13 @@ package bullethell;
 import bullethell.gameobjects.CampaignSingleton;
 import bullethell.gameobjects.ships.Enemy;
 import bullethell.gameobjects.ships.Player;
-import bullethell.gameobjects.builders.LevelBuilder;
-import bullethell.gameobjects.builders.LevelDirector;
 import bullethell.states.GameState;
 import bullethell.states.HomeScreenState;
 import bullethell.states.UpgradeMenuState;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -45,9 +44,15 @@ public class GameContext extends Game {
     private Texture enemyProjectileSprite;
     private Texture score100Sprite;
     private Texture score500Sprite;
+    // SoundFX
     private Sound mainWeaponFx;
     private Sound sideWeaponFx;
     private Sound enemyShootFx;
+    private Music backgroundMusic;
+    private boolean useFx;
+    private boolean useMusic;
+    private final float MUSIC_VOLUME = 0.2f;
+
     private BitmapFont font;
     private ShapeRenderer shapeRenderer;
     private final ArrayList<GameObject> gameObjects = new ArrayList<>();
@@ -92,17 +97,18 @@ public class GameContext extends Game {
         mainWeaponFx = Gdx.audio.newSound(Gdx.files.internal("single_shot.wav"));
         sideWeaponFx = Gdx.audio.newSound(Gdx.files.internal("dual_shot.wav"));
         enemyShootFx = Gdx.audio.newSound(Gdx.files.internal("enemy_shoot.wav"));
+        backgroundMusic = Gdx.audio.newMusic(Gdx.files.internal("background_music.mp3"));
+        useFx = true;
+        useMusic = true;
         font = new BitmapFont();
         shapeRenderer = new ShapeRenderer();
 
-        // Build Level
-        LevelBuilder levelBuilder = new LevelBuilder(this);
-        LevelDirector levelDirector = new LevelDirector();
-
-        level = levelDirector.level1(levelBuilder, this);
-
         upgradeMenuState = new UpgradeMenuState(this, font, batch);
         currentState = new HomeScreenState(this, font, batch);
+        // Start music
+        backgroundMusic.setLooping(true);
+        backgroundMusic.setVolume(this.MUSIC_VOLUME);
+        backgroundMusic.play();
     }
 
     @Override
@@ -122,13 +128,6 @@ public class GameContext extends Game {
         currentState.render();
 
         batch.end();
-        // hitbox viewer (might only keep it for the player)
-        /*shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(Color.RED);
-        for (GameObject gameObject : gameObjects) {
-            shapeRenderer.polygon(gameObject.getHitbox().getTransformedVertices());
-        }*/
         shapeRenderer.end();
     }
 
@@ -173,7 +172,7 @@ public class GameContext extends Game {
         return enemySprite;
     }
 
-    public Texture getHeavyEnemySPrite() {
+    public Texture getHeavyEnemySprite() {
         return heavyEnemySprite;
     }
 
@@ -199,15 +198,51 @@ public class GameContext extends Game {
 
     // Sound getters
     public Sound getMainWeaponFx() {
-        return mainWeaponFx;
+        if (useFx) {
+            return mainWeaponFx;
+        } else {
+            return null;
+        }
     }
 
     public Sound getSideWeaponFx() {
-        return sideWeaponFx;
+        if (useFx) {
+            return sideWeaponFx;
+        } else {
+            return null;
+        }
     }
 
     public Sound getEnemyShootFx() {
-        return enemyShootFx;
+        if (useFx) {
+            return enemyShootFx;
+        } else {
+            return null;
+        }
+    }
+
+    public void toggleSoundFx() {
+        this.useFx = !this.useFx;
+    }
+
+    public boolean usesFx() {
+        return this.useFx;
+    }
+
+    public void toggleMusic() {
+        if (useMusic) {
+            useMusic = false;
+            backgroundMusic.stop();
+        } else {
+            useMusic = true;
+            backgroundMusic.setLooping(true);
+            backgroundMusic.setVolume(this.MUSIC_VOLUME);
+            backgroundMusic.play();
+        }
+    }
+
+    public boolean usesMusic() {
+        return this.useMusic;
     }
 
     public void despawn(GameObject object) {

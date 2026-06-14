@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class StateTextWriter {
+public class StateTextWriter implements IStateTextWriter {
     private final GameContext context;
     private final BitmapFont font;
     private final SpriteBatch batch;
@@ -30,11 +30,12 @@ public class StateTextWriter {
         font.setColor(Color.WHITE);
     }
 
-    public void writeTightMultilineAtHeight(String[] text, float y, float fontSize) {
+    public float writeTightMultilineAtHeight(String[] text, float y, float fontSize) {
         float height = y;
         for (String line : text) {
             height -= writeCenteredTextAtHeight(line, height, fontSize);
         }
+        return height;
     }
 
     public void writeLeftBiasedTextAtHeight(String text, float y, float fontSize) {

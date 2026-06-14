@@ -57,9 +57,12 @@ public abstract class Ship extends GameObject {
     @Override
     public void onCollision(GameObject other) {
         if (isInvulnerable()) return;
+
         if (shield != null && shield.getHp() > 0) {
-            shield.hit();
-            invulnerabilityTimer = invulnerabilityTime;
+            shield.onCollision(other);
+            if (!shield.isSuperCharged()) {
+                setInvulnerabilityTimer(invulnerabilityTime);
+            }
         } else {
             die();
         }
@@ -67,6 +70,7 @@ public abstract class Ship extends GameObject {
 
     protected void die() {
         //todo add explosion effect
+        if (shield != null) context.despawn(shield);
         context.despawn(this);
     }
 
@@ -86,6 +90,15 @@ public abstract class Ship extends GameObject {
     }
     public void setShield(Shield shield) {
         this.shield = shield;
+    }
+
+    public ArrayList<Weapon> getWeapons() {
+        return weapons;
+    }
+
+    public void setInvulnerabilityTimer(float time) {
+        if (invulnerabilityTimer <= 0f)
+            invulnerabilityTimer = time;
     }
 
     public double getShootingX(){

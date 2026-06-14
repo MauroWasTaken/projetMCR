@@ -15,6 +15,7 @@ public class PlayingState implements GameState {
     private boolean gameOver = false;
     private float levelTransitionTimer = 0f;
     private final CampaignSingleton instance = CampaignSingleton.getInstance();
+    int nbRemainingSpecials = 0;
 
     @Override
     public void update(GameContext context, float delta) {
@@ -42,6 +43,9 @@ public class PlayingState implements GameState {
         // check if player is still alive
         if (context.getPlayer() == null){
             gameOver = true;
+        } else {
+            // If player is not dead, update remaining specials
+            nbRemainingSpecials = context.getPlayer().getRemainingSpecialCharges();
         }
 
         // check level completion
@@ -86,6 +90,8 @@ public class PlayingState implements GameState {
         }
         // draw current money
         font.draw(batch, "money: " + bullethell.currencysystem.CurrencyBank.getInstance().getValue(), context.getPlayWidth() - 100, 20);
+
+        font.draw(batch, "Super charges : " + nbRemainingSpecials, 0, 20);
 
         if (gameOver) { //draws game over screen
             font.getData().setScale(1.5f);

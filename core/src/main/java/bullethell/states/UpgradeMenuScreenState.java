@@ -3,9 +3,6 @@ package bullethell.states;
 import bullethell.GameContext;
 import bullethell.gameobjects.Upgrade;
 import bullethell.gameobjects.builders.ShipBuilder.PlayerBuilder;
-import bullethell.gameobjects.factories.ShieldFactory;
-import bullethell.gameobjects.builders.WeaponBuilder;
-import bullethell.gameobjects.builders.WeaponDirector;
 import bullethell.currencysystem.CurrencyBank;
 import bullethell.currencysystem.InsufficientFundsException;
 import bullethell.gameobjects.supermove.SuperLaser;
@@ -13,11 +10,8 @@ import bullethell.gameobjects.supermove.SuperShield;
 import bullethell.states.statetextwriter.IStateTextWriter;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import static com.badlogic.gdx.Gdx.input;
 
@@ -26,8 +20,8 @@ public class UpgradeMenuScreenState extends AbstractGameScreenState {
     private String shopMessage = "";
     private float shopMessageTimer = 0f;
 
-    private ArrayList<Upgrade> availableUpgrades; //available to purchase
-    private ArrayList<Upgrade> purchasedUpgrades;
+    private final List<Upgrade> availableUpgrades; //available to purchase
+    private final List<Upgrade> purchasedUpgrades;
 
     public UpgradeMenuScreenState(GameContext context, IStateTextWriter writer) {
         super(context, writer);
@@ -130,7 +124,7 @@ public class UpgradeMenuScreenState extends AbstractGameScreenState {
                     shopMessage = "Purchased " + upgrade.getName() + "!";
                     shopMessageTimer = 2f;
                     break; // break out of the loop since we modified availableUpgrades
-                } catch (InsufficientFundsException e) { // shows message if we dont have the money
+                } catch (InsufficientFundsException e) { // shows message if we don't have the money
                     shopMessage = "Not enough money!";
                     shopMessageTimer = 2f;
                 }

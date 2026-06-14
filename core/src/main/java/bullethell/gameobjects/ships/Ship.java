@@ -13,12 +13,12 @@ public abstract class Ship extends GameObject {
     double shootingOffsetX,shootingOffsetY;
     final Texture sprite;
     final float speed;
-    ArrayList<Weapon> weapons;
+    final ArrayList<Weapon> weapons;
     Shield shield;
 
     //TODO Make it so weapon places are computed dynamically
-    float[] xOffsets = {-20, 20, 10, -10};
-    float[] yOffsets = {-1, -1, 1, 1};
+    final float[] xOffsets = {-20, 20, 10, -10};
+    final float[] yOffsets = {-1, -1, 1, 1};
     int nbWeapons = 0;
 
     protected float invulnerabilityTime = 1.5f;
@@ -107,13 +107,6 @@ public abstract class Ship extends GameObject {
     public void setInvulnerabilityTimer(float time) {
         if (invulnerabilityTimer <= 0f)
             invulnerabilityTimer = time;
-    }
-
-    public double getShootingX(){
-        return this.x + shootingOffsetX;
-    }
-    public double getShootingY(){
-        return this.y + shootingOffsetY;
     }
 
     public float getX() { return this.x; }

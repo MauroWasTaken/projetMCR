@@ -13,9 +13,9 @@ public class ExplodingShip extends GameObject {
     private float stateTime = 0f;
 
     // Used to display exploding animation
-    TextureRegion[][] frames2D;
-    TextureRegion[] frames;
-    Animation<TextureRegion> animation;
+    final TextureRegion[][] frames2D;
+    final TextureRegion[] frames;
+    final Animation<TextureRegion> animation;
 
     protected ExplodingShip(GameContext context, float width, float height, float xPos, float yPos) {
         super(context, width, height);

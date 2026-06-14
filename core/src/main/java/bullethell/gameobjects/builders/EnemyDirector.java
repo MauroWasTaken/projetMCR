@@ -14,7 +14,7 @@ import java.util.ArrayList;
  */
 public class EnemyDirector {
 
-    private WeaponDirector weaponDirector = new WeaponDirector();
+    private final WeaponDirector weaponDirector = new WeaponDirector();
 
     /**
      * Creates a basic enemy

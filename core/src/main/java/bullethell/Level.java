@@ -17,8 +17,8 @@ public class Level {
 
     // class that represents when and what kind of enemies will be spawned (might be used in builder)
     public static class EnemySpawn {
-        public float time;
-        public Enemy enemy;
+        public final float time;
+        public final Enemy enemy;
 
         public EnemySpawn(float time, Enemy enemy) {
             this.time = time;

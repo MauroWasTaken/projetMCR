@@ -1,11 +1,11 @@
 package bullethell.gameobjects.supermove;
 
 /**
- * A kind of supermove. The shield becomes indestructible and kills enemies on collition
+ * A kind of supermove. The shield becomes indestructible and kills enemies on collision
  */
 public class SuperShield extends SuperMove {
 
-    float maxTime = 5f;
+    final float maxTime = 5f;
 
     public SuperShield() {
         maxCharges = 1;

@@ -2,7 +2,6 @@ package bullethell.gameobjects.builders;
 
 import bullethell.GameContext;
 import bullethell.gameobjects.Weapon;
-import com.badlogic.gdx.graphics.Texture;
 
 /**
  * Creates different types of weapons

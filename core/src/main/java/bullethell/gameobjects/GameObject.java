@@ -12,7 +12,7 @@ public abstract class GameObject {
     protected float x, y;
     protected final float width, height;
     protected final GameContext context;
-    protected Polygon hitbox;
+    protected final Polygon hitbox;
 
     protected GameObject(GameContext context, float width, float height) {
         this.width = width;

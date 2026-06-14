@@ -8,8 +8,6 @@ import bullethell.gameobjects.Shield;
 import bullethell.gameobjects.supermove.SuperMove;
 import com.badlogic.gdx.graphics.Texture;
 
-import java.util.ArrayList;
-
 /**
  * Builds the player's ship
  */

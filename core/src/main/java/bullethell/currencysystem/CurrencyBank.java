@@ -24,7 +24,7 @@ public class CurrencyBank {
     /**
      * Purchase an upgrade
      * @param cost of the upgrade
-     * @throws InsufficientFundsException
+     * @throws InsufficientFundsException if player has not enough funds
      */
     public void purchase(float cost) throws InsufficientFundsException {
         if (this.hasEnoughFunds(cost)) {

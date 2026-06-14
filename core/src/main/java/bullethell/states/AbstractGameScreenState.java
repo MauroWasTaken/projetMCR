@@ -2,9 +2,6 @@ package bullethell.states;
 
 import bullethell.GameContext;
 import bullethell.states.statetextwriter.IStateTextWriter;
-import bullethell.states.statetextwriter.StateTextWriter;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 /**
  * Base for screen states

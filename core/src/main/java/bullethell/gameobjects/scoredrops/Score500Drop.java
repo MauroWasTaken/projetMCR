@@ -2,7 +2,6 @@ package bullethell.gameobjects.scoredrops;
 
 import bullethell.GameContext;
 import bullethell.gameobjects.GameObject;
-import com.badlogic.gdx.graphics.Texture;
 
 public class Score500Drop extends ScoreDrop {
     private static final int VALUE = 500;

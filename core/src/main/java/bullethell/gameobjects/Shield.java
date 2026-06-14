@@ -25,8 +25,8 @@ public class Shield extends GameObject {
     private float stateTime = 0f;
 
     // Normal & supercharged shield
-    Texture normalShield;
-    Texture superShield;
+    final Texture normalShield;
+    final Texture superShield;
 
     Ship owner;
 

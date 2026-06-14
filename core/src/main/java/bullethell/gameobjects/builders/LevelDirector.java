@@ -11,7 +11,7 @@ import java.util.ArrayList;
  * Creates the different levels using a level builder
  */
 public class LevelDirector {
-    // the following levels were very much ai assisted, we described the level flow and it implemented it
+    // the following levels were very much AI assisted, we described the level flow and it implemented it
 
     /**
      * Creates level 1

@@ -4,8 +4,6 @@ import bullethell.GameContext;
 import bullethell.states.statetextwriter.IStateTextWriter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import java.util.List;
 

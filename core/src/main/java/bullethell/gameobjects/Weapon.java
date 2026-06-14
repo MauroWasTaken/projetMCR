@@ -11,12 +11,12 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class Weapon extends GameObject {
     Ship owner;
-    Projectile[] projectiles;
-    Sound soundFx;
-    float volume;
-    TextureRegion[][] frames2D;
-    TextureRegion[] frames;
-    Animation<TextureRegion> animation;
+    final Projectile[] projectiles;
+    final Sound soundFx;
+    final float volume;
+    final TextureRegion[][] frames2D;
+    final TextureRegion[] frames;
+    final Animation<TextureRegion> animation;
     private final float firingRate;
 
     private float shootTimer;

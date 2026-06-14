@@ -21,7 +21,7 @@ public abstract class Ship extends GameObject {
     float[] yOffsets = {-1, -1, 0.5f, 1};
     int nbWeapons = 0;
 
-    protected float invulnerabilityTime = 1f;
+    protected float invulnerabilityTime = 1.5f;
     protected float invulnerabilityTimer = 0f;
 
     protected Ship(GameContext context, Texture sprite, float speed, float width, float height) {
@@ -56,10 +56,13 @@ public abstract class Ship extends GameObject {
 
     @Override
     public void onCollision(GameObject other) {
+        if (isInvulnerable()) return;
+
         if (shield != null && shield.getHp() > 0) {
             shield.onCollision(other);
-            if (shield.isSuperCharged()) return;
-            setInvulnerabilityTimer(invulnerabilityTime);
+            if (!shield.isSuperCharged()) {
+                setInvulnerabilityTimer(invulnerabilityTime);
+            }
         } else {
             die();
         }
@@ -67,6 +70,7 @@ public abstract class Ship extends GameObject {
 
     protected void die() {
         //todo add explosion effect
+        if (shield != null) context.despawn(shield);
         context.despawn(this);
     }
 

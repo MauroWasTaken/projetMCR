@@ -7,7 +7,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-    
+
 import com.badlogic.gdx.math.Vector2;
 
 public class Player extends Ship {
@@ -38,11 +38,16 @@ public class Player extends Ship {
                 w.fire();
             }
         }
+        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
+            if (this.specialMove != null) {
+                specialMove.trigger();
+            }
+        }
     }
 
     @Override
     public void render(SpriteBatch batch) {
-        if (isInvulnerable()) {
+        if (isInvulnerable() && !shield.isSuperCharged()) {
             if ((int)(invulnerabilityTimer * 10) % 2 == 0) return;
         }
         for (Weapon weapon : weapons) {
@@ -73,11 +78,7 @@ public class Player extends Ship {
                 w.fire();
             }
         }
-        if(Gdx.input.isKeyJustPressed(Input.Keys.Q)) {
-            if (this.specialMove != null) {
-                specialMove.trigger();
-            }
-        }
+
 
         // normalize movement (in an if statement so that we dont divide by 0)
         if (dirX != 0f || dirY != 0f) {
@@ -96,18 +97,8 @@ public class Player extends Ship {
         x = Math.max(spriteHalfWidth, Math.min(x, maxX));
         y = Math.max(spriteHalfHeight, Math.min(y, maxY));
     }
-  
-      @Override
-    public void render(SpriteBatch batch) {
-        if (isInvulnerable() && !shield.isSuperCharged()) {
-            if ((int)(invulnerabilityTimer * 10) % 2 == 0) return;
-        }
-        for (Weapon weapon : weapons) {
-            weapon.render(batch);
-        }
-        if (shield != null) shield.render(batch);
-        batch.draw(sprite, x - sprite.getWidth() / 2f, y - sprite.getHeight() / 2f);
-    }
+
+
 
     private void handleMouseInput() {
         // Check mouse pointer is within game area
@@ -135,6 +126,11 @@ public class Player extends Ship {
 
     public void setSpecial(SuperMove specialMove) {
         this.specialMove = specialMove;
+    }
+
+    public int getRemainingSpecialCharges() {
+        if (specialMove == null) return 0;
+        return specialMove.getRemainingCharges();
     }
 
 }

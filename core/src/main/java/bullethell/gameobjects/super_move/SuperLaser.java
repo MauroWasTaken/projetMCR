@@ -6,12 +6,13 @@ import java.util.ArrayList;
 
 public class SuperLaser extends SuperMove {
 
-    int maxUses = 3;
+    public SuperLaser() {
+        maxCharges = 3;
+    }
 
     @Override
     public void trigger() {
-        if (maxUses <= 0) return;
-        maxUses--;
+        if (checkMaxCharges()) return;
         ArrayList<Weapon> weapons = owner.getWeapons();
         for (Weapon w : weapons) {
             w.supercharge();
